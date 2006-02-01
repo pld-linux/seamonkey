@@ -90,43 +90,43 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautoreqdep	libgkgfx.so libgtkxtbin.so libjsj.so libmozjs.so libxpcom.so libxpcom_compat.so
 
 %description
-Mozilla is an open-source web browser, designed for standards
+SeaMonkey is an open-source web browser, designed for standards
 compliance, performance and portability.
 
 %description -l es
-Mozilla es un navegador de Internet que se basa en una versiСn inicial
+SeaMonkey es un navegador de Internet que se basa en una versiСn inicial
 de Netscape Communicator. Este software estА en desarrollo, por lo
 cual todavМa es inestable.
 
 %description -l pl
-Mozilla jest potЙ©n╠ graficzn╠ przegl╠dark╠ WWW, ktСra jest nastЙpc╠
-Netscape Navigatora.
+SeaMonkey jest potЙ©n╠ graficzn╠ przegl╠dark╠ WWW, ktСra jest nastЙpc╠
+Mozilli, ktСra nastЙpnie byЁa nastЙpczyni╠ Netscape Communikatora.
 
 %description -l pt_BR
-O Mozilla И um web browser baseado numa versЦo inicial do Netscape
+O SeaMonkey И um web browser baseado numa versЦo inicial do Netscape
 Communicator. Este software estА em fase de desenvolvimento, portanto,
 ainda nЦo estАvel.
 
 %description -l ru
-Mozilla - полнофункциональный web-browser с открытыми исходными
+SeaMonkey - полнофункциональный web-browser с открытыми исходными
 текстами, разработанный для максимального соотвествия стандартам,
 максмимальной переносимости и скорости работы
 
 %package libs
-Summary:	mozilla shared libraries
-Summary(pl):	Biblioteki wspСЁdzielone mozilli
+Summary:	SeaMonkey shared libraries
+Summary(pl):	Biblioteki wspСЁdzielone SeaMonkey
 Group:		Libraries
 
 %description libs
-mozilla shared libraries.
+SeaMonkey shared libraries.
 
 %description libs -l pl
-Biblioteki wspСЁdzielone mozilli.
+Biblioteki wspСЁdzielone SeaMonkey.
 
 %package mailnews
-Summary:	Mozilla - programs for mail and news
-Summary(pl):	Mozilla - programy do poczty i newsСw
-Summary(ru):	Почтовая система на основе Mozilla
+Summary:	SeaMonkey - programs for mail and news
+Summary(pl):	SeaMonkey - programy do poczty i newsСw
+Summary(ru):	Почтовая система на основе SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
@@ -140,38 +140,38 @@ Programs for mail and news integrated with browser.
 Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
 
 %description mailnews -l ru
-Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP и
+Клиент почты и новостей, на основе SeaMonkey. Поддерживает IMAP, POP и
 NNTP и имеет простой интерфейс пользователя.
 
 %package chat
-Summary:	Mozilla Chat - IRC client integrated with Mozilla
-Summary(pl):	Mozilla Chat - zintegrowany z Mozill╠ klient IRC-a
+Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
+Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill╠ klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description chat
-Mozilla Chat - IRC client that is integrated with the Mozilla web
+SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
 browser.
 
 %description chat -l pl
-Mozilla Chat - klient IRC-a zintegrowany z przegl╠dark╠ Mozilla.
+SeaMonkey Chat - klient IRC-a zintegrowany z przegl╠dark╠ SeaMonkey.
 
 %package js-debugger
-Summary:	JavaScript debugger for use with Mozilla
+Summary:	JavaScript debugger for use with SeaMonkey
 Summary(pl):	Odpluskwiacz JavaScriptu do u©ywania z Mozill╠
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description js-debugger
-JavaScript debugger for use with Mozilla.
+JavaScript debugger for use with SeaMonkey.
 
 %description js-debugger -l pl
 Odpluskwiacz JavaScriptu do u©ywania z Mozill╠.
 
 %package dom-inspector
-Summary:	A tool for inspecting the DOM of pages in Mozilla
+Summary:	A tool for inspecting the DOM of pages in SeaMonkey
 Summary(pl):	NarzЙdzie do ogl╠dania DOM stron w Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
@@ -179,12 +179,12 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
-Mozilla. This is of great use to people who are doing Mozilla chrome
+SeaMonkey. This is of great use to people who are doing SeaMonkey chrome
 development or web page development.
 
 %description dom-inspector -l pl
-To narzЙdzie pozwala na ogl╠danie DOM dla stron WWW w Mozilli. Jest
-bardzo przydatne dla ludzi rozwijaj╠cych chrome w Mozilli lub
+To narzЙdzie pozwala na ogl╠danie DOM dla stron WWW w SeaMonkey. Jest
+bardzo przydatne dla ludzi rozwijaj╠cych chrome w SeaMonkey lub
 tworz╠cych strony WWW.
 
 %package gnomevfs
@@ -201,23 +201,23 @@ Gnome-VFS module providing support for smb:// URLs.
 ModuЁ Gnome-VFS dodaj╠cy wsparcie dla URLi smb://.
 
 %package calendar
-Summary:	Mozilla calendar
-Summary(pl):	Kalendarz Mozilli
+Summary:	SeaMonkey calendar
+Summary(pl):	Kalendarz SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description calendar
-This package contains the calendar application from the Mozilla suite.
+This package contains the calendar application from the SeaMonkey suite.
 
 %description calendar -l pl
-Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
+Ten pakiet zawiera kalendarz z zestawu aplikacji SeaMonkey.
 
 %package devel
-Summary:	Headers for developing programs that will use Mozilla
-Summary(pl):	Mozilla - pliki nagЁСwkowe i biblioteki
-Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam o Mozilla
-Summary(ru):	Файлы, необходимые для использования программ, включающих Mozilla
+Summary:	Headers for developing programs that will use SeaMonkey
+Summary(pl):	SeaMonkey - pliki nagЁСwkowe i biblioteki
+Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam o SeaMonkey
+Summary(ru):	Файлы, необходимые для использования программ, включающих SeaMonkey
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6-2
@@ -226,18 +226,18 @@ Obsoletes:	mozilla-embedded-devel
 Obsoletes:	mozilla-firefox-devel
 
 %description devel
-Mozilla development package.
+SeaMonkey development package.
 
 %description devel -l pl
 Biblioteki i pliki nagЁСwkowe.
 
 %description devel -l pt_BR
 Arquivos de inclusЦo para desenvolvimento de programas que usam o
-Mozilla.
+SeaMonkey.
 
 %description devel -l ru
 Заголовочные файлы, необходимые для разработки программ, испеользующих
-Mozilla
+SeaMonkey
 
 %prep
 %setup -q -c -T
