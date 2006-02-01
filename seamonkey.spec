@@ -13,7 +13,7 @@ Version:	1.0
 Release:	0.1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/seamonkey-%{version}.source.tar.bz2
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	e4f2edc5b2248d090303c70f5b28f210
 #Source1:	%{name}.desktop
 #Source2:	%{name}.png
