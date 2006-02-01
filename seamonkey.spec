@@ -319,7 +319,6 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-%{?with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/gre/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
@@ -506,7 +505,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%attr(755,root,root) %{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
+%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -529,8 +528,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%attr(755,root,root) %{?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%attr(755,root,root) %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
@@ -608,7 +606,7 @@ fi
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
-%attr(755,root,root) %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
+%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
@@ -704,7 +702,6 @@ fi
 # add rest too
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%attr(755,root,root) %{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
