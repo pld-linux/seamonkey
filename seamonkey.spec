@@ -23,17 +23,9 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/%{name}-%
 #Source7:	%{name}-mail.desktop
 #Source9:	%{name}-terminal.desktop
 #Source10:	%{name}-venkman.desktop
-#Patch0:	%{name}-pld-homepage.patch
-#Patch1:	%{name}-nss.patch
-#Patch2:	%{name}-ldap_nspr_includes.patch
-#Patch3:	%{name}-ldap-with-nss.patch
-#Patch4:	%{name}-gfx.patch
-#Patch5:	%{name}-alpha-gcc3.patch
-# http:		//bugzilla.mozilla.org/show_bug.cgi?id=234035
-# http:		//bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
-#Patch8:	%{name}-gcc-bugs.patch
-#Patch9:	%{name}-nspr.patch
-#Patch10:	firefox-1.0-gcc4-compile.patch
+Patch0:		%{name}-pld-homepage.patch
+Patch1:		%{name}-nss.patch
+Patch2:		%{name}-ldap-with-nss.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -233,23 +225,13 @@ SeaMonkey
 %setup -q -c -T
 tar jxf %{SOURCE0} --strip-components=1
 
-#%patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
-#%patch4 -p1
-#%patch5 -p1
-#%{?with_ft218:%patch6 -p0}
-#%patch7 -p1
-#%patch8 -p0
-#%patch9 -p1
-#%patch10 -p0
-#%patch11 -p1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
@@ -269,7 +251,6 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-postscript \
 	%{!?debug:--enable-strip} \
 	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
-	--disable-toolkit-gtk \
 	--enable-default-toolkit=gtk2 \
 	%{!?with_gnomevfs:--disable-gnomevfs} \
 	--enable-xft \
