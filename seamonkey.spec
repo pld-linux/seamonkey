@@ -23,25 +23,25 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/%{name}-%
 #Source7:	%{name}-mail.desktop
 #Source9:	%{name}-terminal.desktop
 #Source10:	%{name}-venkman.desktop
-#Patch0:		%{name}-pld-homepage.patch
-#Patch1:		%{name}-nss.patch
-#Patch2:		%{name}-ldap_nspr_includes.patch
-#Patch3:		%{name}-ldap-with-nss.patch
-#Patch4:		%{name}-gfx.patch
-#Patch5:		%{name}-alpha-gcc3.patch
-# http://bugzilla.mozilla.org/show_bug.cgi?id=234035
-# http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
-#Patch8:		%{name}-gcc-bugs.patch
-#Patch9:		%{name}-nspr.patch
+#Patch0:	%{name}-pld-homepage.patch
+#Patch1:	%{name}-nss.patch
+#Patch2:	%{name}-ldap_nspr_includes.patch
+#Patch3:	%{name}-ldap-with-nss.patch
+#Patch4:	%{name}-gfx.patch
+#Patch5:	%{name}-alpha-gcc3.patch
+# http:		//bugzilla.mozilla.org/show_bug.cgi?id=234035
+# http:		//bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
+#Patch8:	%{name}-gcc-bugs.patch
+#Patch9:	%{name}-nspr.patch
 #Patch10:	firefox-1.0-gcc4-compile.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
 BuildRequires:	automake
-BuildRequires:	tar >= 1:1.15.1
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
+BuildRequires:	tar >= 1:1.15.1
 # for libnegotiateauth
 %{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
 BuildRequires:	libjpeg-devel >= 6b
@@ -52,16 +52,16 @@ BuildRequires:	nss-devel >= 3.9.4-1
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
+BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
-BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6-2
 Requires:	nss >= 3.9.4-1
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
@@ -83,9 +83,9 @@ SeaMonkey is an open-source web browser, designed for standards
 compliance, performance and portability.
 
 %description -l es
-SeaMonkey es un navegador de Internet que se basa en una versión inicial
-de Netscape Communicator. Este software está en desarrollo, por lo
-cual todavía es inestable.
+SeaMonkey es un navegador de Internet que se basa en una versión
+inicial de Netscape Communicator. Este software está en desarrollo,
+por lo cual todavía es inestable.
 
 %description -l pl
 SeaMonkey jest potê¿n± graficzn± przegl±dark± WWW, która jest nastêpc±
@@ -117,8 +117,8 @@ Summary:	SeaMonkey - programs for mail and news
 Summary(pl):	SeaMonkey - programy do poczty i newsów
 Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey
 Group:		X11/Applications/Networking
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mail
 
@@ -168,8 +168,8 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
-SeaMonkey. This is of great use to people who are doing SeaMonkey chrome
-development or web page development.
+SeaMonkey. This is of great use to people who are doing SeaMonkey
+chrome development or web page development.
 
 %description dom-inspector -l pl
 To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey. Jest
@@ -197,7 +197,8 @@ Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description calendar
-This package contains the calendar application from the SeaMonkey suite.
+This package contains the calendar application from the SeaMonkey
+suite.
 
 %description calendar -l pl
 Ten pakiet zawiera kalendarz z zestawu aplikacji SeaMonkey.
@@ -505,7 +506,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
+%attr(755,root,root) %{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -528,8 +529,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%{?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%attr(755,root,root) %{?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
+%attr(755,root,root) %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
@@ -607,7 +608,7 @@ fi
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
-%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
+%attr(755,root,root) %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
@@ -703,7 +704,7 @@ fi
 # add rest too
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%attr(755,root,root) %{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
