@@ -31,8 +31,6 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/seamonkey
 #Patch5:		%{name}-alpha-gcc3.patch
 # http://bugzilla.mozilla.org/show_bug.cgi?id=234035
 # http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
-#Patch6:		%{name}-freetype218.patch
-#Patch7:		%{name}-cairo.patch
 #Patch8:		%{name}-gcc-bugs.patch
 #Patch9:		%{name}-nspr.patch
 #Patch10:	firefox-1.0-gcc4-compile.patch
@@ -41,16 +39,8 @@ BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
 BuildRequires:	automake
 BuildRequires:	tar >= 1:1.15.1
-# TODO: https://bugzilla.mozilla.org/show_bug.cgi?id=296463
-%{?with_svg:BuildRequires:	cairo-devel >= 0.3.0}
-%{?with_svg:BuildRequires:	cairo-devel < 0.5.0}
-%if %{with ft218}
+%{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
-%else
-BuildRequires:	freetype-devel >= 2.1.3
-BuildRequires:	freetype-devel < 1:2.1.8
-BuildConflicts:	freetype-devel = 2.1.8
-%endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 # for libnegotiateauth
 %{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
@@ -68,8 +58,7 @@ BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-%{?with_svg:Requires:	cairo >= 0.3.0}
-%{?with_svg:Requires:	cairo < 0.5.0}
+%{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6-2
 Requires:	nss >= 3.9.4-1
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -269,6 +258,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
+	--enable-application=suite \
 	--enable-calendar \
 	--enable-crypto \
 	--enable-extensions \
