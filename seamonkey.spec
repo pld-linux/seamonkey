@@ -282,8 +282,6 @@ install -d \
 rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,cview,embed,embed-sample,en-US,en-mac,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,venkman,xmlterm}
 # non-unix
 rm -f dist/bin/chrome/en-{mac,win}.jar
-echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
-echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
@@ -313,55 +311,50 @@ ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
 ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libnssckbi.so
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-%{version}/mozilla/' $f \
+	sed -e 's/seamonkey-%{version}/seamonkey/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
-
-sed -i -e 's#mozilla-nspr =.*#mozilla-nspr#g' -e 's#mozilla-nss =.*#mozilla-nss#g' $RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
+sed -e 's,lib/seamonkey-%{version},lib,g;s/seamonkey-%{version}/seamonkey/g' build/unix/seamonkey-gtkmozembed.pc \
+		> $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-gtkmozembed.pc
 
 # add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-plugin.pc
+sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-plugin.pc
 
-rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
+rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
-install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
-	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
+#install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
+#	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
 
-install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
+#install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
-cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
-	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/mozilla
+cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla
+MOZILLA_FIVE_HOME=%{_libdir}/seamonkey
 if [ "$1" == "-remote" ]; then
-	%{_bindir}/mozilla-bin "$@"
+	%{_bindir}/seamonkey-bin "$@"
 else
-	PING=`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null`
+	PING=`%{_bindir}/seamonkey-bin -remote 'ping()' 2>&1 >/dev/null`
 	if [ -n "$PING" ]; then
 		if [ -f "`pwd`/$1" ]; then
-			%{_bindir}/mozilla-bin "file://`pwd`/$1"
+			%{_bindir}/seamonkey-bin "file://`pwd`/$1"
 		else
-			%{_bindir}/mozilla-bin "$@"
+			%{_bindir}/seamonkey-bin "$@"
 		fi
 	else
 		if [ -z "$1" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+			%{_bindir}/seamonkey-bin -remote 'xfeDoCommand (openBrowser)'
 		elif [ "$1" == "-mail" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
+			%{_bindir}/seamonkey-bin -remote 'xfeDoCommand (openInbox)'
 		elif [ "$1" == "-compose" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
+			%{_bindir}/seamonkey-bin -remote 'xfeDoCommand (composeMessage)'
 		else
 			if [ -f "`pwd`/$1" ]; then
 				URL="file://`pwd`/$1"
@@ -370,9 +363,9 @@ else
 			fi
 			grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
 			if [ $? -eq 0 ]; then
-				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-tab)"
+				%{_bindir}/seamonkey-bin -remote "OpenUrl($URL,new-tab)"
 			else
-				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-window)"
+				%{_bindir}/seamonkey-bin -remote "OpenUrl($URL,new-window)"
 			fi
 		fi
 	fi
@@ -383,7 +376,6 @@ cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/mozilla-chrome+xpcom-generate
 #!/bin/sh
 umask 022
 cd %{_datadir}/mozilla/chrome
-cat *-installed-chrome.txt > installed-chrome.txt
 rm -f chrome.rdf overlayinfo/*/*/*.rdf
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
@@ -654,9 +646,6 @@ fi
 %dir %{_datadir}/%{name}/chrome/overlayinfo/navigator
 %dir %{_datadir}/%{name}/chrome/overlayinfo/navigator/content
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/navigator/content/overlays.rdf
-
-%{_datadir}/%{name}/chrome/mozilla-installed-chrome.txt
-%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/greprefs
