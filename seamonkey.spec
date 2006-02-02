@@ -140,7 +140,7 @@ SeaMonkey Chat - klient IRC-a zintegrowany z przegl±dark± SeaMonkey.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with SeaMonkey
-Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z Mozill±
+Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -149,11 +149,11 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 JavaScript debugger for use with SeaMonkey.
 
 %description js-debugger -l pl
-Odpluskwiacz JavaScriptu do u¿ywania z Mozill±.
+Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in SeaMonkey
-Summary(pl):	Narzêdzie do ogl±dania DOM stron w Mozilli
+Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
