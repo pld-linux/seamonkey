@@ -39,8 +39,8 @@ BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6-2
-BuildRequires:	nss-devel >= 3.9.4-1
+BuildRequires:	nspr-devel >= 1:4.6.1
+BuildRequires:	nss-devel >= 3.10.2
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
@@ -52,8 +52,8 @@ BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
-Requires:	nspr >= 1:4.6-2
-Requires:	nss >= 3.9.4-1
+Requires:	nspr >= 1:4.6.1
+Requires:	nss >= 3.10.2
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
@@ -202,7 +202,7 @@ Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam 
 Summary(ru):	Файлы, необходимые для использования программ, включающих SeaMonkey
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6-2
+Requires:	nspr-devel >= 1:4.6.1
 Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 Obsoletes:	mozilla-firefox-devel
