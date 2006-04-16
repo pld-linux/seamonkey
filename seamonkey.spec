@@ -10,7 +10,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.7
+Release:	0.8
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -274,7 +274,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}/idl} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins,greprefs} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,greprefs,myspell,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
@@ -295,9 +295,11 @@ ln -sf ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
 ln -sf ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/bin/components/{[^m],m[^y]}*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
@@ -681,6 +683,7 @@ fi
 %{_datadir}/%{name}/greprefs
 %exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
+%{_datadir}/%{name}/myspell
 %{_datadir}/%{name}/res
 #%exclude %{_datadir}/%{name}/res/inspector
 %{_datadir}/%{name}/searchplugins
