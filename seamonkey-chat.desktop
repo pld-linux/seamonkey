@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SeaMonkey Chat
+Name[pl]=Chat SeaMonkeya
+Exec=seamonkey -chat
+Icon=seamonkey.png
+Terminal=false
+Type=Application
+Categories=Network;IRCClient;
+# vi: encoding=utf-8
