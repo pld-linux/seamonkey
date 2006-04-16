@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
-%bcond_without	heimdal		# disable heimdal support
+#%bcond_without	heimdal		# disable heimdal support
 %bcond_without	svg		# disable svg support
 #
 Summary:	SeaMonkey - web browser
@@ -10,7 +10,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.6
+Release:	0.7
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -35,7 +35,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 BuildRequires:	tar >= 1:1.15.1
 # for libnegotiateauth
-%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
+#%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
@@ -267,11 +267,6 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--with-system-zlib \
 	--with-x
 
-%if %{with heimdal}
-sed -i config/autoconf.mk \
-	-e 's/@USE_GSSAPI@/1/; s/@GSSAPI_INCLUDES@//'
-%endif
-
 %{__make}
 
 %install
@@ -489,7 +484,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-#%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
