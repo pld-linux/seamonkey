@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
-#%bcond_without	heimdal		# disable heimdal support
+%bcond_with	heimdal		# disable heimdal support
 %bcond_without	svg		# disable svg support
 #
 Summary:	SeaMonkey - web browser
