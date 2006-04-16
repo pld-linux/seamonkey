@@ -10,19 +10,18 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.5
+Release:	0.6
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	6921464b5251cafd529c04c2b9f98d5f
-#Source1:	%{name}.desktop
-#Source2:	%{name}.png
-#Source3:	%{name}-composer.desktop
-#Source5:	%{name}-chat.desktop
+Source1:	%{name}.desktop
+Source2:	%{name}-composer.desktop
+Source3:	%{name}-chat.desktop
+Source4:	%{name}-mail.desktop
+Source5:	%{name}-venkman.desktop
 #Source6:	%{name}-jconsole.desktop
-#Source7:	%{name}-mail.desktop
-#Source9:	%{name}-terminal.desktop
-#Source10:	%{name}-venkman.desktop
+#Source7:	%{name}-terminal.desktop
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
@@ -330,10 +329,10 @@ sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_
 
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
-#install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
-#	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
+	$RPM_BUILD_ROOT%{_desktopdir}
 
-#install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
+install suite/branding/icons/gtk/seamonkey.png $RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
@@ -693,9 +692,9 @@ fi
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
-#%{_pixmapsdir}/mozilla.png
-#%{_desktopdir}/mozilla.desktop
-#%{_desktopdir}/mozilla-composer.desktop
+%{_pixmapsdir}/seamonkey.png
+%{_desktopdir}/%{name}.desktop
+%{_desktopdir}/%{name}-composer.desktop
 #%{_desktopdir}/mozilla-jconsole.desktop
 #%{_desktopdir}/mozilla-terminal.desktop
 
@@ -758,7 +757,7 @@ fi
 %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
 
-#%{_desktopdir}/mozilla-mail.desktop
+%{_desktopdir}/%{name}-mail.desktop
 
 %files chat
 %defattr(644,root,root,755)
@@ -766,14 +765,14 @@ fi
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 
-#%{_desktopdir}/mozilla-chat.desktop
+%{_desktopdir}/%{name}-chat.desktop
 
 %files js-debugger
 %defattr(644,root,root,755)
 %{_libdir}/%{name}/components/venkman-service.js
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
-#%{_desktopdir}/mozilla-venkman.desktop
+%{_desktopdir}/%{name}-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
