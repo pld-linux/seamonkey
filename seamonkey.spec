@@ -9,12 +9,12 @@ Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0
-Release:	0.1
+Version:	1.0.1
+Release:	0.2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	e4f2edc5b2248d090303c70f5b28f210
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
+# Source0-md5:	6921464b5251cafd529c04c2b9f98d5f
 #Source1:	%{name}.desktop
 #Source2:	%{name}.png
 #Source3:	%{name}-composer.desktop
@@ -26,6 +26,7 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/1.0/%{name}-%
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
+Patch3:		%{name}-kill_slim_hidden_def.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -228,6 +229,7 @@ tar jxf %{SOURCE0} --strip-components=1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -258,13 +260,18 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-xprint \
 	--disable-xterm-updates \
 	--enable-old-abi-compat-wrappers \
-	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--with-default-mozilla-five-home=%{_libdir}/%{name} \
 	--with-pthreads \
 	--with-system-jpeg \
 	--with-system-nspr \
 	--with-system-png \
 	--with-system-zlib \
 	--with-x
+
+%if %{with heimdal}
+sed -i config/autoconf.mk \
+	-e 's/@USE_GSSAPI@/1/; s/@GSSAPI_INCLUDES@//'
+%endif
 
 %{__make}
 
@@ -288,12 +295,12 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 #install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
-ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -sf ../../share/mozilla/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
-ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
-ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
-ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
+ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -sf ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
+ln -sf ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
+ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
@@ -372,14 +379,14 @@ else
 fi
 EOF
 
-cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/mozilla-chrome+xpcom-generate
+cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
 umask 022
-cd %{_datadir}/mozilla/chrome
+cd %{_datadir}/%{name}/chrome
 rm -f chrome.rdf overlayinfo/*/*/*.rdf
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+rm -f %{_libdir}/%{name}/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/%{name} %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/%{name} %{_bindir}/regchrome
 exit 0
 EOF
 
@@ -388,11 +395,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 umask 022
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun
 if [ "$1" = "1" ]; then
-	%{_sbindir}/mozilla-chrome+xpcom-generate
+	%{_sbindir}/%{name}-chrome+xpcom-generate
 fi
 
 %post	libs -p /sbin/ldconfig
@@ -400,47 +407,47 @@ fi
 
 %post mailnews
 /sbin/ldconfig
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun mailnews
 /sbin/ldconfig
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post chat
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun chat
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post js-debugger
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun js-debugger
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post dom-inspector
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun dom-inspector
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post gnomevfs
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun gnomevfs
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post calendar
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun calendar
-%{_sbindir}/mozilla-chrome+xpcom-generate
+%{_sbindir}/%{name}-chrome+xpcom-generate
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/mozilla*
+%attr(755,root,root) %{_bindir}/seamonkey*
 %attr(755,root,root) %{_bindir}/reg*
-%attr(744,root,root) %{_sbindir}/mozilla-chrome+xpcom-generate
+%attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %dir %{_libdir}/%{name}
 %dir %{_chromedir}
@@ -478,7 +485,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
+#%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -526,7 +533,7 @@ fi
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
-%{_libdir}/%{name}/components/helperAppDlg.xpt
+#%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
@@ -549,7 +556,7 @@ fi
 %{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
-%{_libdir}/%{name}/components/profilesharingsetup.xpt
+#%{_libdir}/%{name}/components/profilesharingsetup.xpt
 %{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
@@ -565,7 +572,7 @@ fi
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
-%{_libdir}/%{name}/components/urlbarhistory.xpt
+#%{_libdir}/%{name}/components/urlbarhistory.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
@@ -577,8 +584,8 @@ fi
 %{_libdir}/%{name}/components/x*.xpt
 
 # Is this a correct package for these files?
-%{_libdir}/%{name}/components/ipcd.xpt
-%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
+#%{_libdir}/%{name}/components/ipcd.xpt
+#%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
@@ -617,7 +624,7 @@ fi
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
+#%{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
@@ -633,32 +640,21 @@ fi
 %exclude %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 
-%dir %{_datadir}/%{name}/chrome/overlayinfo
-%dir %{_datadir}/%{name}/chrome/overlayinfo/communicator
-%dir %{_datadir}/%{name}/chrome/overlayinfo/communicator/content
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/communicator/content/overlays.rdf
-%dir %{_datadir}/%{name}/chrome/overlayinfo/editor
-%dir %{_datadir}/%{name}/chrome/overlayinfo/editor/content
-# chatzilla and messenger entries in editor/content dir
-%dir %{_datadir}/%{name}/chrome/overlayinfo/messenger
-%dir %{_datadir}/%{name}/chrome/overlayinfo/messenger/content
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/messenger/content/overlays.rdf
-%dir %{_datadir}/%{name}/chrome/overlayinfo/navigator
-%dir %{_datadir}/%{name}/chrome/overlayinfo/navigator/content
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/navigator/content/overlays.rdf
+# all in one
+%ghost %{_datadir}/%{name}/chrome/overlays.rdf
 
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/greprefs
 %exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
-%exclude %{_datadir}/%{name}/res/inspector
+#%exclude %{_datadir}/%{name}/res/inspector
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
-%{_pixmapsdir}/mozilla.png
-%{_desktopdir}/mozilla.desktop
-%{_desktopdir}/mozilla-composer.desktop
+#%{_pixmapsdir}/mozilla.png
+#%{_desktopdir}/mozilla.desktop
+#%{_desktopdir}/mozilla-composer.desktop
 #%{_desktopdir}/mozilla-jconsole.desktop
 #%{_desktopdir}/mozilla-terminal.desktop
 
@@ -668,8 +664,10 @@ fi
 # probably should add more if more packages require
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
+%attr(755,root,root) %{_libdir}/libxpcom_core.so
 
 # add rest too
+%attr(755,root,root) %{_libdir}/libgfxpsshar.so
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
@@ -719,13 +717,7 @@ fi
 %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
 
-%dir %{_datadir}/%{name}/chrome/overlayinfo/cookie
-%dir %{_datadir}/%{name}/chrome/overlayinfo/cookie/content
-# only chrome://messenger/content/mailPrefsOverlay.xul
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/cookie/content/overlays.rdf
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
-
-%{_desktopdir}/mozilla-mail.desktop
+#%{_desktopdir}/mozilla-mail.desktop
 
 %files chat
 %defattr(644,root,root,755)
@@ -733,27 +725,14 @@ fi
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 
-%dir %{_datadir}/%{name}/chrome/overlayinfo/browser
-%dir %{_datadir}/%{name}/chrome/overlayinfo/browser/content
-# only chrome://chatzilla/content/browserOverlay.xul
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/browser/content/overlays.rdf
-%dir %{_datadir}/%{name}/chrome/overlayinfo/browser/skin
-# only chrome://chatzilla/skin/browserOverlay.css
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/browser/skin/stylesheets.rdf
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
-%dir %{_datadir}/%{name}/chrome/overlayinfo/global
-%dir %{_datadir}/%{name}/chrome/overlayinfo/global/skin
-# only chrome://chatzilla/skin/browserOverlay.css
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/global/skin/stylesheets.rdf
-
-%{_desktopdir}/mozilla-chat.desktop
+#%{_desktopdir}/mozilla-chat.desktop
 
 %files js-debugger
 %defattr(644,root,root,755)
 %{_libdir}/%{name}/components/venkman-service.js
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
-%{_desktopdir}/mozilla-venkman.desktop
+#%{_desktopdir}/mozilla-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
@@ -762,12 +741,8 @@ fi
 %{_libdir}/%{name}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
-%dir %{_datadir}/%{name}/chrome/overlayinfo/inspector
-%dir %{_datadir}/%{name}/chrome/overlayinfo/inspector/content
-# only chrome://inspector/content/* entries
-%ghost %{_datadir}/%{name}/chrome/overlayinfo/inspector/content/overlays.rdf
 %{_datadir}/%{name}/defaults/pref/inspector.js
-%{_datadir}/%{name}/res/inspector
+#%{_datadir}/%{name}/res/inspector
 
 %if %{with gnomevfs}
 %files gnomevfs
@@ -777,9 +752,11 @@ fi
 
 %files calendar
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
-%{_libdir}/%{name}/components/calendar.xpt
+#%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
+%{_libdir}/%{name}/components/calbase.xpt
+%{_libdir}/%{name}/components/calbaseinternal.xpt
 %{_libdir}/%{name}/components/calendarService.js
+%{_libdir}/%{name}/components/cal[ACDEHIMORST]*.js
 %{_datadir}/%{name}/chrome/calendar.jar
 %{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 
