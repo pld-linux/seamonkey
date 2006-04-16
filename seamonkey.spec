@@ -10,7 +10,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.2
+Release:	0.4
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -340,6 +340,9 @@ install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
+cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
+        $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
+
 cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
@@ -383,7 +386,8 @@ cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
 umask 022
 cd %{_datadir}/%{name}/chrome
-rm -f chrome.rdf overlayinfo/*/*/*.rdf
+cat *-installed-chrome.txt > installed-chrome.txt
+rm -f chrome.rdf overlays.rdf
 rm -f %{_libdir}/%{name}/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/%{name} %{_bindir}/regxpcom
 MOZILLA_FIVE_HOME=%{_libdir}/%{name} %{_bindir}/regchrome
@@ -624,11 +628,11 @@ fi
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-#%{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
 %ghost %{_datadir}/%{name}/chrome/chrome.rdf
+%ghost %{_datadir}/%{name}/chrome/overlays.rdf
 %{_datadir}/%{name}/chrome/chromelist.txt
 %{_datadir}/%{name}/chrome/icons
 %exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
@@ -640,8 +644,8 @@ fi
 %exclude %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 
-# all in one
-%ghost %{_datadir}/%{name}/chrome/overlays.rdf
+%{_datadir}/%{name}/chrome/%{name}-installed-chrome.txt
+%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/greprefs
