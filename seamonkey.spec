@@ -10,7 +10,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.4
+Release:	0.5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -469,6 +469,7 @@ fi
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libauth*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
@@ -514,6 +515,16 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
+
+# needs revision:
+%attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libremoteservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsearchservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libstoragecomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwebdav.so
 
 %{_libdir}/%{name}/components/access*.xpt
 %{_libdir}/%{name}/components/appshell.xpt
@@ -587,6 +598,18 @@ fi
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
+# needs revision:
+%{_libdir}/%{name}/components/alerts.xpt
+%{_libdir}/%{name}/components/appstartup.xpt
+%{_libdir}/%{name}/components/chrome.xpt
+%{_libdir}/%{name}/components/extensions.xpt
+%{_libdir}/%{name}/components/plugin.xpt
+%{_libdir}/%{name}/components/schemavalidation.xpt
+%{_libdir}/%{name}/components/sql.xpt
+%{_libdir}/%{name}/components/storage.xpt
+%{_libdir}/%{name}/components/toolkitremote.xpt
+%{_libdir}/%{name}/components/webdav.xpt
+
 # Is this a correct package for these files?
 #%{_libdir}/%{name}/components/ipcd.xpt
 #%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
@@ -606,6 +629,12 @@ fi
 %{_libdir}/%{name}/components/nsSidebar.js
 %{_libdir}/%{name}/components/nsUpdateNotifier.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
+
+# needs revision:
+%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
+%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
+%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
+%{_libdir}/%{name}/components/xulappinfo.js
 
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
@@ -631,8 +660,16 @@ fi
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
+# needs revision:
+%{_datadir}/%{name}/chrome/reporter.jar
+%{_datadir}/%{name}/chrome/sql.jar
+%{_datadir}/%{name}/chrome/sroaming.jar
+%{_datadir}/%{name}/chrome/xforms.jar
+
 %ghost %{_datadir}/%{name}/chrome/chrome.rdf
 %ghost %{_datadir}/%{name}/chrome/overlays.rdf
+# not generated automatically ?
+%{_datadir}/%{name}/chrome/stylesheets.rdf
 %{_datadir}/%{name}/chrome/chromelist.txt
 %{_datadir}/%{name}/chrome/icons
 %exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
@@ -756,7 +793,7 @@ fi
 
 %files calendar
 %defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libcalbasecomps.so
 %{_libdir}/%{name}/components/calbase.xpt
 %{_libdir}/%{name}/components/calbaseinternal.xpt
 %{_libdir}/%{name}/components/calendarService.js
