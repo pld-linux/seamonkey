@@ -4,24 +4,27 @@
 %bcond_with	heimdal		# disable heimdal support
 %bcond_without	svg		# disable svg support
 #
+%define	_enigmail_ver	0.94.0
 Summary:	SeaMonkey - web browser
 Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.8
+Release:	0.9
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	6921464b5251cafd529c04c2b9f98d5f
-Source1:	%{name}.desktop
-Source2:	%{name}-composer.desktop
-Source3:	%{name}-chat.desktop
-Source4:	%{name}-mail.desktop
-Source5:	%{name}-venkman.desktop
-#Source6:	%{name}-jconsole.desktop
-#Source7:	%{name}-terminal.desktop
+Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
+# Source1-md5:	d326c302c1d2d68217fffcaa01ca7632
+Source2:	%{name}.desktop
+Source3:	%{name}-composer.desktop
+Source4:	%{name}-chat.desktop
+Source5:	%{name}-mail.desktop
+Source6:	%{name}-venkman.desktop
+#Source7:	%{name}-jconsole.desktop
+#Source8:	%{name}-terminal.desktop
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
@@ -124,6 +127,24 @@ Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 ëÌÉÅÎÔ ÐÏÞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey. ðÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É
 NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
 
+%package addon-enigmail
+Summary:        Enigmail %{_enigmail_ver} - PGP/GPG support for Mozilla
+Summary(pl):    Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla Mozilli
+Group:          X11/Applications/Networking
+Requires(post,postun):  %{name}-mailnews = %{epoch}:%{version}-%{release}
+Requires(post,postun):  /sbin/ldconfig
+Requires:       %{name}-mailnews = %{epoch}:%{version}-%{release}
+Requires:	gnupg >= 1.4.2.2
+
+%description addon-enigmail
+Enigmail is an extension to the mail client of Mozilla / Netscape and
+Mozilla Thunderbird which allows users to access the authentication and
+encryption features provided by GnuPG.
+
+%description addon-enigmail -l pl
+Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na ³atwe korzystanie
+z dobrodziejstw GnuPG.
+
 %package chat
 Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
 Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
@@ -224,6 +245,7 @@ SeaMonkey
 %prep
 %setup -q -c -T
 tar jxf %{SOURCE0} --strip-components=1
+tar -C mailnews/extensions -zxf %{SOURCE1}
 
 %patch0 -p1
 %patch1 -p1
@@ -268,6 +290,12 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--with-x
 
 %{__make}
+
+cd mailnews/extensions/enigmail
+sed 's/"mozilla"/"%{name}-%{version}"/g' -i makemake
+./makemake -r
+%{__make}
+cd ../../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -326,7 +354,7 @@ sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_
 
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
-install %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} \
+install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 
 install suite/branding/icons/gtk/seamonkey.png $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -411,6 +439,12 @@ fi
 
 %postun mailnews
 /sbin/ldconfig
+%{_sbindir}/%{name}-chrome+xpcom-generate
+
+%post addon-enigmail
+%{_sbindir}/%{name}-chrome+xpcom-generate
+
+%postun addon-enigmail
 %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post chat
@@ -755,6 +789,20 @@ fi
 %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
 
 %{_desktopdir}/%{name}-mail.desktop
+
+%files addon-enigmail
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libenigmime.so
+%{_libdir}/%{name}/components/enigmail.xpt
+%{_libdir}/%{name}/components/enigmime.xpt
+%{_libdir}/%{name}/components/ipc.xpt
+%{_libdir}/%{name}/components/enigmail.js
+%{_libdir}/%{name}/components/enigprefs-service.js
+%{_datadir}/%{name}/chrome/enigmail-en-US.jar
+%{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
+%{_datadir}/%{name}/chrome/enigmail-skin.jar
+%{_datadir}/%{name}/chrome/enigmail.jar
+%{_datadir}/%{name}/chrome/enigmime.jar
 
 %files chat
 %defattr(644,root,root,755)
