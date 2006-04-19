@@ -11,7 +11,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.9.1
+Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -124,22 +124,22 @@ Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
 
 %package addon-enigmail
-Summary:        Enigmail %{_enigmail_ver} - PGP/GPG support for Mozilla
-Summary(pl):    Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla Mozilli
-Group:          X11/Applications/Networking
-Requires(post,postun):  %{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires(post,postun):  /sbin/ldconfig
-Requires:       %{name}-mailnews = %{epoch}:%{version}-%{release}
+Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for Mozilla
+Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla Mozilli
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
+Requires(post,postun):	/sbin/ldconfig
+Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
 %description addon-enigmail
 Enigmail is an extension to the mail client of Mozilla / Netscape and
-Mozilla Thunderbird which allows users to access the authentication and
-encryption features provided by GnuPG.
+Mozilla Thunderbird which allows users to access the authentication
+and encryption features provided by GnuPG.
 
 %description addon-enigmail -l pl
-Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na ³atwe korzystanie
-z dobrodziejstw GnuPG.
+Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na ³atwe
+korzystanie z dobrodziejstw GnuPG.
 
 %package chat
 Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
@@ -706,8 +706,6 @@ fi
 %{_pixmapsdir}/seamonkey.png
 %{_desktopdir}/%{name}.desktop
 %{_desktopdir}/%{name}-composer.desktop
-#%{_desktopdir}/mozilla-jconsole.desktop
-#%{_desktopdir}/mozilla-terminal.desktop
 
 %files libs
 %defattr(644,root,root,755)
