@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
+%bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
 %define	_enigmail_ver	0.94.0
@@ -10,7 +11,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.1
-Release:	0.9
+Release:	0.9.1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -22,8 +23,6 @@ Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
 Source5:	%{name}-mail.desktop
 Source6:	%{name}-venkman.desktop
-#Source7:	%{name}-jconsole.desktop
-#Source8:	%{name}-terminal.desktop
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
@@ -35,7 +34,7 @@ BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
-BuildRequires:	libgnomeui-devel >= 2.0
+%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
@@ -259,11 +258,15 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 %configure2_13 \
 	%{!?debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
+	%{!?with_gnomeui:--disable-gnomeui} \
+	%{!?with_gnomevfs:--disable-gnomevfs} \
 	--disable-pedantic \
 	--disable-tests \
+	--disable-xterm-updates \
 	--enable-application=suite \
 	--enable-calendar \
 	--enable-crypto \
+	--enable-default-toolkit=gtk2 \
 	--enable-extensions \
 	--enable-ldap \
 	--enable-mathml \
@@ -271,13 +274,9 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-postscript \
 	%{!?debug:--enable-strip} \
 	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
-	--enable-default-toolkit=gtk2 \
-	%{!?with_gnomevfs:--disable-gnomevfs} \
-	--enable-gnomeui \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
-	--disable-xterm-updates \
 	--enable-old-abi-compat-wrappers \
 	--with-default-mozilla-five-home=%{_libdir}/%{name} \
 	--with-pthreads \
@@ -580,7 +579,7 @@ fi
 %{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-%{_libdir}/%{name}/components/imgicon.xpt
+%{?with_gnomeui:%{_libdir}/%{name}/components/imgicon.xpt}
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
