@@ -523,13 +523,21 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libremoteservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsearchservice.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libstoragecomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
@@ -539,27 +547,21 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwebdav.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
-# needs revision:
-%attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libremoteservice.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsearchservice.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libstoragecomps.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwebdav.so
-
 %{_libdir}/%{name}/components/access*.xpt
+%{_libdir}/%{name}/components/alerts.xpt
 %{_libdir}/%{name}/components/appshell.xpt
+%{_libdir}/%{name}/components/appstartup.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
 %{_libdir}/%{name}/components/autoconfig.xpt
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
+%{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content*.xpt
@@ -570,12 +572,12 @@ fi
 %{_libdir}/%{name}/components/downloadmanager.xpt
 %{_libdir}/%{name}/components/editor.xpt
 %{_libdir}/%{name}/components/embed_base.xpt
+%{_libdir}/%{name}/components/extensions.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
-#%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
 %{_libdir}/%{name}/components/imgicon.xpt
@@ -594,31 +596,34 @@ fi
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
 %{_libdir}/%{name}/components/pippki.xpt
-#%{_libdir}/%{name}/components/plugin.xpt
+%{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
-#%{_libdir}/%{name}/components/profilesharingsetup.xpt
 %{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/related.xpt
 %{_libdir}/%{name}/components/search.xpt
+%{_libdir}/%{name}/components/schemavalidation.xpt
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/spellchecker.xpt
+%{_libdir}/%{name}/components/sql.xpt
+%{_libdir}/%{name}/components/storage.xpt
+%{_libdir}/%{name}/components/toolkitremote.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
-#%{_libdir}/%{name}/components/urlbarhistory.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
+%{_libdir}/%{name}/components/webdav.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/websrvcs.xpt
 %{_libdir}/%{name}/components/widget.xpt
@@ -626,25 +631,9 @@ fi
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
-# needs revision:
-%{_libdir}/%{name}/components/alerts.xpt
-%{_libdir}/%{name}/components/appstartup.xpt
-%{_libdir}/%{name}/components/chrome.xpt
-%{_libdir}/%{name}/components/extensions.xpt
-%{_libdir}/%{name}/components/plugin.xpt
-%{_libdir}/%{name}/components/schemavalidation.xpt
-%{_libdir}/%{name}/components/sql.xpt
-%{_libdir}/%{name}/components/storage.xpt
-%{_libdir}/%{name}/components/toolkitremote.xpt
-%{_libdir}/%{name}/components/webdav.xpt
-
-# Is this a correct package for these files?
-#%{_libdir}/%{name}/components/ipcd.xpt
-#%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
-
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
+%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
 %{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadProgressListener.js
 %{_libdir}/%{name}/components/nsFilePicker.js
@@ -654,14 +643,10 @@ fi
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
 %{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
 %{_libdir}/%{name}/components/nsSidebar.js
 %{_libdir}/%{name}/components/nsUpdateNotifier.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
-
-# needs revision:
-%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
-%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
-%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
 %{_libdir}/%{name}/components/xulappinfo.js
 
 # not *.dat, so check-files can catch any new files
@@ -685,13 +670,11 @@ fi
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{_datadir}/%{name}/chrome/tasks.jar
-%{_datadir}/%{name}/chrome/toolkit.jar
-
-# needs revision:
 %{_datadir}/%{name}/chrome/reporter.jar
 %{_datadir}/%{name}/chrome/sql.jar
 %{_datadir}/%{name}/chrome/sroaming.jar
+%{_datadir}/%{name}/chrome/tasks.jar
+%{_datadir}/%{name}/chrome/toolkit.jar
 %{_datadir}/%{name}/chrome/xforms.jar
 
 %ghost %{_datadir}/%{name}/chrome/chrome.rdf
@@ -718,7 +701,6 @@ fi
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/myspell
 %{_datadir}/%{name}/res
-#%exclude %{_datadir}/%{name}/res/inspector
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
@@ -746,7 +728,6 @@ fi
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 
@@ -762,8 +743,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmailview.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
 
@@ -776,6 +757,7 @@ fi
 %{_libdir}/%{name}/components/msg*.xpt
 
 %{_libdir}/%{name}/components/mdn-service.js
+%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
 %{_libdir}/%{name}/components/nsLDAPPrefsService.js
 %{_libdir}/%{name}/components/offlineStartup.js
 %{_libdir}/%{name}/components/smime-service.js
@@ -826,7 +808,6 @@ fi
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 %{_datadir}/%{name}/defaults/pref/inspector.js
-#%{_datadir}/%{name}/res/inspector
 
 %if %{with gnomevfs}
 %files gnomevfs
