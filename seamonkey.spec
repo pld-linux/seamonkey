@@ -1,7 +1,6 @@
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
-%bcond_with	heimdal		# disable heimdal support
 %bcond_without	svg		# disable svg support
 #
 %define	_enigmail_ver	0.94.0
@@ -36,9 +35,7 @@ BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
-BuildRequires:	tar >= 1:1.15.1
-# for libnegotiateauth
-#%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
+BuildRequires:	libgnomeui-devel >= 2.0
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
@@ -276,6 +273,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
 	--enable-default-toolkit=gtk2 \
 	%{!?with_gnomevfs:--disable-gnomevfs} \
+	--enable-gnomeui \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
