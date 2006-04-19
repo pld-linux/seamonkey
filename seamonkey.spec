@@ -580,6 +580,7 @@ fi
 #%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
+%{_libdir}/%{name}/components/imgicon.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
