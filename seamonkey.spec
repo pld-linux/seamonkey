@@ -68,8 +68,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_seamonkeydir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
-# mozilla and firefox provide their own versions
-%define		_noautoreqdep	libgkgfx.so libgtkxtbin.so libjsj.so libmozjs.so libxpcom.so libxpcom_compat.so
+# seamonkey, mozilla and firefox provide their own versions
+%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
 
 %description
 SeaMonkey is an open-source web browser, designed for standards
