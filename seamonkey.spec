@@ -54,14 +54,9 @@ Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
 Requires:	nss >= 3.10.2
-Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
+Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
-Obsoletes:	mozilla-embedded
-Obsoletes:	mozilla-irc
-Obsoletes:	mozilla-theme-NegativeModern
-Obsoletes:	mozilla-theme-gold
-Obsoletes:	mozilla-theme-kzilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -113,7 +108,6 @@ Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-mail
 
 %description mailnews
 Programs for mail and news integrated with browser.
@@ -126,8 +120,8 @@ Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
 
 %package addon-enigmail
-Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for Mozilla
-Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla Mozilli
+Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey
+Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -135,13 +129,14 @@ Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
 %description addon-enigmail
-Enigmail is an extension to the mail client of Mozilla / Netscape and
-Mozilla Thunderbird which allows users to access the authentication
-and encryption features provided by GnuPG.
+Enigmail is an extension to the mail client of SeaMonkey / Mozilla /
+Netscape and Mozilla Thunderbird which allows users to access the
+authentication and encryption features provided by GnuPG.
 
 %description addon-enigmail -l pl
-Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na ³atwe
-korzystanie z dobrodziejstw GnuPG.
+Enigmail jest rozszerzeniem dla klienta pocztowego SeaMonkey, Mozilla
+i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
+funkcjonalno¶ci GnuPG.
 
 %package chat
 Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
@@ -222,8 +217,8 @@ Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ SeaMonkey
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6.1
-Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-embedded-devel
+Provides:	seamonkey-embedded-devel = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-devel
 Obsoletes:	mozilla-firefox-devel
 
 %description devel
