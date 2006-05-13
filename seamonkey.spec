@@ -253,6 +253,7 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
 cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
+ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 %configure2_13 \
 	%{!?debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
