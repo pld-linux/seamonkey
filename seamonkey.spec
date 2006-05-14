@@ -35,6 +35,7 @@ BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
+BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
