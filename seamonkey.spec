@@ -493,7 +493,6 @@ fi
 %attr(755,root,root) %{_bindir}/seamonkey
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%dir %{_seamonkeydir}
 %dir %{_chromedir}
 %dir %{_seamonkeydir}/components
 %dir %{_seamonkeydir}/defaults
@@ -725,6 +724,7 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
+%dir %{_seamonkeydir}
 # libxpcom.so used by mozillaplug-in
 # probably should add more if more packages require
 %attr(755,root,root) %{_seamonkeydir}/libxpcom.so
@@ -743,7 +743,6 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/libmozjs.so
 %attr(755,root,root) %{_seamonkeydir}/libxpistub.so
 %attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
-
 
 %files mailnews
 %defattr(644,root,root,755)
@@ -803,7 +802,6 @@ fi
 %{_seamonkeydir}/components/chatzilla-service.js
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
-
 %{_desktopdir}/%{name}-chat.desktop
 
 %files js-debugger
@@ -840,7 +838,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/%{name}
-%{_pkgconfigdir}/*
 %attr(755,root,root) %{_bindir}/reg*
 %attr(755,root,root) %{_bindir}/xpidl
+%{_includedir}/%{name}
+%{_pkgconfigdir}/*
