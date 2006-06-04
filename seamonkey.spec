@@ -323,7 +323,7 @@ ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_seamonkeydir}/searchp
 ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_seamonkeydir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/{[^m],m[^y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
+cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
 cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
@@ -507,7 +507,6 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/reg*
 %attr(755,root,root) %{_seamonkeydir}/xpidl
 
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
 %attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
 
 %attr(755,root,root) %{_seamonkeydir}/components/libaccess*.so
