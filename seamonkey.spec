@@ -38,7 +38,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libpng-devel >= 1.2.0
+BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 3.10.2
@@ -49,7 +49,7 @@ BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xorg-lib-libXcursor-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
-BuildRequires:	zlib-devel >= 1.0.0
+BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
