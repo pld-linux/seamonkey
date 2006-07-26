@@ -11,7 +11,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.2
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-source-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
 Patch3:		%{name}-kill_slim_hidden_def.patch
 Patch4:		%{name}-lib_path.patch
+Patch5:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -250,6 +251,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
