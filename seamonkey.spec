@@ -11,7 +11,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.2
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-source-%{version}.tar.bz2
@@ -28,6 +28,7 @@ Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap-with-nss.patch
 Patch3:		%{name}-kill_slim_hidden_def.patch
 Patch4:		%{name}-lib_path.patch
+Patch5:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -38,7 +39,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libpng-devel >= 1.2.7
+BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 3.10.2
@@ -46,15 +47,11 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
-BuildRequires:	zlib-devel >= 1.2.3
+BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -250,6 +247,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -327,7 +325,7 @@ ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_seamonkeydir}/searchp
 ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_seamonkeydir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
+cp -frL dist/bin/components/{[^m],m[^y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
 cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
@@ -511,6 +509,7 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/reg*
 %attr(755,root,root) %{_seamonkeydir}/xpidl
 
+%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
 %attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
 
 %attr(755,root,root) %{_seamonkeydir}/components/libaccess*.so
