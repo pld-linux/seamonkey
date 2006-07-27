@@ -10,12 +10,12 @@ Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.2
-Release:	2
+Version:	1.0.3
+Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	967e0441183492b0ade4ab2a394deb71
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
+# Source0-md5:	e0483331f10e812205c461bdf4ac1b1c
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
 # Source1-md5:	d326c302c1d2d68217fffcaa01ca7632
 Source2:	%{name}.desktop
@@ -39,7 +39,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libpng-devel >= 1.2.0
+BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 3.10.2
@@ -50,7 +50,7 @@ BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
-BuildRequires:	zlib-devel >= 1.0.0
+BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
@@ -325,7 +325,7 @@ ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_seamonkeydir}/searchp
 ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_seamonkeydir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/{[^m],m[^y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
+cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
 cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
