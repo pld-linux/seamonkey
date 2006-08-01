@@ -47,15 +47,11 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
-Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -513,6 +509,7 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/reg*
 %attr(755,root,root) %{_seamonkeydir}/xpidl
 
+%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
 %attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
 
 %attr(755,root,root) %{_seamonkeydir}/components/libaccess*.so
