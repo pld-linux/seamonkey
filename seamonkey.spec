@@ -11,7 +11,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.0.4
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -52,6 +52,7 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -509,7 +510,6 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/reg*
 %attr(755,root,root) %{_seamonkeydir}/xpidl
 
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
 %attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
 
 %attr(755,root,root) %{_seamonkeydir}/components/libaccess*.so
