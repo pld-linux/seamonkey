@@ -10,12 +10,12 @@ Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.4
+Version:	1.0.5
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	973a762329b951d93eac3c158bbb1416
+# Source0-md5:	a1b98cd4d2d0f71d50406f8cd3885a5e
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
 # Source1-md5:	d326c302c1d2d68217fffcaa01ca7632
 Source2:	%{name}.desktop
