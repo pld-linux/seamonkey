@@ -4,20 +4,20 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.0
+%define	_enigmail_ver	0.94.1
 Summary:	SeaMonkey - web browser
 Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.3
+Version:	1.0.5
 Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	e0483331f10e812205c461bdf4ac1b1c
+# Source0-md5:	a1b98cd4d2d0f71d50406f8cd3885a5e
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	d326c302c1d2d68217fffcaa01ca7632
+# Source1-md5:	b255e7a77ecea435934bfa1872e99f6a
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -42,16 +42,13 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
-BuildRequires:	nss-devel >= 3.10.2
+BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
@@ -59,7 +56,7 @@ Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
-Requires:	nss >= 1:3.10.2
+Requires:	nss >= 1:3.11.3
 Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
