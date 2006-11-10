@@ -63,6 +63,7 @@ Requires:	nss >= 1:3.11.3
 Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
+Obsoletes:	mozilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -99,6 +100,7 @@ SeaMonkey - –œÃŒœ∆’ŒÀ√…œŒ¡ÃÿŒŸ  web-browser ” œ‘À“Ÿ‘ŸÕ… …”»œƒŒŸÕ…
 Summary:	SeaMonkey shared libraries
 Summary(pl):	Biblioteki wspÛ≥dzielone SeaMonkey
 Group:		Libraries
+Obsoletes:	mozilla-libs
 
 %description libs
 SeaMonkey shared libraries.
@@ -114,6 +116,7 @@ Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-mailnews
 
 %description mailnews
 Programs for mail and news integrated with browser.
@@ -150,6 +153,7 @@ Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-chat
 
 %description chat
 SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
@@ -164,6 +168,7 @@ Summary(pl):	Odpluskwiacz JavaScriptu do uøywania z SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
 JavaScript debugger for use with SeaMonkey.
@@ -177,6 +182,7 @@ Summary(pl):	NarzÍdzie do ogl±dania DOM stron w SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
@@ -194,6 +200,7 @@ Summary(pl):	Modu≥ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-gnomevfs
 
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
@@ -207,6 +214,7 @@ Summary(pl):	Kalendarz SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-calendar
 
 %description calendar
 This package contains the calendar application from the SeaMonkey
