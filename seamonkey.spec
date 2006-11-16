@@ -4,20 +4,20 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.0
+%define	_enigmail_ver	0.94.1
 Summary:	SeaMonkey - web browser
 Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.3
-Release:	2
+Version:	1.0.6
+Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	e0483331f10e812205c461bdf4ac1b1c
+# Source0-md5:	16e1c6bab1e3832b22863933b5b032e7
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	d326c302c1d2d68217fffcaa01ca7632
+# Source1-md5:	b255e7a77ecea435934bfa1872e99f6a
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -42,16 +42,13 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.6.1
-BuildRequires:	nss-devel >= 3.10.2
+BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
@@ -59,10 +56,11 @@ Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
-Requires:	nss >= 1:3.10.2
+Requires:	nss >= 1:3.11.3
 Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
+Obsoletes:	mozilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -99,6 +97,7 @@ SeaMonkey - –œÃŒœ∆’ŒÀ√…œŒ¡ÃÿŒŸ  web-browser ” œ‘À“Ÿ‘ŸÕ… …”»œƒŒŸÕ…
 Summary:	SeaMonkey shared libraries
 Summary(pl):	Biblioteki wspÛ≥dzielone SeaMonkey
 Group:		Libraries
+Obsoletes:	mozilla-libs
 
 %description libs
 SeaMonkey shared libraries.
@@ -114,6 +113,7 @@ Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-mailnews
 
 %description mailnews
 Programs for mail and news integrated with browser.
@@ -150,6 +150,7 @@ Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-chat
 
 %description chat
 SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
@@ -164,6 +165,7 @@ Summary(pl):	Odpluskwiacz JavaScriptu do uøywania z SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
 JavaScript debugger for use with SeaMonkey.
@@ -177,6 +179,7 @@ Summary(pl):	NarzÍdzie do ogl±dania DOM stron w SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
@@ -194,6 +197,7 @@ Summary(pl):	Modu≥ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-gnomevfs
 
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
@@ -207,6 +211,7 @@ Summary(pl):	Kalendarz SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-calendar
 
 %description calendar
 This package contains the calendar application from the SeaMonkey
