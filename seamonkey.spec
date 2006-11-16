@@ -10,12 +10,12 @@ Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.5
-Release:	2
+Version:	1.0.6
+Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	a1b98cd4d2d0f71d50406f8cd3885a5e
+# Source0-md5:	16e1c6bab1e3832b22863933b5b032e7
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
 # Source1-md5:	b255e7a77ecea435934bfa1872e99f6a
 Source2:	%{name}.desktop
@@ -60,6 +60,7 @@ Requires:	nss >= 1:3.11.3
 Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
+Obsoletes:	mozilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -96,6 +97,7 @@ SeaMonkey - –œÃŒœ∆’ŒÀ√…œŒ¡ÃÿŒŸ  web-browser ” œ‘À“Ÿ‘ŸÕ… …”»œƒŒŸÕ…
 Summary:	SeaMonkey shared libraries
 Summary(pl):	Biblioteki wspÛ≥dzielone SeaMonkey
 Group:		Libraries
+Obsoletes:	mozilla-libs
 
 %description libs
 SeaMonkey shared libraries.
@@ -111,6 +113,7 @@ Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-mailnews
 
 %description mailnews
 Programs for mail and news integrated with browser.
@@ -147,6 +150,7 @@ Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-chat
 
 %description chat
 SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
@@ -161,6 +165,7 @@ Summary(pl):	Odpluskwiacz JavaScriptu do uøywania z SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
 JavaScript debugger for use with SeaMonkey.
@@ -174,6 +179,7 @@ Summary(pl):	NarzÍdzie do ogl±dania DOM stron w SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
@@ -191,6 +197,7 @@ Summary(pl):	Modu≥ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-gnomevfs
 
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
@@ -204,6 +211,7 @@ Summary(pl):	Kalendarz SeaMonkey
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-calendar
 
 %description calendar
 This package contains the calendar application from the SeaMonkey
