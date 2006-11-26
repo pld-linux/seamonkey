@@ -456,15 +456,10 @@ if [ "$1" = "1" ]; then
 	%{_sbindir}/%{name}-chrome+xpcom-generate
 fi
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %post mailnews
-/sbin/ldconfig
 %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %postun mailnews
-/sbin/ldconfig
 %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %post addon-enigmail
