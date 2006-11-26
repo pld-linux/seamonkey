@@ -447,56 +447,29 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-umask 022
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun
-if [ "$1" = "1" ]; then
-	%{_sbindir}/%{name}-chrome+xpcom-generate
-fi
+%post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post mailnews
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun mailnews
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post addon-enigmail
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun addon-enigmail
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post chat
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun chat
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post js-debugger
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun js-debugger
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post dom-inspector
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun dom-inspector
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post gnomevfs
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun gnomevfs
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post calendar
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun calendar
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %files
 %defattr(644,root,root,755)
