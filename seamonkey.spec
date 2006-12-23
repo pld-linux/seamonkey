@@ -10,12 +10,12 @@ Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.6
+Version:	1.0.7
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	16e1c6bab1e3832b22863933b5b032e7
+Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
+# Source0-md5:	d0137029a8cc6d8f21de12b0cb5bfff8
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
 # Source1-md5:	b255e7a77ecea435934bfa1872e99f6a
 Source2:	%{name}.desktop
@@ -443,61 +443,29 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-umask 022
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun
-if [ "$1" = "1" ]; then
-	%{_sbindir}/%{name}-chrome+xpcom-generate
-fi
+%post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
+%post addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post mailnews
-/sbin/ldconfig
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun mailnews
-/sbin/ldconfig
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post addon-enigmail
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%postun addon-enigmail
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post chat
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun chat
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post js-debugger
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun js-debugger
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post dom-inspector
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun dom-inspector
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post gnomevfs
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun gnomevfs
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post calendar
-%{_sbindir}/%{name}-chrome+xpcom-generate
-
-%postun calendar
-%{_sbindir}/%{name}-chrome+xpcom-generate
+%post calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%postun calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
 %files
 %defattr(644,root,root,755)
