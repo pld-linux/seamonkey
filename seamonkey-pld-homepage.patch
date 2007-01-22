@@ -4,9 +4,9 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/
 +homePageDefault=http://www.pld-linux.org/
- shopKeyword=keyword:shop [Product]
- quoteKeyword=keyword:quote [Enter symbol here]
- localKeyword=keyword:zip [Your zip code]
+ keywordList=http://home.netscape.com/escapes/keywords
+ webmailKeyword=http://webmail.netscape.com
+ fallbackDefaultSearchURL=http://www.google.com/search?q=
 @@ -11,7 +11,7 @@
  #
  # all.js
