@@ -1,3 +1,4 @@
+# TODO: use browser-plugins framework
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
