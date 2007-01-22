@@ -5,31 +5,30 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.1
+%define	_enigmail_ver	0.94.2
 Summary:	SeaMonkey - web browser
 Summary(es):	Navegador de Internet SeaMonkey
 Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
-Version:	1.0.7
+Version:	1.1
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	d0137029a8cc6d8f21de12b0cb5bfff8
+# Source0-md5:	2d78434affe9e4499e3cfceae2d8522f
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	b255e7a77ecea435934bfa1872e99f6a
+# Source1-md5:	cc1ba2bec7c3a2ac408ef24fbf1884de
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
 Source5:	%{name}-mail.desktop
 Source6:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
-Patch1:		%{name}-nss.patch
-Patch2:		%{name}-ldap-with-nss.patch
-Patch3:		%{name}-kill_slim_hidden_def.patch
-Patch4:		%{name}-lib_path.patch
-Patch5:		%{name}-fonts.patch
+Patch1:		%{name}-ldap-with-nss.patch
+Patch2:		%{name}-kill_slim_hidden_def.patch
+Patch3:		%{name}-lib_path.patch
+Patch4:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -65,6 +64,7 @@ Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla
+Obsoletes:	seamonkey-calendar
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
@@ -209,21 +209,6 @@ Gnome-VFS module providing support for smb:// URLs.
 %description gnomevfs -l pl
 Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
-%package calendar
-Summary:	SeaMonkey calendar
-Summary(pl):	Kalendarz SeaMonkey
-Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-calendar
-
-%description calendar
-This package contains the calendar application from the SeaMonkey
-suite.
-
-%description calendar -l pl
-Ten pakiet zawiera kalendarz z zestawu aplikacji SeaMonkey.
-
 %package devel
 Summary:	Headers for developing programs that will use SeaMonkey
 Summary(pl):	SeaMonkey - pliki nag³ówkowe i biblioteki
@@ -260,7 +245,6 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -279,7 +263,6 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 	--disable-tests \
 	--disable-xterm-updates \
 	--enable-application=suite \
-	--enable-calendar \
 	--enable-crypto \
 	--enable-default-toolkit=gtk2 \
 	--enable-extensions \
@@ -289,6 +272,7 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 	--enable-postscript \
 	%{!?debug:--enable-strip} \
 	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
+	%{?with_svg:--enable-system-cairo} \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
@@ -297,6 +281,7 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 	--with-pthreads \
 	--with-system-jpeg \
 	--with-system-nspr \
+	--with-system-nss \
 	--with-system-png \
 	--with-system-zlib \
 	--with-x
@@ -314,7 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,greprefs,myspell,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dictionaries,icons,greprefs,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name}/idl,%{_pkgconfigdir}}
 
@@ -331,19 +316,19 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 
 ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_seamonkeydir}/defaults
+ln -sf ../../share/%{name}/dictionaries $RPM_BUILD_ROOT%{_seamonkeydir}/dictionaries
 ln -sf ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_seamonkeydir}/greprefs
 ln -sf ../../share/%{name}/icons $RPM_BUILD_ROOT%{_seamonkeydir}/icons
 ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_seamonkeydir}/res
 ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_seamonkeydir}/searchplugins
-ln -sf ../../../share/%{name}/myspell $RPM_BUILD_ROOT%{_seamonkeydir}/components/myspell
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
-cp -frL dist/bin/components/myspell/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/myspell
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+cp -frL dist/bin/dictionaries/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
+cp -frL dist/bin/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -frL dist/gre/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_includedir}/%{name}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -469,9 +454,6 @@ rm -rf $RPM_BUILD_ROOT
 %post gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
 %postun gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
 
-%post calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun calendar -p %{_sbindir}/%{name}-chrome+xpcom-generate
-
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/seamonkey
@@ -480,6 +462,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_chromedir}
 %dir %{_seamonkeydir}/components
 %dir %{_seamonkeydir}/defaults
+%dir %{_seamonkeydir}/dictionaries
 %dir %{_seamonkeydir}/greprefs
 %dir %{_seamonkeydir}/icons
 %dir %{_seamonkeydir}/plugins
@@ -545,7 +528,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_seamonkeydir}/components/libwallet.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwalletviewers.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwebbrwsr.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwebdav.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwebsrvcs.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwidget_gtk2.so
 %attr(755,root,root) %{_seamonkeydir}/components/libx*.so
@@ -603,10 +585,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_seamonkeydir}/components/proxyObjInst.xpt
 %{_seamonkeydir}/components/rdf.xpt
 %{_seamonkeydir}/components/related.xpt
+%{_seamonkeydir}/components/saxparser.xpt
 %{_seamonkeydir}/components/search.xpt
 %{_seamonkeydir}/components/schemavalidation.xpt
 %{_seamonkeydir}/components/shistory.xpt
-%{_seamonkeydir}/components/sidebar.xpt
 %{_seamonkeydir}/components/signonviewer.xpt
 %{_seamonkeydir}/components/spellchecker.xpt
 %{_seamonkeydir}/components/sql.xpt
@@ -618,10 +600,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_seamonkeydir}/components/uconv.xpt
 %{_seamonkeydir}/components/unicharutil.xpt
 %{_seamonkeydir}/components/uriloader.xpt
+%{_seamonkeydir}/components/urlformatter.xpt
 %{_seamonkeydir}/components/wallet*.xpt
 %{_seamonkeydir}/components/webBrowser_core.xpt
 %{_seamonkeydir}/components/webbrowserpersist.xpt
-%{_seamonkeydir}/components/webdav.xpt
 %{_seamonkeydir}/components/webshell_idls.xpt
 %{_seamonkeydir}/components/websrvcs.xpt
 %{_seamonkeydir}/components/widget.xpt
@@ -644,6 +626,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_seamonkeydir}/components/nsSchemaValidatorRegexp.js
 %{_seamonkeydir}/components/nsSidebar.js
 %{_seamonkeydir}/components/nsUpdateNotifier.js
+%{_seamonkeydir}/components/nsURLFormatter.js
 %{_seamonkeydir}/components/nsXmlRpcClient.js
 %{_seamonkeydir}/components/xulappinfo.js
 
@@ -651,8 +634,6 @@ rm -rf $RPM_BUILD_ROOT
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_seamonkeydir}/components/compreg.dat
 %ghost %{_seamonkeydir}/components/xpti.dat
-
-%{_seamonkeydir}/components/myspell
 
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/US.jar
@@ -683,7 +664,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/chrome/icons
 %exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
-%exclude %{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
@@ -694,10 +674,10 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
+%{_datadir}/%{name}/dictionaries
 %{_datadir}/%{name}/greprefs
 %exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
-%{_datadir}/%{name}/myspell
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 
@@ -796,7 +776,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files dom-inspector
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_seamonkeydir}/components/libinspector.so
 %{_seamonkeydir}/components/inspector.xpt
 %{_seamonkeydir}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
@@ -808,16 +787,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_seamonkeydir}/components/libnkgnomevfs.so
 %endif
-
-%files calendar
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_seamonkeydir}/components/libcalbasecomps.so
-%{_seamonkeydir}/components/calbase.xpt
-%{_seamonkeydir}/components/calbaseinternal.xpt
-%{_seamonkeydir}/components/calendarService.js
-%{_seamonkeydir}/components/cal[ACDEHIMORST]*.js
-%{_datadir}/%{name}/chrome/calendar.jar
-%{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 
 %files devel
 %defattr(644,root,root,755)
