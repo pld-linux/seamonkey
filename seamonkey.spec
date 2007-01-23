@@ -1,3 +1,5 @@
+# TODO:
+# - i believe we're not allowed to distribute rpm's build with _OFFICIAL
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
@@ -29,8 +31,6 @@ Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
-BuildRequires:	/bin/csh
-BuildRequires:	/bin/ex
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
@@ -45,7 +45,6 @@ BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
@@ -232,10 +231,9 @@ SeaMonkey.
 SeaMonkey
 
 %prep
-%setup -q -c -T
-tar jxf %{SOURCE0} --strip-components=1
+%setup -qc
+cd mozilla
 tar -C mailnews/extensions -zxf %{SOURCE1}
-
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -243,6 +241,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch4 -p1
 
 %build
+cd mozilla
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
@@ -285,13 +284,13 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 %{__make}
 
 cd mailnews/extensions/enigmail
-sed 's/"mozilla"/"%{name}-%{version}"/g' -i makemake
 ./makemake -r
 %{__make}
 cd ../../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd mozilla
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
