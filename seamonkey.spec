@@ -13,7 +13,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.1
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -204,32 +204,6 @@ Gnome-VFS module providing support for smb:// URLs.
 %description gnomevfs -l pl
 Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
-%package devel
-Summary:	Headers for developing programs that will use SeaMonkey
-Summary(pl):	SeaMonkey - pliki nag³ówkowe i biblioteki
-Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o SeaMonkey
-Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ SeaMonkey
-Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.1
-Provides:	seamonkey-embedded-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-devel
-Obsoletes:	mozilla-firefox-devel
-
-%description devel
-SeaMonkey development package.
-
-%description devel -l pl
-Biblioteki i pliki nag³ówkowe.
-
-%description devel -l pt_BR
-Arquivos de inclusão para desenvolvimento de programas que usam o
-SeaMonkey.
-
-%description devel -l ru
-úÁÇÏÌÏ×ÏÞÎÙÅ ÆÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÒÁÚÒÁÂÏÔËÉ ÐÒÏÇÒÁÍÍ, ÉÓÐÅÏÌØÚÕÀÝÉÈ
-SeaMonkey
-
 %prep
 %setup -qc
 cd mozilla
@@ -295,8 +269,7 @@ install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dictionaries,icons,greprefs,res,searchplugins} \
-	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins} \
-	$RPM_BUILD_ROOT{%{_includedir}/%{name}/idl,%{_pkgconfigdir}}
+	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins}
 
 # preparing to create register
 # remove empty directory trees
@@ -307,7 +280,6 @@ rm -f dist/bin/chrome/en-{mac,win}.jar
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
-#install dist/bin/component.reg $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_seamonkeydir}/defaults
@@ -324,26 +296,10 @@ cp -frL dist/bin/dictionaries/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
 cp -frL dist/bin/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_includedir}/%{name}/idl
-cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_seamonkeydir}/libnssckbi.so
-
-for f in build/unix/*.pc ; do
-	sed -e 's/seamonkey-%{version}/seamonkey/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
-
-sed -e 's,lib/seamonkey-%{version},lib,g;s/seamonkey-%{version}/seamonkey/g' build/unix/seamonkey-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-gtkmozembed.pc
-
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-plugin.pc
-
-rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
 install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -354,9 +310,6 @@ install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
         $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
@@ -781,10 +734,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_seamonkeydir}/components/libnkgnomevfs.so
 %endif
-
-%files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
-%attr(755,root,root) %{_bindir}/xpidl
-%{_includedir}/%{name}
-%{_pkgconfigdir}/*
