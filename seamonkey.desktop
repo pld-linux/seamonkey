@@ -1,12 +1,14 @@
 [Desktop Entry]
 Name=SeaMonkey
 Name[pl]=SeaMonkey
-Comment=Web browser
-Comment[pl]=Przeglądarka WWW
+GenericName=Web Browser
+GenericName[pl]=Przeglądarka WWW
+Comment=Browse the Web powered by Mozilla technology
+Comment[pl]=Przeglądarka WWW oparta o technologię Mozilli
 Exec=seamonkey
 Icon=seamonkey.png
 Terminal=false
 Type=Application
-Categories=Network;WebBrowser;
+Categories=GTK;Network;WebBrowser;
 Encoding=UTF-8
 # vi: encoding=utf-8
