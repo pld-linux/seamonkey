@@ -1,4 +1,5 @@
-# TODO: use browser-plugins framework
+# TODO:
+# - i believe we're not allowed to distribute rpm's build with _OFFICIAL
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
@@ -12,7 +13,7 @@ Summary(pl):	SeaMonkey - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey
 Name:		seamonkey
 Version:	1.1
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -30,8 +31,6 @@ Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
-BuildRequires:	/bin/csh
-BuildRequires:	/bin/ex
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
@@ -46,12 +45,8 @@ BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	tar >= 1:1.15.1
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	/sbin/ldconfig
@@ -209,37 +204,10 @@ Gnome-VFS module providing support for smb:// URLs.
 %description gnomevfs -l pl
 Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
-%package devel
-Summary:	Headers for developing programs that will use SeaMonkey
-Summary(pl):	SeaMonkey - pliki nag³ówkowe i biblioteki
-Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o SeaMonkey
-Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ SeaMonkey
-Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.1
-Provides:	seamonkey-embedded-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-devel
-Obsoletes:	mozilla-firefox-devel
-
-%description devel
-SeaMonkey development package.
-
-%description devel -l pl
-Biblioteki i pliki nag³ówkowe.
-
-%description devel -l pt_BR
-Arquivos de inclusão para desenvolvimento de programas que usam o
-SeaMonkey.
-
-%description devel -l ru
-úÁÇÏÌÏ×ÏÞÎÙÅ ÆÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÒÁÚÒÁÂÏÔËÉ ÐÒÏÇÒÁÍÍ, ÉÓÐÅÏÌØÚÕÀÝÉÈ
-SeaMonkey
-
 %prep
-%setup -q -c -T
-tar jxf %{SOURCE0} --strip-components=1
+%setup -qc
+cd mozilla
 tar -C mailnews/extensions -zxf %{SOURCE1}
-
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -247,6 +215,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch4 -p1
 
 %build
+cd mozilla
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
@@ -289,19 +258,18 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 %{__make}
 
 cd mailnews/extensions/enigmail
-sed 's/"mozilla"/"%{name}-%{version}"/g' -i makemake
 ./makemake -r
 %{__make}
 cd ../../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd mozilla
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dictionaries,icons,greprefs,res,searchplugins} \
-	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins} \
-	$RPM_BUILD_ROOT{%{_includedir}/%{name}/idl,%{_pkgconfigdir}}
+	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins}
 
 # preparing to create register
 # remove empty directory trees
@@ -312,7 +280,6 @@ rm -f dist/bin/chrome/en-{mac,win}.jar
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
-#install dist/bin/component.reg $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_seamonkeydir}/defaults
@@ -329,26 +296,10 @@ cp -frL dist/bin/dictionaries/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
 cp -frL dist/bin/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_includedir}/%{name}/idl
-cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_seamonkeydir}/libnssckbi.so
-
-for f in build/unix/*.pc ; do
-	sed -e 's/seamonkey-%{version}/seamonkey/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
-
-sed -e 's,lib/seamonkey-%{version},lib,g;s/seamonkey-%{version}/seamonkey/g' build/unix/seamonkey-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-gtkmozembed.pc
-
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-plugin.pc
-
-rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
 install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -359,9 +310,6 @@ install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
         $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
@@ -373,45 +321,44 @@ cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 LD_LIBRARY_PATH=%{_seamonkeydir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH
 
-MOZILLA_FIVE_HOME="%{_seamonkeydir}"
-SEAMONKEY="$MOZILLA_FIVE_HOME/seamonkey-bin"
+MOZILLA_FIVE_HOME=%{_seamonkeydir}
 if [ "$1" == "-remote" ]; then
-	exec $SEAMONKEY "$@"
-fi
-
-PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
-if [ -n "$PING" ]; then
-	if [ -f "`pwd`/$1" ]; then
-		exec $SEAMONKEY "file://`pwd`/$1"
+	%{_seamonkeydir}/seamonkey-bin "$@"
+else
+	PING=`%{_seamonkeydir}/seamonkey-bin -remote 'ping()' 2>&1 >/dev/null`
+	if [ -n "$PING" ]; then
+		if [ -f "`pwd`/$1" ]; then
+			%{_seamonkeydir}/seamonkey-bin "file://`pwd`/$1"
+		else
+			%{_seamonkeydir}/seamonkey-bin "$@"
+		fi
 	else
-		exec $SEAMONKEY "$@"
+		if [ -z "$1" ]; then
+			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (openBrowser)'
+		elif [ "$1" == "-mail" ]; then
+			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (openInbox)'
+		elif [ "$1" == "-compose" ]; then
+			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (composeMessage)'
+		else
+			echo $1 | grep -q "^-" > /dev/null
+			if [ $? -eq 0 ]; then
+				%{_seamonkeydir}/seamonkey-bin "$@"
+			else
+				if [ -f "`pwd`/$1" ]; then
+					URL="file://`pwd`/$1"
+				else
+					URL="$1"
+				fi
+				grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+				if [ $? -eq 0 ]; then
+					%{_seamonkeydir}/seamonkey-bin -remote "OpenUrl($URL,new-tab)"
+				else
+					%{_seamonkeydir}/seamonkey-bin -remote "OpenUrl($URL,new-window)"
+				fi
+			fi
+		fi
 	fi
 fi
-
-if [ -z "$1" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
-elif [ "$1" == "-mail" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
-elif [ "$1" == "-compose" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
-fi
-
-[[ $1 == -* ]] && exec $SEAMONKEY "$@"
-
-if [ -f "`pwd`/$1" ]; then
-	URL="file://`pwd`/$1"
-else
-	URL="$1"
-fi
-if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
-		~/.mozilla/default/*/prefs.js; then
-	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
-else
-	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
-fi
-
-echo "Cannot execute SeaMonkey ($SEAMONKEY)!" >&2
-exit 1
 EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
@@ -787,10 +734,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_seamonkeydir}/components/libnkgnomevfs.so
 %endif
-
-%files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
-%attr(755,root,root) %{_bindir}/xpidl
-%{_includedir}/%{name}
-%{_pkgconfigdir}/*
