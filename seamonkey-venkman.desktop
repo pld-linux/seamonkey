@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=SeaMonkey Venkman
-Name[pl]=SeaMonkey Venkman
+Name=SeaMonkey Community Edition Venkman
+Name[pl]=SeaMonkey Community Edition Venkman
 Comment=JavaScript Debugger
 Comment[pl]=Debugger JavaScript
 Exec=seamonkey -venkman
