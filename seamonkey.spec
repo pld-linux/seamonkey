@@ -1,5 +1,3 @@
-# TODO:
-# - i believe we're not allowed to distribute rpm's build with _OFFICIAL
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
@@ -7,10 +5,10 @@
 %bcond_without	svg		# disable svg support
 #
 %define	_enigmail_ver	0.94.2
-Summary:	SeaMonkey - web browser
-Summary(es):	Navegador de Internet SeaMonkey
-Summary(pl):	SeaMonkey - przegl±darka WWW
-Summary(pt_BR):	Navegador SeaMonkey
+Summary:	SeaMonkey Community Edition - web browser
+Summary(es):	Navegador de Internet SeaMonkey Community Edition
+Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
+Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1
 Release:	2
@@ -49,8 +47,8 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -70,44 +68,45 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
 
 %description
-SeaMonkey is an open-source web browser, designed for standards
-compliance, performance and portability.
+SeaMonkey Community Edition is an open-source web browser, designed
+for standards compliance, performance and portability.
 
 %description -l es
-SeaMonkey es un navegador de Internet que se basa en una versión
-inicial de Netscape Communicator. Este software está en desarrollo,
-por lo cual todavía es inestable.
+SeaMonkey Community Edition es un navegador de Internet que se basa en
+una versión inicial de Netscape Communicator. Este software está en
+desarrollo, por lo cual todavía es inestable.
 
 %description -l pl
-SeaMonkey jest potê¿n± graficzn± przegl±dark± WWW, która jest nastêpc±
-Mozilli, która nastêpnie by³a nastêpczyni± Netscape Communikatora.
+SeaMonkey Community Edition jest potê¿n± graficzn± przegl±dark± WWW,
+która jest nastêpc± Mozilli, która nastêpnie by³a nastêpczyni±
+Netscape Communikatora.
 
 %description -l pt_BR
-O SeaMonkey é um web browser baseado numa versão inicial do Netscape
-Communicator. Este software está em fase de desenvolvimento, portanto,
-ainda não estável.
+O SeaMonkey Community Edition é um web browser baseado numa versão
+inicial do Netscape Communicator. Este software está em fase de
+desenvolvimento, portanto, ainda não estável.
 
 %description -l ru
-SeaMonkey - ĞÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ
-ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ,
-ÍÁËÓÍÉÍÁÌØÎÏÊ ĞÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
+SeaMonkey Community Edition - ĞÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó
+ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ
+ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ, ÍÁËÓÍÉÍÁÌØÎÏÊ ĞÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
 
 %package libs
-Summary:	SeaMonkey shared libraries
-Summary(pl):	Biblioteki wspó³dzielone SeaMonkey
+Summary:	SeaMonkey Community Edition shared libraries
+Summary(pl):	Biblioteki wspó³dzielone SeaMonkey Community Edition
 Group:		Libraries
 Obsoletes:	mozilla-libs
 
 %description libs
-SeaMonkey shared libraries.
+SeaMonkey Community Edition shared libraries.
 
 %description libs -l pl
-Biblioteki wspó³dzielone SeaMonkey.
+Biblioteki wspó³dzielone SeaMonkey Community Edition.
 
 %package mailnews
-Summary:	SeaMonkey - programs for mail and news
-Summary(pl):	SeaMonkey - programy do poczty i newsów
-Summary(ru):	ğÏŞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey
+Summary:	SeaMonkey Community Edition - programs for mail and news
+Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
+Summary(ru):	ğÏŞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -121,12 +120,12 @@ Programs for mail and news integrated with browser.
 Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 
 %description mailnews -l ru
-ëÌÉÅÎÔ ĞÏŞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey. ğÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É
-NNTP É ÉÍÅÅÔ ĞÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ĞÏÌØÚÏ×ÁÔÅÌÑ.
+ëÌÉÅÎÔ ĞÏŞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition.
+ğÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É NNTP É ÉÍÅÅÔ ĞÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ĞÏÌØÚÏ×ÁÔÅÌÑ.
 
 %package addon-enigmail
-Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey
-Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey
+Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
+Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -144,37 +143,38 @@ i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
 funkcjonalno¶ci GnuPG.
 
 %package chat
-Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
-Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
+Summary:	SeaMonkey Community Edition Chat - integrated IRC client
+Summary(pl):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-chat
 
 %description chat
-SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
-browser.
+SeaMonkey Community Edition Chat - IRC client that is integrated with
+the SeaMonkey Community Edition web browser.
 
 %description chat -l pl
-SeaMonkey Chat - klient IRC-a zintegrowany z przegl±dark± SeaMonkey.
+SeaMonkey Community Edition Chat - klient IRC-a zintegrowany z
+przegl±dark± SeaMonkey Community Edition.
 
 %package js-debugger
-Summary:	JavaScript debugger for use with SeaMonkey
-Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey
+Summary:	JavaScript debugger for use with SeaMonkey Community Edition
+Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
-JavaScript debugger for use with SeaMonkey.
+JavaScript debugger for use with SeaMonkey Community Edition.
 
 %description js-debugger -l pl
-Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey.
+Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition.
 
 %package dom-inspector
-Summary:	A tool for inspecting the DOM of pages in SeaMonkey
-Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey
+Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
+Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -182,13 +182,14 @@ Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
-SeaMonkey. This is of great use to people who are doing SeaMonkey
-chrome development or web page development.
+SeaMonkey Community Edition. This is of great use to people who are
+doing SeaMonkey Community Edition chrome development or web page
+development.
 
 %description dom-inspector -l pl
-To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey. Jest
-bardzo przydatne dla ludzi rozwijaj±cych chrome w SeaMonkey lub
-tworz±cych strony WWW.
+To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey
+Community Edition. Jest bardzo przydatne dla ludzi rozwijaj±cych
+chrome w SeaMonkey Community Edition lub tworz±cych strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
@@ -216,8 +217,6 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 
 %build
 cd mozilla
-BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
-MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
 cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
