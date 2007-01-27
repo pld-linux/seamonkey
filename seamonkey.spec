@@ -73,8 +73,7 @@ for standards compliance, performance and portability.
 
 %description -l es
 SeaMonkey Community Edition es un navegador de Internet que se basa en
-una versión inicial de Netscape Communicator. Este software está en
-desarrollo, por lo cual todavía es inestable.
+una versión inicial de Netscape Communicator.
 
 %description -l pl
 SeaMonkey Community Edition jest potê¿n± graficzn± przegl±dark± WWW,
@@ -83,8 +82,7 @@ Netscape Communikatora.
 
 %description -l pt_BR
 O SeaMonkey Community Edition é um web browser baseado numa versão
-inicial do Netscape Communicator. Este software está em fase de
-desenvolvimento, portanto, ainda não estável.
+inicial do Netscape Communicator.
 
 %description -l ru
 SeaMonkey Community Edition - ĞÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó
