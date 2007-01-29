@@ -318,44 +318,45 @@ cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 LD_LIBRARY_PATH=%{_seamonkeydir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH
 
-MOZILLA_FIVE_HOME=%{_seamonkeydir}
+MOZILLA_FIVE_HOME="%{_seamonkeydir}"
+SEAMONKEY="$MOZILLA_FIVE_HOME/seamonkey-bin"
 if [ "$1" == "-remote" ]; then
-	%{_seamonkeydir}/seamonkey-bin "$@"
-else
-	PING=`%{_seamonkeydir}/seamonkey-bin -remote 'ping()' 2>&1 >/dev/null`
+	exec $SEAMONKEY "$@"
+fi
+
+PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
 	if [ -n "$PING" ]; then
 		if [ -f "`pwd`/$1" ]; then
-			%{_seamonkeydir}/seamonkey-bin "file://`pwd`/$1"
+		exec $SEAMONKEY "file://`pwd`/$1"
 		else
-			%{_seamonkeydir}/seamonkey-bin "$@"
+		exec $SEAMONKEY "$@"
 		fi
-	else
+fi
+
 		if [ -z "$1" ]; then
-			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (openBrowser)'
+	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
 		elif [ "$1" == "-mail" ]; then
-			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (openInbox)'
+	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
 		elif [ "$1" == "-compose" ]; then
-			%{_seamonkeydir}/seamonkey-bin -remote 'xfeDoCommand (composeMessage)'
-		else
-			echo $1 | grep -q "^-" > /dev/null
-			if [ $? -eq 0 ]; then
-				%{_seamonkeydir}/seamonkey-bin "$@"
-			else
+	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
+fi
+
+[[ $1 == -* ]] && exec $SEAMONKEY "$@"
+
 				if [ -f "`pwd`/$1" ]; then
 					URL="file://`pwd`/$1"
 				else
 					URL="$1"
 				fi
-				grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
-				if [ $? -eq 0 ]; then
-					%{_seamonkeydir}/seamonkey-bin -remote "OpenUrl($URL,new-tab)"
+if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
+		~/.mozilla/default/*/prefs.js; then
+	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
 				else
-					%{_seamonkeydir}/seamonkey-bin -remote "OpenUrl($URL,new-window)"
-				fi
-			fi
-		fi
-	fi
+	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
 fi
+
+echo "Cannot execute SeaMonkey ($SEAMONKEY)!" >&2
+exit 1
 EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
