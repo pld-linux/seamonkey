@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=SeaMonkey Chat
-Name[pl]=Chat SeaMonkeya
+Name=SeaMonkey Community Edition Chat
+Name[pl]=Chat SeaMonkey Community Edition
 Exec=seamonkey -chat
 Icon=seamonkey.png
 Terminal=false
