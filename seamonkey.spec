@@ -6,13 +6,13 @@
 %bcond_without	svg		# disable svg support
 #
 %define	_enigmail_ver	0.94.2
-Summary:	SeaMonkey - web browser
-Summary(es):	Navegador de Internet SeaMonkey
-Summary(pl):	SeaMonkey - przegl±darka WWW
-Summary(pt_BR):	Navegador SeaMonkey
+Summary:	SeaMonkey Community Edition - web browser
+Summary(es):	Navegador de Internet SeaMonkey Community Edition
+Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
+Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -30,8 +30,6 @@ Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
-BuildRequires:	/bin/csh
-BuildRequires:	/bin/ex
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
@@ -46,7 +44,6 @@ BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
@@ -54,8 +51,8 @@ BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -75,44 +72,43 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
 
 %description
-SeaMonkey is an open-source web browser, designed for standards
-compliance, performance and portability.
+SeaMonkey Community Edition is an open-source web browser, designed
+for standards compliance, performance and portability.
 
 %description -l es
-SeaMonkey es un navegador de Internet que se basa en una versión
-inicial de Netscape Communicator. Este software está en desarrollo,
-por lo cual todavía es inestable.
+SeaMonkey Community Edition es un navegador de Internet que se basa en
+una versión inicial de Netscape Communicator.
 
 %description -l pl
-SeaMonkey jest potê¿n± graficzn± przegl±dark± WWW, która jest nastêpc±
-Mozilli, która nastêpnie by³a nastêpczyni± Netscape Communikatora.
+SeaMonkey Community Edition jest potê¿n± graficzn± przegl±dark± WWW,
+która jest nastêpc± Mozilli, która nastêpnie by³a nastêpczyni±
+Netscape Communikatora.
 
 %description -l pt_BR
-O SeaMonkey é um web browser baseado numa versão inicial do Netscape
-Communicator. Este software está em fase de desenvolvimento, portanto,
-ainda não estável.
+O SeaMonkey Community Edition é um web browser baseado numa versão
+inicial do Netscape Communicator.
 
 %description -l ru
-SeaMonkey - ÐÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ
-ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ,
-ÍÁËÓÍÉÍÁÌØÎÏÊ ÐÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
+SeaMonkey Community Edition - ÐÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó
+ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ
+ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ, ÍÁËÓÍÉÍÁÌØÎÏÊ ÐÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
 
 %package libs
-Summary:	SeaMonkey shared libraries
-Summary(pl):	Biblioteki wspó³dzielone SeaMonkey
+Summary:	SeaMonkey Community Edition shared libraries
+Summary(pl):	Biblioteki wspó³dzielone SeaMonkey Community Edition
 Group:		Libraries
 Obsoletes:	mozilla-libs
 
 %description libs
-SeaMonkey shared libraries.
+SeaMonkey Community Edition shared libraries.
 
 %description libs -l pl
-Biblioteki wspó³dzielone SeaMonkey.
+Biblioteki wspó³dzielone SeaMonkey Community Edition.
 
 %package mailnews
-Summary:	SeaMonkey - programs for mail and news
-Summary(pl):	SeaMonkey - programy do poczty i newsów
-Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey
+Summary:	SeaMonkey Community Edition - programs for mail and news
+Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
+Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -126,12 +122,12 @@ Programs for mail and news integrated with browser.
 Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 
 %description mailnews -l ru
-ëÌÉÅÎÔ ÐÏÞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey. ðÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É
-NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
+ëÌÉÅÎÔ ÐÏÞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition.
+ðÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
 
 %package addon-enigmail
-Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey
-Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey
+Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
+Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -149,37 +145,38 @@ i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
 funkcjonalno¶ci GnuPG.
 
 %package chat
-Summary:	SeaMonkey Chat - IRC client integratd with SeaMonkey
-Summary(pl):	SeaMonkey Chat - zintegrowany z Mozill± klient IRC-a
+Summary:	SeaMonkey Community Edition Chat - integrated IRC client
+Summary(pl):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-chat
 
 %description chat
-SeaMonkey Chat - IRC client that is integrated with the SeaMonkey web
-browser.
+SeaMonkey Community Edition Chat - IRC client that is integrated with
+the SeaMonkey Community Edition web browser.
 
 %description chat -l pl
-SeaMonkey Chat - klient IRC-a zintegrowany z przegl±dark± SeaMonkey.
+SeaMonkey Community Edition Chat - klient IRC-a zintegrowany z
+przegl±dark± SeaMonkey Community Edition.
 
 %package js-debugger
-Summary:	JavaScript debugger for use with SeaMonkey
-Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey
+Summary:	JavaScript debugger for use with SeaMonkey Community Edition
+Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
-JavaScript debugger for use with SeaMonkey.
+JavaScript debugger for use with SeaMonkey Community Edition.
 
 %description js-debugger -l pl
-Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey.
+Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition.
 
 %package dom-inspector
-Summary:	A tool for inspecting the DOM of pages in SeaMonkey
-Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey
+Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
+Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -187,13 +184,14 @@ Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
-SeaMonkey. This is of great use to people who are doing SeaMonkey
-chrome development or web page development.
+SeaMonkey Community Edition. This is of great use to people who are
+doing SeaMonkey Community Edition chrome development or web page
+development.
 
 %description dom-inspector -l pl
-To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey. Jest
-bardzo przydatne dla ludzi rozwijaj±cych chrome w SeaMonkey lub
-tworz±cych strony WWW.
+To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey
+Community Edition. Jest bardzo przydatne dla ludzi rozwijaj±cych
+chrome w SeaMonkey Community Edition lub tworz±cych strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
@@ -209,37 +207,10 @@ Gnome-VFS module providing support for smb:// URLs.
 %description gnomevfs -l pl
 Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
-%package devel
-Summary:	Headers for developing programs that will use SeaMonkey
-Summary(pl):	SeaMonkey - pliki nag³ówkowe i biblioteki
-Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o SeaMonkey
-Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ SeaMonkey
-Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6.1
-Provides:	seamonkey-embedded-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-devel
-Obsoletes:	mozilla-firefox-devel
-
-%description devel
-SeaMonkey development package.
-
-%description devel -l pl
-Biblioteki i pliki nag³ówkowe.
-
-%description devel -l pt_BR
-Arquivos de inclusão para desenvolvimento de programas que usam o
-SeaMonkey.
-
-%description devel -l ru
-úÁÇÏÌÏ×ÏÞÎÙÅ ÆÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÒÁÚÒÁÂÏÔËÉ ÐÒÏÇÒÁÍÍ, ÉÓÐÅÏÌØÚÕÀÝÉÈ
-SeaMonkey
-
 %prep
-%setup -q -c -T
-tar jxf %{SOURCE0} --strip-components=1
+%setup -qc
+cd mozilla
 tar -C mailnews/extensions -zxf %{SOURCE1}
-
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -247,8 +218,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch4 -p1
 
 %build
-BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
-MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
+cd mozilla
 
 cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
@@ -289,19 +259,18 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 %{__make}
 
 cd mailnews/extensions/enigmail
-sed 's/"mozilla"/"%{name}-%{version}"/g' -i makemake
 ./makemake -r
 %{__make}
 cd ../../..
 
 %install
 rm -rf $RPM_BUILD_ROOT
+cd mozilla
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dictionaries,icons,greprefs,res,searchplugins} \
-	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins} \
-	$RPM_BUILD_ROOT{%{_includedir}/%{name}/idl,%{_pkgconfigdir}}
+	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins}
 
 # preparing to create register
 # remove empty directory trees
@@ -312,7 +281,6 @@ rm -f dist/bin/chrome/en-{mac,win}.jar
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
-#install dist/bin/component.reg $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_seamonkeydir}/defaults
@@ -329,26 +297,10 @@ cp -frL dist/bin/dictionaries/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
 cp -frL dist/bin/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_includedir}/%{name}/idl
-cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so $RPM_BUILD_ROOT%{_seamonkeydir}
 
 ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_seamonkeydir}/libnssckbi.so
-
-for f in build/unix/*.pc ; do
-	sed -e 's/seamonkey-%{version}/seamonkey/' $f \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-done
-
-sed -e 's,lib/seamonkey-%{version},lib,g;s/seamonkey-%{version}/seamonkey/g' build/unix/seamonkey-gtkmozembed.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-gtkmozembed.pc
-
-# add includir/dom to Cflags, for openvrml.spec, perhaps others
-sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-plugin.pc
-
-rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/seamonkey-nspr.pc
 
 install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -359,9 +311,6 @@ install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_seamonkeydir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
         $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
@@ -787,10 +736,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_seamonkeydir}/components/libnkgnomevfs.so
 %endif
-
-%files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/reg*
-%attr(755,root,root) %{_bindir}/xpidl
-%{_includedir}/%{name}
-%{_pkgconfigdir}/*
