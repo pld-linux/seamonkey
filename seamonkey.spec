@@ -11,7 +11,7 @@ Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1
-Release:	2
+Release:	3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
@@ -42,6 +42,7 @@ BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.356
 BuildRequires:	sed >= 4.0
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
@@ -50,6 +51,7 @@ BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
 Requires:	nss >= 1:3.11.3
@@ -375,11 +377,20 @@ MOZILLA_FIVE_HOME=%{_seamonkeydir} %{_seamonkeydir}/regchrome
 exit 0
 EOF
 
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post
+%{_sbindir}/%{name}-chrome+xpcom-generate
+%update_browser_plugins
+
+%postun
+%{_sbindir}/%{name}-chrome+xpcom-generate
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
+fi
 
 %post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
 %postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
@@ -403,6 +414,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/seamonkey
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
+
+# browser plugins v2
+%{_browserpluginsconfdir}/browsers.d/%{name}.*
+%config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
 %dir %{_chromedir}
 %dir %{_seamonkeydir}/components
