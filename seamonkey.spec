@@ -6,9 +6,9 @@
 #
 %define	_enigmail_ver	0.94.2
 Summary:	SeaMonkey Community Edition - web browser
-Summary(es.UTF-8):   Navegador de Internet SeaMonkey Community Edition
-Summary(pl.UTF-8):   SeaMonkey Community Edition - przeglądarka WWW
-Summary(pt_BR.UTF-8):   Navegador SeaMonkey Community Edition
+Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
+Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
+Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1
 Release:	3
@@ -96,7 +96,7 @@ SeaMonkey Community Edition - полнофункциональный web-browser
 
 %package libs
 Summary:	SeaMonkey Community Edition shared libraries
-Summary(pl.UTF-8):   Biblioteki współdzielone SeaMonkey Community Edition
+Summary(pl.UTF-8):	Biblioteki współdzielone SeaMonkey Community Edition
 Group:		Libraries
 Obsoletes:	mozilla-libs
 
@@ -108,8 +108,8 @@ Biblioteki współdzielone SeaMonkey Community Edition.
 
 %package mailnews
 Summary:	SeaMonkey Community Edition - programs for mail and news
-Summary(pl.UTF-8):   SeaMonkey Community Edition - programy do poczty i newsów
-Summary(ru.UTF-8):   Почтовая система на основе SeaMonkey Community Edition
+Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsów
+Summary(ru.UTF-8):	Почтовая система на основе SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -128,7 +128,7 @@ Programy pocztowe i obsługa newsów zintegrowane z przeglądarką.
 
 %package addon-enigmail
 Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
-Summary(pl.UTF-8):   Enigmail %{_enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
+Summary(pl.UTF-8):	Enigmail %{_enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires(post,postun):	/sbin/ldconfig
@@ -147,7 +147,7 @@ funkcjonalności GnuPG.
 
 %package chat
 Summary:	SeaMonkey Community Edition Chat - integrated IRC client
-Summary(pl.UTF-8):   SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
+Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -163,7 +163,7 @@ przeglądarką SeaMonkey Community Edition.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with SeaMonkey Community Edition
-Summary(pl.UTF-8):   Odpluskwiacz JavaScriptu do używania z SeaMonkey Community Edition
+Summary(pl.UTF-8):	Odpluskwiacz JavaScriptu do używania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -177,7 +177,7 @@ Odpluskwiacz JavaScriptu do używania z SeaMonkey Community Edition.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
-Summary(pl.UTF-8):   Narzędzie do oglądania DOM stron w SeaMonkey Community Edition
+Summary(pl.UTF-8):	Narzędzie do oglądania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -196,7 +196,7 @@ chrome w SeaMonkey Community Edition lub tworzących strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl.UTF-8):   Moduł Gnome-VFS dodający wsparcie dla URLi smb://
+Summary(pl.UTF-8):	Moduł Gnome-VFS dodający wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
