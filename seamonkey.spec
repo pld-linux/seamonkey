@@ -65,12 +65,17 @@ Obsoletes:	mozilla
 Obsoletes:	seamonkey-calendar
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		specflags	-fno-strict-aliasing
-
 %define		_seamonkeydir	%{_libdir}/%{name}
-%define		_chromedir	%{_libdir}/%{name}/chrome
+%define		_chromedir		%{_libdir}/%{name}/chrome
+
 # seamonkey, mozilla and firefox provide their own versions
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+# we don't want these to satisfy xulrunner-devel
+%define		_noautoprov			libmozjs.so libxpcom.so libxul.so
+# and as we don't provide them, don't require either
+%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
