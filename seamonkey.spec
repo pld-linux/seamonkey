@@ -4,7 +4,7 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.2
+%define	_enigmail_ver	0.94.3
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
@@ -17,7 +17,7 @@ Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	4409ad62738d403719a62d00c0276e08
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	cc1ba2bec7c3a2ac408ef24fbf1884de
+# Source1-md5:	08727eea68589eb4c9087ca771229f06
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -49,7 +49,6 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
@@ -62,12 +61,17 @@ Obsoletes:	mozilla
 Obsoletes:	seamonkey-calendar
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		specflags	-fno-strict-aliasing
-
 %define		_seamonkeydir	%{_libdir}/%{name}
-%define		_chromedir	%{_libdir}/%{name}/chrome
+%define		_chromedir		%{_libdir}/%{name}/chrome
+
 # seamonkey, mozilla and firefox provide their own versions
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+# we don't want these to satisfy xulrunner-devel
+%define		_noautoprov			libmozjs.so libxpcom.so libxul.so
+# and as we don't provide them, don't require either
+%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
@@ -109,7 +113,6 @@ Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
 Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mailnews
 
@@ -128,7 +131,6 @@ Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edi
 Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
