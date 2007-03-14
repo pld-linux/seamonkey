@@ -52,7 +52,6 @@ BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
@@ -117,7 +116,6 @@ Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsów
 Summary(ru.UTF-8):	Почтовая система на основе SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mailnews
 
@@ -136,7 +134,6 @@ Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edi
 Summary(pl.UTF-8):	Enigmail %{_enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
