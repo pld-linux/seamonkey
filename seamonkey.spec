@@ -1,24 +1,23 @@
-# TODO: use browser-plugins framework
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.2
+%define	_enigmail_ver	0.94.3
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1
+Version:	1.1.1
 Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	2d78434affe9e4499e3cfceae2d8522f
+# Source0-md5:	4409ad62738d403719a62d00c0276e08
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	cc1ba2bec7c3a2ac408ef24fbf1884de
+# Source1-md5:	08727eea68589eb4c9087ca771229f06
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -43,17 +42,15 @@ BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.356
 BuildRequires:	sed >= 4.0
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
 Requires:	nss >= 1:3.11.3
@@ -64,12 +61,17 @@ Obsoletes:	mozilla
 Obsoletes:	seamonkey-calendar
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		specflags	-fno-strict-aliasing
-
 %define		_seamonkeydir	%{_libdir}/%{name}
-%define		_chromedir	%{_libdir}/%{name}/chrome
+%define		_chromedir		%{_libdir}/%{name}/chrome
+
 # seamonkey, mozilla and firefox provide their own versions
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+# we don't want these to satisfy xulrunner-devel
+%define		_noautoprov			libmozjs.so libxpcom.so libxul.so
+# and as we don't provide them, don't require either
+%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
@@ -111,7 +113,6 @@ Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
 Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mailnews
 
@@ -130,7 +131,6 @@ Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edi
 Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
@@ -329,33 +329,33 @@ if [ "$1" == "-remote" ]; then
 fi
 
 PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
-if [ -n "$PING" ]; then
-	if [ -f "`pwd`/$1" ]; then
+	if [ -n "$PING" ]; then
+		if [ -f "`pwd`/$1" ]; then
 		exec $SEAMONKEY "file://`pwd`/$1"
-	else
+		else
 		exec $SEAMONKEY "$@"
-	fi
+		fi
 fi
 
-if [ -z "$1" ]; then
+		if [ -z "$1" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
-elif [ "$1" == "-mail" ]; then
+		elif [ "$1" == "-mail" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
-elif [ "$1" == "-compose" ]; then
+		elif [ "$1" == "-compose" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
 fi
 
 [[ $1 == -* ]] && exec $SEAMONKEY "$@"
 
-if [ -f "`pwd`/$1" ]; then
-	URL="file://`pwd`/$1"
-else
-	URL="$1"
-fi
+				if [ -f "`pwd`/$1" ]; then
+					URL="file://`pwd`/$1"
+				else
+					URL="$1"
+				fi
 if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
 		~/.mozilla/default/*/prefs.js; then
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
-else
+				else
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
 fi
 
@@ -379,11 +379,20 @@ MOZILLA_FIVE_HOME=%{_seamonkeydir} %{_seamonkeydir}/regchrome
 exit 0
 EOF
 
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post
+%{_sbindir}/%{name}-chrome+xpcom-generate
+%update_browser_plugins
+
+%postun
+%{_sbindir}/%{name}-chrome+xpcom-generate
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
+fi
 
 %post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
 %postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
@@ -407,6 +416,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/seamonkey
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
+
+# browser plugins v2
+%{_browserpluginsconfdir}/browsers.d/%{name}.*
+%config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
 %dir %{_chromedir}
 %dir %{_seamonkeydir}/components
