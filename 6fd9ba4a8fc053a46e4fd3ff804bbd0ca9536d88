@@ -1,0 +1,3 @@
+- AC-branch merge:
+  updated to 1.1.2, updated enigmail to 0.95.0 (by hawk)
+[fixes CVE-2007-1362 CVE-2007-1558 CVE-2007-2867 CVE-2007-2868 CVE-2007-2870 CVE-2007-2871]
