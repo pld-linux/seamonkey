@@ -4,20 +4,20 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.95.0
+%define	_enigmail_ver	0.95.1
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1.2
-Release:	1
+Release:	2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	a84742277a3d3036f9d8f55e3b82ac3d
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	820ab216b6ba21f81392d56bb9991c18
+# Source1-md5:	8c585b6bca96cc1ece50bc850cc99ede
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -719,6 +719,7 @@ fi
 %{_seamonkeydir}/components/enigmail.js
 %{_seamonkeydir}/components/enigprefs-service.js
 %{_datadir}/%{name}/chrome/enigmail-en-US.jar
+%{_datadir}/%{name}/chrome/enigmail-locale.jar
 %{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
 %{_datadir}/%{name}/chrome/enigmail-skin.jar
 %{_datadir}/%{name}/chrome/enigmail.jar
