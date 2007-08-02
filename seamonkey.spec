@@ -2,8 +2,12 @@
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_with	gnomeui		# enable GnomeUI
+%bcond_without	gnome		# disable gnomevfs (alias)
 %bcond_without	svg		# disable svg support
 #
+%if %{without gnome}
+%undefine	with_gnomevfs
+%endif
 %define	enigmail_ver	0.95.2
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
