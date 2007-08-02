@@ -16,7 +16,7 @@ Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	1.1.3
 Release:	1
-License:	Mozilla Public License
+License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
 # Source0-md5:	adede0ee02c302011ecd49f8e83e7c0f
