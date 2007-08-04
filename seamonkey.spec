@@ -10,12 +10,12 @@ Summary(es):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.3
+Version:	1.1.4
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	adede0ee02c302011ecd49f8e83e7c0f
+# Source0-md5:	a2d8a30be44fe9dfc88c35c7a6830fcf
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
 # Source1-md5:	62c0406d787e264b5d33656d13115b3c
 Source2:	%{name}.desktop
