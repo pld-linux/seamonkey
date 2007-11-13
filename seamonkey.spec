@@ -4,20 +4,20 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.95.3
+%define	_enigmail_ver	0.95.5
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
 Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.5
+Version:	1.1.6
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	95f9bcfef69f1bb79594bc7ffe5f0050
+# Source0-md5:	bd3f4d3232a1c936a20fd76785f3e395
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	47e3c376a681bdee3958295d31ff471c
+# Source1-md5:	18b45ff84edbea05acd5756fc63e9ba0
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
