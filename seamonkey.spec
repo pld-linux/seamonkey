@@ -4,20 +4,20 @@
 %bcond_with	gnomeui		# enable GnomeUI
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.3
+%define	_enigmail_ver	0.95.5
 Summary:	SeaMonkey Community Edition - web browser
-Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
-Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglÄ…darka WWW
-Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
+Summary(es):	Navegador de Internet SeaMonkey Community Edition
+Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
+Summary(pt_BR):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.1
+Version:	1.1.7
 Release:	1
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	4409ad62738d403719a62d00c0276e08
+# Source0-md5:	6642c1c9f635068b7537e7d967cac04e
 Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	08727eea68589eb4c9087ca771229f06
+# Source1-md5:	18b45ff84edbea05acd5756fc63e9ba0
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -28,6 +28,7 @@ Patch1:		%{name}-ldap-with-nss.patch
 Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
+Patch5:		%{name}-agent.patch
 URL:		http://www.mozilla.org/projects/seamonkey/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
@@ -44,11 +45,8 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.356
 BuildRequires:	sed >= 4.0
-BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
-BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
-BuildRequires:	xorg-lib-libXt-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -80,40 +78,40 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 SeaMonkey Community Edition is an open-source web browser, designed
 for standards compliance, performance and portability.
 
-%description -l es.UTF-8
+%description -l es
 SeaMonkey Community Edition es un navegador de Internet que se basa en
-una versiÃ³n inicial de Netscape Communicator.
+una versión inicial de Netscape Communicator.
 
-%description -l pl.UTF-8
-SeaMonkey Community Edition jest potÄ™Å¼nÄ… graficznÄ… przeglÄ…darkÄ… WWW,
-ktÃ³ra jest nastÄ™pcÄ… Mozilli, ktÃ³ra nastÄ™pnie byÅ‚a nastÄ™pczyniÄ…
+%description -l pl
+SeaMonkey Community Edition jest potê¿n± graficzn± przegl±dark± WWW,
+która jest nastêpc± Mozilli, która nastêpnie by³a nastêpczyni±
 Netscape Communikatora.
 
-%description -l pt_BR.UTF-8
-O SeaMonkey Community Edition Ã© um web browser baseado numa versÃ£o
+%description -l pt_BR
+O SeaMonkey Community Edition é um web browser baseado numa versão
 inicial do Netscape Communicator.
 
-%description -l ru.UTF-8
-SeaMonkey Community Edition - Ğ¿Ğ¾Ğ»Ğ½Ğ¾Ñ„ÑƒĞ½ĞºÑ†Ğ¸Ğ¾Ğ½Ğ°Ğ»ÑŒĞ½Ñ‹Ğ¹ web-browser Ñ
-Ğ¾Ñ‚ĞºÑ€Ñ‹Ñ‚Ñ‹Ğ¼Ğ¸ Ğ¸ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğ¼Ğ¸ Ñ‚ĞµĞºÑÑ‚Ğ°Ğ¼Ğ¸, Ñ€Ğ°Ğ·Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ğ´Ğ»Ñ Ğ¼Ğ°ĞºÑĞ¸Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾Ğ³Ğ¾
-ÑĞ¾Ğ¾Ñ‚Ğ²ĞµÑÑ‚Ğ²Ğ¸Ñ ÑÑ‚Ğ°Ğ½Ğ´Ğ°Ñ€Ñ‚Ğ°Ğ¼, Ğ¼Ğ°ĞºÑĞ¼Ğ¸Ğ¼Ğ°Ğ»ÑŒĞ½Ğ¾Ğ¹ Ğ¿ĞµÑ€ĞµĞ½Ğ¾ÑĞ¸Ğ¼Ğ¾ÑÑ‚Ğ¸ Ğ¸ ÑĞºĞ¾Ñ€Ğ¾ÑÑ‚Ğ¸ Ñ€Ğ°Ğ±Ğ¾Ñ‚Ñ‹
+%description -l ru
+SeaMonkey Community Edition - ĞÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó
+ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ
+ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ, ÍÁËÓÍÉÍÁÌØÎÏÊ ĞÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
 
 %package libs
 Summary:	SeaMonkey Community Edition shared libraries
-Summary(pl.UTF-8):	Biblioteki wspÃ³Å‚dzielone SeaMonkey Community Edition
+Summary(pl):	Biblioteki wspó³dzielone SeaMonkey Community Edition
 Group:		Libraries
 Obsoletes:	mozilla-libs
 
 %description libs
 SeaMonkey Community Edition shared libraries.
 
-%description libs -l pl.UTF-8
-Biblioteki wspÃ³Å‚dzielone SeaMonkey Community Edition.
+%description libs -l pl
+Biblioteki wspó³dzielone SeaMonkey Community Edition.
 
 %package mailnews
 Summary:	SeaMonkey Community Edition - programs for mail and news
-Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsÃ³w
-Summary(ru.UTF-8):	ĞŸĞ¾Ñ‡Ñ‚Ğ¾Ğ²Ğ°Ñ ÑĞ¸ÑÑ‚ĞµĞ¼Ğ° Ğ½Ğ° Ğ¾ÑĞ½Ğ¾Ğ²Ğµ SeaMonkey Community Edition
+Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
+Summary(ru):	ğÏŞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -122,16 +120,16 @@ Obsoletes:	mozilla-mailnews
 %description mailnews
 Programs for mail and news integrated with browser.
 
-%description mailnews -l pl.UTF-8
-Programy pocztowe i obsÅ‚uga newsÃ³w zintegrowane z przeglÄ…darkÄ….
+%description mailnews -l pl
+Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 
-%description mailnews -l ru.UTF-8
-ĞšĞ»Ğ¸ĞµĞ½Ñ‚ Ğ¿Ğ¾Ñ‡Ñ‚Ñ‹ Ğ¸ Ğ½Ğ¾Ğ²Ğ¾ÑÑ‚ĞµĞ¹, Ğ½Ğ° Ğ¾ÑĞ½Ğ¾Ğ²Ğµ SeaMonkey Community Edition.
-ĞŸĞ¾Ğ´Ğ´ĞµÑ€Ğ¶Ğ¸Ğ²Ğ°ĞµÑ‚ IMAP, POP Ğ¸ NNTP Ğ¸ Ğ¸Ğ¼ĞµĞµÑ‚ Ğ¿Ñ€Ğ¾ÑÑ‚Ğ¾Ğ¹ Ğ¸Ğ½Ñ‚ĞµÑ€Ñ„ĞµĞ¹Ñ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»Ñ.
+%description mailnews -l ru
+ëÌÉÅÎÔ ĞÏŞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition.
+ğÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É NNTP É ÉÍÅÅÔ ĞÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ĞÏÌØÚÏ×ÁÔÅÌÑ.
 
 %package addon-enigmail
 Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
-Summary(pl.UTF-8):	Enigmail %{_enigmail_ver} - obsÅ‚uga PGP/GPG dla SeaMonkey Community Edition
+Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
@@ -142,14 +140,14 @@ Enigmail is an extension to the mail client of SeaMonkey / Mozilla /
 Netscape and Mozilla Thunderbird which allows users to access the
 authentication and encryption features provided by GnuPG.
 
-%description addon-enigmail -l pl.UTF-8
+%description addon-enigmail -l pl
 Enigmail jest rozszerzeniem dla klienta pocztowego SeaMonkey, Mozilla
-i Mozilla Thunderdbird pozwalajÄ…cym uÅ¼ytkownikowi korzystaÄ‡ z
-funkcjonalnoÅ›ci GnuPG.
+i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
+funkcjonalno¶ci GnuPG.
 
 %package chat
 Summary:	SeaMonkey Community Edition Chat - integrated IRC client
-Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
+Summary(pl):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -159,13 +157,13 @@ Obsoletes:	mozilla-chat
 SeaMonkey Community Edition Chat - IRC client that is integrated with
 the SeaMonkey Community Edition web browser.
 
-%description chat -l pl.UTF-8
+%description chat -l pl
 SeaMonkey Community Edition Chat - klient IRC-a zintegrowany z
-przeglÄ…darkÄ… SeaMonkey Community Edition.
+przegl±dark± SeaMonkey Community Edition.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with SeaMonkey Community Edition
-Summary(pl.UTF-8):	Odpluskwiacz JavaScriptu do uÅ¼ywania z SeaMonkey Community Edition
+Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -174,12 +172,12 @@ Obsoletes:	mozilla-js-debugger
 %description js-debugger
 JavaScript debugger for use with SeaMonkey Community Edition.
 
-%description js-debugger -l pl.UTF-8
-Odpluskwiacz JavaScriptu do uÅ¼ywania z SeaMonkey Community Edition.
+%description js-debugger -l pl
+Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
-Summary(pl.UTF-8):	NarzÄ™dzie do oglÄ…dania DOM stron w SeaMonkey Community Edition
+Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -191,14 +189,14 @@ SeaMonkey Community Edition. This is of great use to people who are
 doing SeaMonkey Community Edition chrome development or web page
 development.
 
-%description dom-inspector -l pl.UTF-8
-To narzÄ™dzie pozwala na oglÄ…danie DOM dla stron WWW w SeaMonkey
-Community Edition. Jest bardzo przydatne dla ludzi rozwijajÄ…cych
-chrome w SeaMonkey Community Edition lub tworzÄ…cych strony WWW.
+%description dom-inspector -l pl
+To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey
+Community Edition. Jest bardzo przydatne dla ludzi rozwijaj±cych
+chrome w SeaMonkey Community Edition lub tworz±cych strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl.UTF-8):	ModuÅ‚ Gnome-VFS dodajÄ…cy wsparcie dla URLi smb://
+Summary(pl):	Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -207,8 +205,8 @@ Obsoletes:	mozilla-gnomevfs
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
 
-%description gnomevfs -l pl.UTF-8
-ModuÅ‚ Gnome-VFS dodajÄ…cy wsparcie dla URLi smb://.
+%description gnomevfs -l pl
+Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
 %prep
 %setup -qc
@@ -219,6 +217,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 cd mozilla
@@ -720,6 +719,7 @@ fi
 %{_seamonkeydir}/components/enigmail.js
 %{_seamonkeydir}/components/enigprefs-service.js
 %{_datadir}/%{name}/chrome/enigmail-en-US.jar
+%{_datadir}/%{name}/chrome/enigmail-locale.jar
 %{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
 %{_datadir}/%{name}/chrome/enigmail-skin.jar
 %{_datadir}/%{name}/chrome/enigmail.jar
