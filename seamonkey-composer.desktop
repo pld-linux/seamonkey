@@ -1,10 +1,9 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=SeaMonkey Community Edition Composer
 Comment=SeaMonkey Community Edition Composer
 Comment[pl]=SeaMonkey Community Edition - Projektant stron WWW
 Exec=seamonkey -edit
-Icon=seamonkey.png
+Icon=seamonkey
 Terminal=false
 Type=Application
 Categories=Development;WebDevelopment;

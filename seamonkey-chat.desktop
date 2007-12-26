@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=SeaMonkey Community Edition Chat
 Name[pl]=Chat SeaMonkey Community Edition
 Exec=seamonkey -chat
-Icon=seamonkey.png
+Icon=seamonkey
 Terminal=false
 Type=Application
 Categories=Network;IRCClient;

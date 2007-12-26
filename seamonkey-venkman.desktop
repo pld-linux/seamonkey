@@ -1,11 +1,10 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=SeaMonkey Community Edition Venkman
 Name[pl]=SeaMonkey Community Edition Venkman
 Comment=JavaScript Debugger
 Comment[pl]=Debugger JavaScript
 Exec=seamonkey -venkman
-Icon=seamonkey.png
+Icon=seamonkey
 Terminal=false
 Type=Application
 Categories=Development;WebDevelopment;
