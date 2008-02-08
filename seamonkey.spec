@@ -8,20 +8,20 @@
 %if %{without gnome}
 %undefine	with_gnomevfs
 %endif
-%define	enigmail_ver	0.95.5
+%define	enigmail_ver	0.95.6
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.7
+Version:	1.1.8
 Release:	1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	6642c1c9f635068b7537e7d967cac04e
-Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	18b45ff84edbea05acd5756fc63e9ba0
+# Source0-md5:	d91320fcd6a6aa48cc7c4d5ae596b09e
+Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
+# Source1-md5:	cfbe6ff77f80a349b396829757ad952a
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
