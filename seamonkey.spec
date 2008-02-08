@@ -49,8 +49,6 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
-Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
@@ -60,6 +58,7 @@ Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla
 Obsoletes:	seamonkey-calendar
+Obsoletes:	seamonkey-libs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_seamonkeydir	%{_libdir}/%{name}
@@ -95,27 +94,6 @@ inicial do Netscape Communicator.
 SeaMonkey Community Edition - полнофункциональный web-browser с
 открытыми исходными текстами, разработанный для максимального
 соотвествия стандартам, максмимальной переносимости и скорости работы
-
-%package libs
-Summary:	SeaMonkey Community Edition shared libraries
-Summary(pl):	Biblioteki wspСЁdzielone SeaMonkey Community Edition
-Group:		Libraries
-Obsoletes:	mozilla-libs
-
-%description libs
-SeaMonkey Community Edition shared libraries.
-
-%description libs -l pl
-Biblioteki wspСЁdzielone SeaMonkey Community Edition.
-
-%package mailnews
-Summary:	SeaMonkey Community Edition - programs for mail and news
-Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsСw
-Summary(ru):	Почтовая система на основе SeaMonkey Community Edition
-Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Obsoletes:	mozilla-mailnews
 
 %description mailnews
 Programs for mail and news integrated with browser.
@@ -424,6 +402,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
 %dir %{_chromedir}
+%dir %{_seamonkeydir}
 %dir %{_seamonkeydir}/components
 %dir %{_seamonkeydir}/defaults
 %dir %{_seamonkeydir}/dictionaries
@@ -433,6 +412,21 @@ fi
 %dir %{_seamonkeydir}/res
 %dir %{_seamonkeydir}/searchplugins
 %dir %{_datadir}/%{name}
+
+%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
+%attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
+%attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
+%attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
+%attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
+%attr(755,root,root) %{_seamonkeydir}/libjsj.so
+%attr(755,root,root) %{_seamonkeydir}/libldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libprldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libssldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
+%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
+%attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
 
 %attr(755,root,root) %{_seamonkeydir}/seamonkey-bin
 %attr(755,root,root) %{_seamonkeydir}/reg*
@@ -648,28 +642,6 @@ fi
 %{_pixmapsdir}/seamonkey.png
 %{_desktopdir}/%{name}.desktop
 %{_desktopdir}/%{name}-composer.desktop
-
-%files libs
-%defattr(644,root,root,755)
-%dir %{_seamonkeydir}
-# libxpcom.so used by mozillaplug-in
-# probably should add more if more packages require
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
-
-# add rest too
-%attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
-%attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
-%attr(755,root,root) %{_seamonkeydir}/libjsj.so
-%attr(755,root,root) %{_seamonkeydir}/libldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libprldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libssldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
-%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
-%attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
 
 %files mailnews
 %defattr(644,root,root,755)
