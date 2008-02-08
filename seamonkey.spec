@@ -103,6 +103,15 @@ SeaMonkey Community Edition - полнофункциональный web-browser
 открытыми исходными текстами, разработанный для максимального
 соотвествия стандартам, максмимальной переносимости и скорости работы
 
+%package mailnews
+Summary:	SeaMonkey Community Edition - programs for mail and news
+Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsów
+Summary(ru.UTF-8):	Почтовая система на основе SeaMonkey Community Edition
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Obsoletes:	mozilla-mailnews
+
 %description mailnews
 Programs for mail and news integrated with browser.
 
