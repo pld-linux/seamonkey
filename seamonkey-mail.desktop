@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=SeaMonkey Community Edition Mail
+Name[pl]=Poczta SeaMonkey Community Edition
+Exec=seamonkey -mail
+Icon=seamonkey.png
+Terminal=false
+Type=Application
+Categories=Network;Email;
+# vi: encoding=utf-8
