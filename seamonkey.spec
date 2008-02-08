@@ -33,7 +33,7 @@ Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 Patch5:		%{name}-agent.patch
-URL:		http://www.mozilla.org/projects/seamonkey/
+URL:		http://www.seamonkey-project.org/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
