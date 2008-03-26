@@ -1,24 +1,27 @@
-# TODO: use browser-plugins framework
 #
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_with	gnomeui		# enable GnomeUI
+%bcond_without	gnome		# disable gnomevfs (alias)
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.94.2
+%if %{without gnome}
+%undefine	with_gnomevfs
+%endif
+%define	enigmail_ver	0.95.6
 Summary:	SeaMonkey Community Edition - web browser
-Summary(es):	Navegador de Internet SeaMonkey Community Edition
-Summary(pl):	SeaMonkey Community Edition - przegl±darka WWW
-Summary(pt_BR):	Navegador SeaMonkey Community Edition
+Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
+Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglÄ…darka WWW
+Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1
-Release:	2
-License:	Mozilla Public License
+Version:	1.1.9
+Release:	1
+License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	2d78434affe9e4499e3cfceae2d8522f
-Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
-# Source1-md5:	cc1ba2bec7c3a2ac408ef24fbf1884de
+# Source0-md5:	2b08c472164e80922f715c6e96e0bee7
+Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
+# Source1-md5:	cfbe6ff77f80a349b396829757ad952a
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -29,10 +32,12 @@ Patch1:		%{name}-ldap-with-nss.patch
 Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
-URL:		http://www.mozilla.org/projects/seamonkey/
+Patch5:		%{name}-agent.patch
+URL:		http://www.seamonkey-project.org/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
+BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
@@ -43,6 +48,7 @@ BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.356
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
@@ -51,9 +57,7 @@ BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.2.3
-Requires(post,postun):	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
 Requires:	nss >= 1:3.11.3
@@ -62,75 +66,67 @@ Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla
 Obsoletes:	seamonkey-calendar
+Obsoletes:	seamonkey-libs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		specflags	-fno-strict-aliasing
 
 %define		_seamonkeydir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
-# seamonkey, mozilla and firefox provide their own versions
-%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+
+# firefox/thunderbird/seamonkey provide their own versions
+%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxlibrgb.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+# we don't want these to satisfy xulrunner-devel
+%define		_noautoprov	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+# and as we don't provide them, don't require either
+%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+
+%define		specflags	-fno-strict-aliasing
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
 for standards compliance, performance and portability.
 
-%description -l es
+%description -l es.UTF-8
 SeaMonkey Community Edition es un navegador de Internet que se basa en
-una versión inicial de Netscape Communicator.
+una versiÃ³n inicial de Netscape Communicator.
 
-%description -l pl
-SeaMonkey Community Edition jest potê¿n± graficzn± przegl±dark± WWW,
-która jest nastêpc± Mozilli, która nastêpnie by³a nastêpczyni±
+%description -l pl.UTF-8
+SeaMonkey Community Edition jest potÄ™Å¼nÄ… graficznÄ… przeglÄ…darkÄ… WWW,
+ktÃ³ra jest nastÄ™pcÄ… Mozilli, ktÃ³ra nastÄ™pnie byÅ‚a nastÄ™pczyniÄ…
 Netscape Communikatora.
 
-%description -l pt_BR
-O SeaMonkey Community Edition é um web browser baseado numa versão
+%description -l pt_BR.UTF-8
+O SeaMonkey Community Edition Ã© um web browser baseado numa versÃ£o
 inicial do Netscape Communicator.
 
-%description -l ru
-SeaMonkey Community Edition - ÐÏÌÎÏÆÕÎËÃÉÏÎÁÌØÎÙÊ web-browser Ó
-ÏÔËÒÙÔÙÍÉ ÉÓÈÏÄÎÙÍÉ ÔÅËÓÔÁÍÉ, ÒÁÚÒÁÂÏÔÁÎÎÙÊ ÄÌÑ ÍÁËÓÉÍÁÌØÎÏÇÏ
-ÓÏÏÔ×ÅÓÔ×ÉÑ ÓÔÁÎÄÁÒÔÁÍ, ÍÁËÓÍÉÍÁÌØÎÏÊ ÐÅÒÅÎÏÓÉÍÏÓÔÉ É ÓËÏÒÏÓÔÉ ÒÁÂÏÔÙ
-
-%package libs
-Summary:	SeaMonkey Community Edition shared libraries
-Summary(pl):	Biblioteki wspó³dzielone SeaMonkey Community Edition
-Group:		Libraries
-Obsoletes:	mozilla-libs
-
-%description libs
-SeaMonkey Community Edition shared libraries.
-
-%description libs -l pl
-Biblioteki wspó³dzielone SeaMonkey Community Edition.
+%description -l ru.UTF-8
+SeaMonkey Community Edition - Ð¿Ð¾Ð»Ð½Ð¾Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¾Ð½Ð°Ð»ÑŒÐ½Ñ‹Ð¹ web-browser Ñ
+Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ñ‹Ð¼Ð¸ Ð¸ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¼Ð¸ Ñ‚ÐµÐºÑÑ‚Ð°Ð¼Ð¸, Ñ€Ð°Ð·Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð½Ñ‹Ð¹ Ð´Ð»Ñ Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾
+ÑÐ¾Ð¾Ñ‚Ð²ÐµÑÑ‚Ð²Ð¸Ñ ÑÑ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð°Ð¼, Ð¼Ð°ÐºÑÐ¼Ð¸Ð¼Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ð¿ÐµÑ€ÐµÐ½Ð¾ÑÐ¸Ð¼Ð¾ÑÑ‚Ð¸ Ð¸ ÑÐºÐ¾Ñ€Ð¾ÑÑ‚Ð¸ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹
 
 %package mailnews
 Summary:	SeaMonkey Community Edition - programs for mail and news
-Summary(pl):	SeaMonkey Community Edition - programy do poczty i newsów
-Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition
+Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsÃ³w
+Summary(ru.UTF-8):	ÐŸÐ¾Ñ‡Ñ‚Ð¾Ð²Ð°Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ð° Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mailnews
 
 %description mailnews
 Programs for mail and news integrated with browser.
 
-%description mailnews -l pl
-Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
+%description mailnews -l pl.UTF-8
+Programy pocztowe i obsÅ‚uga newsÃ³w zintegrowane z przeglÄ…darkÄ….
 
-%description mailnews -l ru
-ëÌÉÅÎÔ ÐÏÞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å SeaMonkey Community Edition.
-ðÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
+%description mailnews -l ru.UTF-8
+ÐšÐ»Ð¸ÐµÐ½Ñ‚ Ð¿Ð¾Ñ‡Ñ‚Ñ‹ Ð¸ Ð½Ð¾Ð²Ð¾ÑÑ‚ÐµÐ¹, Ð½Ð° Ð¾ÑÐ½Ð¾Ð²Ðµ SeaMonkey Community Edition.
+ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶Ð¸Ð²Ð°ÐµÑ‚ IMAP, POP Ð¸ NNTP Ð¸ Ð¸Ð¼ÐµÐµÑ‚ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ.
 
 %package addon-enigmail
-Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
-Summary(pl):	Enigmail %{_enigmail_ver} - obs³uga PGP/GPG dla SeaMonkey Community Edition
+Summary:	Enigmail %{enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
+Summary(pl.UTF-8):	Enigmail %{enigmail_ver} - obsÅ‚uga PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
@@ -139,14 +135,14 @@ Enigmail is an extension to the mail client of SeaMonkey / Mozilla /
 Netscape and Mozilla Thunderbird which allows users to access the
 authentication and encryption features provided by GnuPG.
 
-%description addon-enigmail -l pl
+%description addon-enigmail -l pl.UTF-8
 Enigmail jest rozszerzeniem dla klienta pocztowego SeaMonkey, Mozilla
-i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
-funkcjonalno¶ci GnuPG.
+i Mozilla Thunderdbird pozwalajÄ…cym uÅ¼ytkownikowi korzystaÄ‡ z
+funkcjonalnoÅ›ci GnuPG.
 
 %package chat
 Summary:	SeaMonkey Community Edition Chat - integrated IRC client
-Summary(pl):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
+Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -156,13 +152,13 @@ Obsoletes:	mozilla-chat
 SeaMonkey Community Edition Chat - IRC client that is integrated with
 the SeaMonkey Community Edition web browser.
 
-%description chat -l pl
+%description chat -l pl.UTF-8
 SeaMonkey Community Edition Chat - klient IRC-a zintegrowany z
-przegl±dark± SeaMonkey Community Edition.
+przeglÄ…darkÄ… SeaMonkey Community Edition.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with SeaMonkey Community Edition
-Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition
+Summary(pl.UTF-8):	Odpluskwiacz JavaScriptu do uÅ¼ywania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -171,12 +167,12 @@ Obsoletes:	mozilla-js-debugger
 %description js-debugger
 JavaScript debugger for use with SeaMonkey Community Edition.
 
-%description js-debugger -l pl
-Odpluskwiacz JavaScriptu do u¿ywania z SeaMonkey Community Edition.
+%description js-debugger -l pl.UTF-8
+Odpluskwiacz JavaScriptu do uÅ¼ywania z SeaMonkey Community Edition.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
-Summary(pl):	Narzêdzie do ogl±dania DOM stron w SeaMonkey Community Edition
+Summary(pl.UTF-8):	NarzÄ™dzie do oglÄ…dania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -188,14 +184,14 @@ SeaMonkey Community Edition. This is of great use to people who are
 doing SeaMonkey Community Edition chrome development or web page
 development.
 
-%description dom-inspector -l pl
-To narzêdzie pozwala na ogl±danie DOM dla stron WWW w SeaMonkey
-Community Edition. Jest bardzo przydatne dla ludzi rozwijaj±cych
-chrome w SeaMonkey Community Edition lub tworz±cych strony WWW.
+%description dom-inspector -l pl.UTF-8
+To narzÄ™dzie pozwala na oglÄ…danie DOM dla stron WWW w SeaMonkey
+Community Edition. Jest bardzo przydatne dla ludzi rozwijajÄ…cych
+chrome w SeaMonkey Community Edition lub tworzÄ…cych strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl):	Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
+Summary(pl.UTF-8):	ModuÅ‚ Gnome-VFS dodajÄ…cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -204,8 +200,8 @@ Obsoletes:	mozilla-gnomevfs
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
 
-%description gnomevfs -l pl
-Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
+%description gnomevfs -l pl.UTF-8
+ModuÅ‚ Gnome-VFS dodajÄ…cy wsparcie dla URLi smb://.
 
 %prep
 %setup -qc
@@ -216,6 +212,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 cd mozilla
@@ -329,33 +326,33 @@ if [ "$1" == "-remote" ]; then
 fi
 
 PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
-if [ -n "$PING" ]; then
-	if [ -f "`pwd`/$1" ]; then
+	if [ -n "$PING" ]; then
+		if [ -f "`pwd`/$1" ]; then
 		exec $SEAMONKEY "file://`pwd`/$1"
-	else
+		else
 		exec $SEAMONKEY "$@"
-	fi
+		fi
 fi
 
-if [ -z "$1" ]; then
+		if [ -z "$1" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
-elif [ "$1" == "-mail" ]; then
+		elif [ "$1" == "-mail" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
-elif [ "$1" == "-compose" ]; then
+		elif [ "$1" == "-compose" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
 fi
 
 [[ $1 == -* ]] && exec $SEAMONKEY "$@"
 
-if [ -f "`pwd`/$1" ]; then
-	URL="file://`pwd`/$1"
-else
-	URL="$1"
-fi
+				if [ -f "`pwd`/$1" ]; then
+					URL="file://`pwd`/$1"
+				else
+					URL="$1"
+				fi
 if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
 		~/.mozilla/default/*/prefs.js; then
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
-else
+				else
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
 fi
 
@@ -379,11 +376,20 @@ MOZILLA_FIVE_HOME=%{_seamonkeydir} %{_seamonkeydir}/regchrome
 exit 0
 EOF
 
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post
+%{_sbindir}/%{name}-chrome+xpcom-generate
+%update_browser_plugins
+
+%postun
+%{_sbindir}/%{name}-chrome+xpcom-generate
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
+fi
 
 %post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
 %postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
@@ -408,7 +414,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/seamonkey
 %attr(744,root,root) %{_sbindir}/%{name}-chrome+xpcom-generate
 
+# browser plugins v2
+%{_browserpluginsconfdir}/browsers.d/%{name}.*
+%config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
+
 %dir %{_chromedir}
+%dir %{_seamonkeydir}
 %dir %{_seamonkeydir}/components
 %dir %{_seamonkeydir}/defaults
 %dir %{_seamonkeydir}/dictionaries
@@ -418,6 +429,21 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_seamonkeydir}/res
 %dir %{_seamonkeydir}/searchplugins
 %dir %{_datadir}/%{name}
+
+%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
+%attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
+%attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
+%attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
+%attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
+%attr(755,root,root) %{_seamonkeydir}/libjsj.so
+%attr(755,root,root) %{_seamonkeydir}/libldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libprldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libssldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
+%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
+%attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
 
 %attr(755,root,root) %{_seamonkeydir}/seamonkey-bin
 %attr(755,root,root) %{_seamonkeydir}/reg*
@@ -634,28 +660,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/%{name}.desktop
 %{_desktopdir}/%{name}-composer.desktop
 
-%files libs
-%defattr(644,root,root,755)
-%dir %{_seamonkeydir}
-# libxpcom.so used by mozillaplug-in
-# probably should add more if more packages require
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
-
-# add rest too
-%attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
-%attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
-%attr(755,root,root) %{_seamonkeydir}/libjsj.so
-%attr(755,root,root) %{_seamonkeydir}/libldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libprldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libssldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
-%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
-%attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
-
 %files mailnews
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_seamonkeydir}/libmsgbaseutil.so
@@ -704,6 +708,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_seamonkeydir}/components/enigmail.js
 %{_seamonkeydir}/components/enigprefs-service.js
 %{_datadir}/%{name}/chrome/enigmail-en-US.jar
+%{_datadir}/%{name}/chrome/enigmail-locale.jar
 %{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
 %{_datadir}/%{name}/chrome/enigmail-skin.jar
 %{_datadir}/%{name}/chrome/enigmail.jar

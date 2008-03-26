@@ -7,18 +7,18 @@
  keywordList=http://home.netscape.com/escapes/keywords
  webmailKeyword=http://webmail.netscape.com
  fallbackDefaultSearchURL=http://www.google.com/search?q=
-@@ -11,7 +11,7 @@
+@@ -7,7 +7,7 @@
  #
  # all.js
  #
--browser.startup.homepage=http://www.mozilla.org/projects/seamonkey/start/
+-browser.startup.homepage=http://www.seamonkey-project.org/start/
 +browser.startup.homepage=http://www.pld-linux.org/
- browser.throbber.url=http://www.mozilla.org/projects/seamonkey/
+ browser.throbber.url=http://www.seamonkey-project.org/
  browser.search.defaulturl=http://www.google.com/search?q=
  general.useragent.contentlocale=US
-@@ -21,4 +21,4 @@
+@@ -17,4 +17,4 @@
  
  #config.js
  #
--startup.homepage_override_url=http://www.mozilla.org/projects/seamonkey/start/
+-startup.homepage_override_url=http://www.seamonkey-project.org/start/
 +startup.homepage_override_url=http://www.pld-linux.org/
