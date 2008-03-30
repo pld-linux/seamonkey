@@ -2,21 +2,25 @@
 # Conditional build:
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_with	gnomeui		# enable GnomeUI
+%bcond_without	gnome		# disable gnomevfs (alias)
 %bcond_without	svg		# disable svg support
 #
-%define	_enigmail_ver	0.95.6
+%if %{without gnome}
+%undefine	with_gnomevfs
+%endif
+%define	enigmail_ver	0.95.6
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.8
+Version:	1.1.9
 Release:	1
-License:	Mozilla Public License
+License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	d91320fcd6a6aa48cc7c4d5ae596b09e
-Source1:	http://www.mozilla-enigmail.org/downloads/src/enigmail-%{_enigmail_ver}.tar.gz
+# Source0-md5:	2b08c472164e80922f715c6e96e0bee7
+Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
 # Source1-md5:	cfbe6ff77f80a349b396829757ad952a
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
@@ -29,10 +33,11 @@ Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 Patch5:		%{name}-agent.patch
-URL:		http://www.mozilla.org/projects/seamonkey/
+URL:		http://www.seamonkey-project.org/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
 BuildRequires:	freetype-devel >= 1:2.1.8
+BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 BuildRequires:	gtk+2-devel
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
@@ -62,14 +67,14 @@ Obsoletes:	seamonkey-libs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_seamonkeydir	%{_libdir}/%{name}
-%define		_chromedir		%{_libdir}/%{name}/chrome
+%define		_chromedir	%{_libdir}/%{name}/chrome
 
-# seamonkey, mozilla and firefox provide their own versions
-%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libxpistub.so
+# firefox/thunderbird/seamonkey provide their own versions
+%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxlibrgb.so libxpcom_compat.so libxpcom_core.so libxpistub.so
 # we don't want these to satisfy xulrunner-devel
-%define		_noautoprov			libmozjs.so libxpcom.so libxul.so
+%define		_noautoprov	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
 # and as we don't provide them, don't require either
-%define		_noautoreq			libmozjs.so libxpcom.so libxul.so
+%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
 
 %define		specflags	-fno-strict-aliasing
 
@@ -115,8 +120,8 @@ Programy pocztowe i obsługa newsów zintegrowane z przeglądarką.
 Поддерживает IMAP, POP и NNTP и имеет простой интерфейс пользователя.
 
 %package addon-enigmail
-Summary:	Enigmail %{_enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
-Summary(pl.UTF-8):	Enigmail %{_enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
+Summary:	Enigmail %{enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
+Summary(pl.UTF-8):	Enigmail %{enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
