@@ -32,7 +32,8 @@ Patch1:		%{name}-ldap-with-nss.patch
 Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
-Patch5:		%{name}-agent.patch
+Patch5:		%{name}-ti-agent.patch
+Patch6:		%{name}-agent.patch
 URL:		http://www.seamonkey-project.org/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
@@ -48,6 +49,7 @@ BuildRequires:	nspr-devel >= 1:4.6.1
 BuildRequires:	nss-devel >= 1:3.11.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.356
 BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libXext-devel
@@ -212,7 +214,11 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%if "%{pld_release}" == "ti"
 %patch5 -p1
+%else
+%patch6 -p1
+%endif
 
 %build
 cd mozilla
