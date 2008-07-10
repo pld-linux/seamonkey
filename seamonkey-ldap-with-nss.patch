@@ -1,6 +1,15 @@
---- seamonkey-1.0/configure.in.orig	2006-01-10 04:11:42.000000000 +0100
-+++ seamonkey-1.0/configure.in	2006-02-01 21:10:12.670658750 +0100
-@@ -7098,7 +7098,7 @@
+--- seamonkey-1.1.10/configure.in.orig	2008-06-16 00:25:32.000000000 +0200
++++ seamonkey-1.1.10/configure.in	2008-07-10 18:30:45.487028766 +0200
+@@ -3746,7 +3746,7 @@
+ fi
+ 
+ if test -n "$MOZ_NATIVE_NSS"; then
+-   NSS_LIBS="$NSS_LIBS -lcrmf"
++   NSS_LIBS="-lcrmf $NSS_LIBS"
+ else
+    NSS_CFLAGS='-I$(DIST)/public/nss'
+    NSS_DEP_LIBS='\\\
+@@ -7629,7 +7629,7 @@
          mkdir "directory/c-sdk/ldap"    
      fi
  
@@ -9,9 +18,18 @@
      if test -z "$MOZ_DEBUG"; then
          ac_configure_args="$ac_configure_args --disable-debug"
      fi
---- seamonkey-1.0/configure.orig	2006-01-11 06:43:03.000000000 +0100
-+++ seamonkey-1.0/configure	2006-02-01 21:10:17.982990750 +0100
-@@ -20209,7 +20209,7 @@
+--- seamonkey-1.1.10/configure.orig	2008-06-16 00:25:31.000000000 +0200
++++ seamonkey-1.1.10/configure	2008-07-10 18:31:04.379027928 +0200
+@@ -11842,7 +11842,7 @@
+ fi
+ 
+ if test -n "$MOZ_NATIVE_NSS"; then
+-   NSS_LIBS="$NSS_LIBS -lcrmf"
++   NSS_LIBS="-lcrmf $NSS_LIBS"
+ else
+    NSS_CFLAGS='-I$(DIST)/public/nss'
+    NSS_DEP_LIBS='\\\
+@@ -21195,7 +21195,7 @@
          mkdir "directory/c-sdk/ldap"    
      fi
  
