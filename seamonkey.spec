@@ -14,12 +14,12 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.10
+Version:	1.1.11
 Release:	0.1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	0a13d4298fa175a459a5e78ec74810f6
+# Source0-md5:	a1bde0923cb1eaef48e61c67676ad18f
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
 # Source1-md5:	cfbe6ff77f80a349b396829757ad952a
 Source2:	%{name}.desktop
@@ -452,14 +452,15 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
 
 %attr(755,root,root) %{_seamonkeydir}/seamonkey-bin
-%attr(755,root,root) %{_seamonkeydir}/reg*
+%attr(755,root,root) %{_seamonkeydir}/regchrome
+%attr(755,root,root) %{_seamonkeydir}/regxpcom
 %attr(755,root,root) %{_seamonkeydir}/xpidl
 
 %attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
 
-%attr(755,root,root) %{_seamonkeydir}/components/libaccess*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libaccessibility.so
 %attr(755,root,root) %{_seamonkeydir}/components/libappcomps.so
-%attr(755,root,root) %{_seamonkeydir}/components/libauth*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libauth.so
 %attr(755,root,root) %{_seamonkeydir}/components/libautoconfig.so
 %attr(755,root,root) %{_seamonkeydir}/components/libcaps.so
 %attr(755,root,root) %{_seamonkeydir}/components/libchrome.so
@@ -469,20 +470,28 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/components/libeditor.so
 %attr(755,root,root) %{_seamonkeydir}/components/libembedcomponents.so
 %attr(755,root,root) %{_seamonkeydir}/components/libfileview.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgfx*.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgk*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgfx_gtk.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgfxps.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgfxxprint.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgkdebug.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgklayout.so
+%attr(755,root,root) %{_seamonkeydir}/components/libgkplugin.so
 %attr(755,root,root) %{_seamonkeydir}/components/libhtmlpars.so
 %attr(755,root,root) %{_seamonkeydir}/components/libi18n.so
-%attr(755,root,root) %{_seamonkeydir}/components/libimg*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libimglib2.so
+%{?with_gnomeui:%attr(755,root,root) %{_seamonkeydir}/components/libimgicon.so}
 %attr(755,root,root) %{_seamonkeydir}/components/libjar50.so
 %attr(755,root,root) %{_seamonkeydir}/components/libjsd.so
 %attr(755,root,root) %{_seamonkeydir}/components/libmork.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmoz*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libmozfind.so
+%attr(755,root,root) %{_seamonkeydir}/components/libmozldap.so
 %attr(755,root,root) %{_seamonkeydir}/components/libmyspell.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnecko*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libnecko.so
+%attr(755,root,root) %{_seamonkeydir}/components/libnecko2.so
 %attr(755,root,root) %{_seamonkeydir}/components/libnkdatetime.so
 %attr(755,root,root) %{_seamonkeydir}/components/libnkfinger.so
-%attr(755,root,root) %{_seamonkeydir}/components/libns*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libnsappshell.so
+%attr(755,root,root) %{_seamonkeydir}/components/libnsprefm.so
 %attr(755,root,root) %{_seamonkeydir}/components/liboji.so
 %attr(755,root,root) %{_seamonkeydir}/components/libp3p.so
 %attr(755,root,root) %{_seamonkeydir}/components/libpermissions.so
@@ -504,14 +513,19 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/components/libtxmgr.so
 %attr(755,root,root) %{_seamonkeydir}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_seamonkeydir}/components/libuconv.so
-%attr(755,root,root) %{_seamonkeydir}/components/libucv*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libucvmath.so
 %attr(755,root,root) %{_seamonkeydir}/components/libuniversalchardet.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwallet.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwalletviewers.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwebbrwsr.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwebsrvcs.so
 %attr(755,root,root) %{_seamonkeydir}/components/libwidget_gtk2.so
-%attr(755,root,root) %{_seamonkeydir}/components/libx*.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxforms.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxmlextras.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxpcom_compat_c.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxpconnect.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxpinstall.so
+%attr(755,root,root) %{_seamonkeydir}/components/libxremoteservice.so
 
 %{_seamonkeydir}/components/access*.xpt
 %{_seamonkeydir}/components/alerts.xpt
