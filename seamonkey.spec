@@ -41,7 +41,7 @@ BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	libIDL-devel >= 0.8.0
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 BuildRequires:	gtk+2-devel
-%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.0}
+%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.7
 BuildRequires:	libstdc++-devel
@@ -63,7 +63,7 @@ Requires:	browser-plugins >= 2.0
 %{?with_svg:Requires:	cairo >= 1.0.0}
 Requires:	nspr >= 1:4.6.1
 Requires:	nss >= 1:3.11.3
-Provides:	seamonkey-embedded = %{epoch}:%{version}-%{release}
+Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla
@@ -74,12 +74,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_seamonkeydir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
-# firefox/thunderbird/seamonkey provide their own versions
-%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxlibrgb.so libxpcom_compat.so libxpcom_core.so libxpistub.so
-# we don't want these to satisfy xulrunner-devel
-%define		_noautoprov	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+# don't satisfy other packages by private libs and modules (note: don't use %{name} here)
+%define		_noautoprovfiles	%{_libdir}/seamonkey
 # and as we don't provide them, don't require either
-%define		_noautoreq	libgtkembedmoz.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxpcom.so libxul.so
+%define		_noautoreq	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libmsgbaseutil.so
 
 %define		specflags	-fno-strict-aliasing
 
@@ -110,8 +108,8 @@ Summary:	SeaMonkey Community Edition - programs for mail and news
 Summary(pl.UTF-8):	SeaMonkey Community Edition - programy do poczty i newsów
 Summary(ru.UTF-8):	Почтовая система на основе SeaMonkey Community Edition
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	mozilla-mailnews
 
 %description mailnews
@@ -128,8 +126,8 @@ Programy pocztowe i obsługa newsów zintegrowane z przeglądarką.
 Summary:	Enigmail %{enigmail_ver} - PGP/GPG support for SeaMonkey Community Edition
 Summary(pl.UTF-8):	Enigmail %{enigmail_ver} - obsługa PGP/GPG dla SeaMonkey Community Edition
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
-Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name}-mailnews = %{version}-%{release}
+Requires:	%{name}-mailnews = %{version}-%{release}
 Requires:	gnupg >= 1.4.2.2
 
 %description addon-enigmail
@@ -146,8 +144,8 @@ funkcjonalności GnuPG.
 Summary:	SeaMonkey Community Edition Chat - integrated IRC client
 Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	mozilla-chat
 
 %description chat
@@ -162,8 +160,8 @@ przeglądarką SeaMonkey Community Edition.
 Summary:	JavaScript debugger for use with SeaMonkey Community Edition
 Summary(pl.UTF-8):	Odpluskwiacz JavaScriptu do używania z SeaMonkey Community Edition
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	mozilla-js-debugger
 
 %description js-debugger
@@ -176,8 +174,8 @@ Odpluskwiacz JavaScriptu do używania z SeaMonkey Community Edition.
 Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
 Summary(pl.UTF-8):	Narzędzie do oglądania DOM stron w SeaMonkey Community Edition
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	mozilla-dom-inspector
 
 %description dom-inspector
@@ -195,8 +193,8 @@ chrome w SeaMonkey Community Edition lub tworzących strony WWW.
 Summary:	Gnome-VFS module providing support for smb:// URLs
 Summary(pl.UTF-8):	Moduł Gnome-VFS dodający wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	mozilla-gnomevfs
 
 %description gnomevfs
@@ -436,20 +434,20 @@ fi
 %dir %{_seamonkeydir}/searchplugins
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
 %attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
 %attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
 %attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
 %attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
 %attr(755,root,root) %{_seamonkeydir}/libjsj.so
 %attr(755,root,root) %{_seamonkeydir}/libldap50.so
+%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
 %attr(755,root,root) %{_seamonkeydir}/libprldap50.so
 %attr(755,root,root) %{_seamonkeydir}/libssldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
-%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
 %attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
+%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
+%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
 
 %attr(755,root,root) %{_seamonkeydir}/seamonkey-bin
 %attr(755,root,root) %{_seamonkeydir}/regchrome
