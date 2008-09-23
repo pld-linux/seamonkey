@@ -34,6 +34,7 @@ Patch3:		%{name}-lib_path.patch
 Patch4:		%{name}-fonts.patch
 Patch5:		%{name}-ti-agent.patch
 Patch6:		%{name}-agent.patch
+Patch7:		%{name}-glueload-fix.patch
 URL:		http://www.seamonkey-project.org/
 BuildRequires:	automake
 %{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
@@ -217,6 +218,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %else
 %patch6 -p1
 %endif
+%patch7 -p2
 
 %build
 cd mozilla
@@ -257,7 +259,8 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 	--with-system-zlib \
 	--with-x
 
-%{__make}
+%{__make} \
+	STRIP='printf "\033[1;31mWill not strip: %s\033[0;0m\n"'
 
 cd mailnews/extensions/enigmail
 ./makemake -r
