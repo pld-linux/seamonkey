@@ -333,33 +333,33 @@ if [ "$1" == "-remote" ]; then
 fi
 
 PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
-	if [ -n "$PING" ]; then
-		if [ -f "`pwd`/$1" ]; then
+if [ -n "$PING" ]; then
+	if [ -f "`pwd`/$1" ]; then
 		exec $SEAMONKEY "file://`pwd`/$1"
-		else
+	else
 		exec $SEAMONKEY "$@"
-		fi
+	fi
 fi
 
-		if [ -z "$1" ]; then
+if [ -z "$1" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
-		elif [ "$1" == "-mail" ]; then
+elif [ "$1" == "-mail" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
-		elif [ "$1" == "-compose" ]; then
+elif [ "$1" == "-compose" ]; then
 	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
 fi
 
 [[ $1 == -* ]] && exec $SEAMONKEY "$@"
 
-				if [ -f "`pwd`/$1" ]; then
-					URL="file://`pwd`/$1"
-				else
-					URL="$1"
-				fi
+if [ -f "`pwd`/$1" ]; then
+	URL="file://`pwd`/$1"
+else
+	URL="$1"
+fi
 if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
 		~/.mozilla/default/*/prefs.js; then
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
-				else
+else
 	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
 fi
 
