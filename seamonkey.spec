@@ -260,7 +260,7 @@ ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
 	--with-x
 
 %{__make} \
-	STRIP='printf "\033[1;31mWill not strip: %s\033[0;0m\n"'
+	STRIP=echo
 
 cd mailnews/extensions/enigmail
 ./makemake -r
