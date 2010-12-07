@@ -8,20 +8,20 @@
 %if %{without gnome}
 %undefine	with_gnomevfs
 %endif
-%define	enigmail_ver	0.95.7
+%define	enigmail_ver	1.1.2
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	1.1.17
-Release:	3
+Version:	2.0.10
+Release:	0.1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	9eba600ba6ca522b8eada9a0a8e890e2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
+# Source0-md5:	08771818ede4a30c50500328b16c6f85
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	bbee59bab58b97e33e85015a5ae5de7b
+# Source1-md5:	7d329d5e8afbbb28214ca1995beb09c9
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
@@ -206,7 +206,7 @@ Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 
 %prep
 %setup -qc
-cd mozilla
+cd comm-*
 tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch0 -p1
 %patch1 -p1
