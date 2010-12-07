@@ -29,9 +29,7 @@ Source5:	%{name}-mail.desktop
 Source6:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-ldap-with-nss.patch
-Patch2:		%{name}-kill_slim_hidden_def.patch
 Patch3:		%{name}-lib_path.patch
-Patch4:		%{name}-fonts.patch
 Patch5:		%{name}-ti-agent.patch
 Patch6:		%{name}-agent.patch
 Patch7:		%{name}-glueload-fix.patch
@@ -208,17 +206,15 @@ Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 %setup -qc
 cd comm-*
 tar -C mailnews/extensions -zxf %{SOURCE1}
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+#%patch3 -p1
 %if "%{pld_release}" == "ti"
 %patch5 -p1
 %else
 %patch6 -p1
 %endif
-%patch7 -p2
+%patch7 -p1
 
 %build
 cd mozilla

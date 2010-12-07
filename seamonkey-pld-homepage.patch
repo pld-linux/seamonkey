@@ -1,5 +1,5 @@
---- seamonkey-1.0/xpfe/browser/resources/locale/en-US/region.properties.orig	2005-12-05 13:43:59.000000000 +0100
-+++ seamonkey-1.0/xpfe/browser/resources/locale/en-US/region.properties	2006-02-01 21:09:15.479084500 +0100
+--- seamonkey-1.0/mozilla/browser/locales/en-US/region.properties.orig	2005-12-05 13:43:59.000000000 +0100
++++ seamonkey-1.0/mozilla/browser/locales/en-US/region.properties	2006-02-01 21:09:15.479084500 +0100
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/

@@ -7,14 +7,14 @@
 -   NSS_LIBS="$NSS_LIBS -lcrmf"
 +   NSS_LIBS="-lcrmf $NSS_LIBS"
  else
-    NSS_CFLAGS='-I$(DIST)/public/nss'
-    NSS_DEP_LIBS='\\\
+    NSS_CFLAGS='-I$(LIBXUL_DIST)/include/nss'
+    NSS_DEP_LIBS="\
 @@ -7629,7 +7629,7 @@
          mkdir "directory/c-sdk/ldap"    
      fi
  
--    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/dist --with-dist-prefix=$MOZ_BUILD_ROOT/dist --without-nss --with-mozilla"
-+    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/dist --with-dist-prefix=$MOZ_BUILD_ROOT/dist --with-nss --with-mozilla"
+-    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-dist-prefix=$MOZ_BUILD_ROOT/mozilla/dist --without-nss --with-mozilla"
++    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-dist-prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-nss --with-mozilla"
      if test -z "$MOZ_DEBUG"; then
          ac_configure_args="$ac_configure_args --disable-debug"
      fi
@@ -27,28 +27,14 @@
 -   NSS_LIBS="$NSS_LIBS -lcrmf"
 +   NSS_LIBS="-lcrmf $NSS_LIBS"
  else
-    NSS_CFLAGS='-I$(DIST)/public/nss'
-    NSS_DEP_LIBS='\\\
+    NSS_CFLAGS='-I$(LIBXUL_DIST)/include/nss'
+    NSS_DEP_LIBS="\
 @@ -21195,7 +21195,7 @@
          mkdir "directory/c-sdk/ldap"    
      fi
  
--    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/dist --with-dist-prefix=$MOZ_BUILD_ROOT/dist --without-nss --with-mozilla"
-+    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/dist --with-dist-prefix=$MOZ_BUILD_ROOT/dist --with-nss --with-mozilla"
+-    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-dist-prefix=$MOZ_BUILD_ROOT/mozilla/dist --without-nss --with-mozilla"
++    ac_configure_args="$_SUBDIR_CONFIG_ARGS --prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-dist-prefix=$MOZ_BUILD_ROOT/mozilla/dist --with-nss --with-mozilla"
      if test -z "$MOZ_DEBUG"; then
          ac_configure_args="$ac_configure_args --disable-debug"
      fi
---- mozilla/directory/c-sdk/ldap/libraries/libssldap/Makefile.in.orig	Fri May 17 08:54:00 2002
-+++ mozilla/directory/c-sdk/ldap/libraries/libssldap/Makefile.in	Wed Aug 28 11:37:29 2002
-@@ -53,9 +53,8 @@
- LOCAL_INCLUDES  = -I$(PUBLIC)/nspr
- INCLUDES	+= -I$(DISTHDIR) -I$(HDIR) -I$(INSTALLDIR)/include \
- 		   -I$(DIST)/include \
--		   -I$(DIST)/public/security \
--		   -I$(DIST)/public/nss \
--                   -I$(DIST)/include/nspr
-+		   -I/usr/include/nss \
-+                   -I/usr/include/nspr
- DEFINES		+= $(DEFS)
- 
- PLATFORMCFLAGS	= -DUSE_WAITPID -DNEEDPROTOS
