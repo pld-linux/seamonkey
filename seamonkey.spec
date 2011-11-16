@@ -8,20 +8,33 @@
 %if %{without gnome}
 %undefine	with_gnomevfs
 %endif
-%define	enigmail_ver	1.1.2
+
+%define		enigmail_ver	1.3.2
+%define		nspr_ver	4.8.8
+%define		nss_ver		3.12.10
+
+# convert firefox release number to platform version: 7.0.x -> 7.0.x
+%define		xulrunner_main	8.0
+%define		xulrunner_ver	%(v=%{version}; echo %{xulrunner_main}${v#8.0})
+
+%if %{without xulrunner}
+# The actual sqlite version (see RHBZ#480989):
+%define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
+%endif
+
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.0.10
+Version:	2.4.1
 Release:	0.1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	08771818ede4a30c50500328b16c6f85
+# Source0-md5:	ccac3a0971a75cb0798347d60f12f6cf
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	7d329d5e8afbbb28214ca1995beb09c9
+# Source1-md5:	2318d60320dc6c3db3c34d968bb7d533
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
