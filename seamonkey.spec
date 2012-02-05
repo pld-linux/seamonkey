@@ -16,10 +16,7 @@
 %define		enigmail_ver	1.3.5
 %define		nspr_ver	4.8.8
 %define		nss_ver		3.12.10
-
-# convert firefox release number to platform version: 7.0.x -> 7.0.x
-%define		xulrunner_main	10.0
-%define		xulrunner_ver	%(v=%{version}; echo %{xulrunner_main}${v#10.0})
+%define		xulrunner_ver	10.0
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
