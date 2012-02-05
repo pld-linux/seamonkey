@@ -1,21 +1,25 @@
 #
 # Conditional build:
+%bcond_without	enigmail	# don't build enigmail - GPG/PGP support
 %bcond_without	gnomevfs	# disable GnomeVFS support
-%bcond_with	gnomeui		# enable GnomeUI
+%bcond_without	gnomeui		# disable GnomeUI
 %bcond_without	gnome		# disable gnomevfs (alias)
-%bcond_without	svg		# disable svg support
-#
+%bcond_without	ldap		# disable e-mail address lookups in LDAP directories
+%bcond_without	lightning	# disable Sunbird/Lightning calendar
+%bcond_without	xulrunner	# build with system xulrunner
+
 %if %{without gnome}
+%undefine	with_gnomeui
 %undefine	with_gnomevfs
 %endif
 
-%define		enigmail_ver	1.3.2
+%define		enigmail_ver	1.3.5
 %define		nspr_ver	4.8.8
 %define		nss_ver		3.12.10
 
 # convert firefox release number to platform version: 7.0.x -> 7.0.x
-%define		xulrunner_main	8.0
-%define		xulrunner_ver	%(v=%{version}; echo %{xulrunner_main}${v#8.0})
+%define		xulrunner_main	10.0
+%define		xulrunner_ver	%(v=%{version}; echo %{xulrunner_main}${v#10.0})
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
@@ -27,54 +31,90 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.4.1
+Version:	2.7
 Release:	0.1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	ccac3a0971a75cb0798347d60f12f6cf
+# Source0-md5:	a566e49ab96ba93ceea1a3c636757435
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	2318d60320dc6c3db3c34d968bb7d533
+# Source1-md5:	1b008b0d106e238c11e4bead08126bc0
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
 Source5:	%{name}-mail.desktop
 Source6:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
-Patch1:		%{name}-ldap-with-nss.patch
-Patch3:		%{name}-lib_path.patch
 Patch5:		%{name}-ti-agent.patch
 Patch6:		%{name}-agent.patch
 Patch7:		%{name}-glueload-fix.patch
 URL:		http://www.seamonkey-project.org/
+%{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
+BuildRequires:	OpenGL-devel
+BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
-%{?with_svg:BuildRequires:	cairo-devel >= 1.0.0}
+BuildRequires:	bzip2-devel
+BuildRequires:	cairo-devel >= 1.10.2-5
+BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
+%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0}
+BuildRequires:	glib2-devel >= 1:2.18
+BuildRequires:	gtk+2-devel >= 2:2.10
+%{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
+BuildRequires:	hunspell-devel
 BuildRequires:	libIDL-devel >= 0.8.0
-%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
-BuildRequires:	gtk+2-devel
+BuildRequires:	libdnet-devel
+BuildRequires:	libevent-devel >= 1.4.7
+%{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
+%{?with_gnomeui:BuildRequires:	libgnome-keyring-devel}
 %{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
+BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libpng-devel >= 1.2.7
+BuildRequires:	libnotify-devel >= 0.4
+BuildRequires:	libpng(APNG)-devel >= 0.10
+BuildRequires:	libpng-devel >= 1.4.1
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6.1
-BuildRequires:	nss-devel >= 1:3.11.3
-BuildRequires:	perl-modules >= 5.6.0
+BuildRequires:	libvpx-devel
+BuildRequires:	nspr-devel >= 1:%{nspr_ver}
+BuildRequires:	nss-devel >= 1:%{nss_ver}
+BuildRequires:	pango-devel >= 1:1.14.0
+BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
+BuildRequires:	python >= 1:2.5
+BuildRequires:	python-modules
 BuildRequires:	rpm >= 4.4.9-56
-BuildRequires:	rpmbuild(macros) >= 1.356
+BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
+BuildRequires:	sqlite3-devel >= 3.7.5-2
+BuildRequires:	startup-notification-devel >= 0.8
+BuildRequires:	xorg-lib-libXScrnSaver-devel
 BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	xorg-lib-libXinerama-devel
-BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
-BuildRequires:	zip >= 2.1
+%if %{with xulrunner}
+BuildRequires:	xulrunner-devel >= 2:%{xulrunner_ver}
+%endif
+BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
+Requires(post):	mktemp >= 1.5-18
+Requires:	desktop-file-utils
+Requires:	hicolor-icon-theme
+%if %{with xulrunner}
+%requires_eq_to	xulrunner xulrunner-devel
+%else
 Requires:	browser-plugins >= 2.0
-%{?with_svg:Requires:	cairo >= 1.0.0}
-Requires:	nspr >= 1:4.6.1
-Requires:	nss >= 1:3.11.3
+Requires:	cairo >= 1.10.2-5
+Requires:	dbus-glib >= 0.60
+Requires:	gtk+2 >= 2:2.18
+Requires:	libpng >= 1.4.1
+Requires:	libpng(APNG) >= 0.10
+Requires:	myspell-common
+Requires:	nspr >= 1:%{nspr_ver}
+Requires:	nss >= 1:%{nss_ver}
+Requires:	pango >= 1:1.14.0
+Requires:	sqlite3 >= %{sqlite_build_version}
+Requires:	startup-notification >= 0.8
+%endif
 Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
@@ -86,12 +126,19 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_seamonkeydir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
-# don't satisfy other packages by private libs and modules (note: don't use %{name} here)
-%define		_noautoprovfiles	%{_libdir}/seamonkey
-# and as we don't provide them, don't require either
-%define		_noautoreq	libgfxpsshar.so libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpcom_core.so libmsgbaseutil.so
+%define		filterout_cpp		-D_FORTIFY_SOURCE=[0-9]+
 
-%define		specflags	-fno-strict-aliasing
+# don't satisfy other packages
+%define		_noautoprovfiles	%{_libdir}/%{name}
+# and as we don't provide them, don't require either
+%define		_noautoreq	libmozjs.so libxpcom.so libxul.so libjemalloc.so %{!?with_xulrunner:libmozalloc.so}
+%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxpcom_compat.so libxpistub.so
+
+%if "%{cc_version}" >= "3.4"
+%define		specflags	-fno-strict-aliasing -fomit-frame-pointer -fno-tree-vrp -fno-stack-protector
+%else
+%define		specflags	-fno-strict-aliasing -fomit-frame-pointer
+%endif
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
@@ -219,9 +266,6 @@ Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 %setup -qc
 cd comm-*
 tar -C mailnews/extensions -zxf %{SOURCE1}
-#%patch0 -p1
-%patch1 -p1
-#%patch3 -p1
 %if "%{pld_release}" == "ti"
 %patch5 -p1
 %else
