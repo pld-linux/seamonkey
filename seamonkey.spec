@@ -1,22 +1,22 @@
 #
 # Conditional build:
 %bcond_without	enigmail	# don't build enigmail - GPG/PGP support
-%bcond_without	gnomevfs	# disable GnomeVFS support
-%bcond_without	gnomeui		# disable GnomeUI
-%bcond_without	gnome		# disable gnomevfs (alias)
+%bcond_without	gnomeui		# disable gnomeui support
+%bcond_without	gnome		# disable gnomeui (alias)
 %bcond_without	ldap		# disable e-mail address lookups in LDAP directories
 %bcond_without	lightning	# disable Sunbird/Lightning calendar
-%bcond_without	xulrunner	# build with system xulrunner
+%bcond_with	xulrunner	# build with system xulrunner
+%bcond_with	tests		# enable tests (whatever they check)
+%bcond_without	kerberos	# disable krb5 support
 
 %if %{without gnome}
 %undefine	with_gnomeui
-%undefine	with_gnomevfs
 %endif
 
-%define		enigmail_ver	1.3.5
-%define		nspr_ver	4.8.8
-%define		nss_ver		3.12.10
-%define		xulrunner_ver	10.0
+%define		enigmail_ver	1.4.1
+%define		nspr_ver	4.9
+%define		nss_ver		3.13.3
+%define		xulrunner_ver	12.0
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
@@ -28,25 +28,28 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.7
+Version:	2.9.1
 Release:	0.1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	a566e49ab96ba93ceea1a3c636757435
+# Source0-md5:	8dd18d93a6570c3c9f3873bb177ccc6b
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	1b008b0d106e238c11e4bead08126bc0
+# Source1-md5:	0eba75fbcf8f0bb32d538df102fbb8e9
 Source2:	%{name}.desktop
 Source3:	%{name}-composer.desktop
 Source4:	%{name}-chat.desktop
 Source5:	%{name}-mail.desktop
 Source6:	%{name}-venkman.desktop
+Source7:	%{name}.sh
 Patch0:		%{name}-pld-homepage.patch
-Patch5:		%{name}-ti-agent.patch
-Patch6:		%{name}-agent.patch
-Patch7:		%{name}-glueload-fix.patch
+Patch1:		%{name}-agent.patch
+Patch2:		%{name}-glueload-fix.patch
+Patch3:		system-mozldap.patch
+Patch4:		makefile.patch
+Patch5:		system-cairo.patch
 URL:		http://www.seamonkey-project.org/
-%{?with_gnomevfs:BuildRequires:	GConf2-devel >= 1.2.1}
+BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	automake
@@ -54,7 +57,6 @@ BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel >= 1.10.2-5
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	freetype-devel >= 1:2.1.8
-%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0}
 BuildRequires:	glib2-devel >= 1:2.18
 BuildRequires:	gtk+2-devel >= 2:2.10
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
@@ -62,9 +64,11 @@ BuildRequires:	hunspell-devel
 BuildRequires:	libIDL-devel >= 0.8.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libevent-devel >= 1.4.7
-%{?with_gnomevfs:BuildRequires:	libgnome-devel >= 2.0}
-%{?with_gnomeui:BuildRequires:	libgnome-keyring-devel}
-%{?with_gnomeui:BuildRequires:	libgnomeui-devel >= 2.2.0}
+# standalone libffi 3.0.9 or gcc's from 4.5(?)+
+BuildRequires:	libffi-devel >= 6:3.0.9
+%{?with_gnomeui:BuildRequires:  libgnome-devel >= 2.0}
+%{?with_gnomeui:BuildRequires:  libgnome-keyring-devel}
+%{?with_gnomeui:BuildRequires:  libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libnotify-devel >= 0.4
@@ -75,6 +79,7 @@ BuildRequires:	libvpx-devel
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
 BuildRequires:	pango-devel >= 1:1.14.0
+BuildRequires:	perl-base >= 1:5.6
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.5
@@ -82,7 +87,7 @@ BuildRequires:	python-modules
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.7.5-2
+BuildRequires:	sqlite3-devel >= 3.7.10
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	xorg-lib-libXScrnSaver-devel
 BuildRequires:	xorg-lib-libXext-devel
@@ -91,6 +96,7 @@ BuildRequires:	xorg-lib-libXt-devel
 %if %{with xulrunner}
 BuildRequires:	xulrunner-devel >= 2:%{xulrunner_ver}
 %endif
+BuildRequires:	yasm
 BuildRequires:	zip
 BuildRequires:	zlib-devel >= 1.2.3
 Requires(post):	mktemp >= 1.5-18
@@ -123,19 +129,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_seamonkeydir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
-%define		filterout_cpp		-D_FORTIFY_SOURCE=[0-9]+
+%define		topdir		%{_builddir}/%{name}-%{version}
+%define		objdir		%{topdir}/obj-%{_target_cpu}
+
+%define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
 
 # don't satisfy other packages
 %define		_noautoprovfiles	%{_libdir}/%{name}
 # and as we don't provide them, don't require either
 %define		_noautoreq	libmozjs.so libxpcom.so libxul.so libjemalloc.so %{!?with_xulrunner:libmozalloc.so}
 %define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxpcom_compat.so libxpistub.so
-
-%if "%{cc_version}" >= "3.4"
-%define		specflags	-fno-strict-aliasing -fomit-frame-pointer -fno-tree-vrp -fno-stack-protector
-%else
-%define		specflags	-fno-strict-aliasing -fomit-frame-pointer
-%endif
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
@@ -261,100 +264,212 @@ Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 
 %prep
 %setup -qc
-cd comm-*
+cd comm-release
 tar -C mailnews/extensions -zxf %{SOURCE1}
-%if "%{pld_release}" == "ti"
+#patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 %patch5 -p1
-%else
-%patch6 -p1
-%endif
-%patch7 -p1
 
 %build
-cd mozilla
+cd comm-release
+%if %{with xulrunner}
+if [ "$(grep -E '^[0-9]+\.' mozilla/config/milestone.txt)" != "%{xulrunner_ver}" ]; then
+	echo >&2
+	echo >&2 "Xulrunner version %{xulrunner_ver} does not match mozilla/config/milestone.txt!"
+	echo >&2
+	exit 1
+fi
+%endif
 
-cp -f /usr/share/automake/config.* build/autoconf
-cp -f /usr/share/automake/config.* nsprpub/build/autoconf
-cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
-ac_cv_visibility_pragma=no; export ac_cv_visibility_pragma
-%configure2_13 \
-	%{!?debug:--disable-debug} \
-	--disable-elf-dynstr-gc \
-	%{!?with_gnomeui:--disable-gnomeui} \
-	%{!?with_gnomevfs:--disable-gnomevfs} \
-	--disable-pedantic \
-	--disable-tests \
-	--disable-xterm-updates \
-	--enable-application=suite \
-	--enable-crypto \
-	--enable-default-toolkit=gtk2 \
-	--enable-extensions \
-	--enable-ldap \
-	--enable-mathml \
-	--enable-optimize="%{rpmcflags}" \
-	--enable-postscript \
-	%{!?debug:--enable-strip} \
-	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
-	%{?with_svg:--enable-system-cairo} \
-	--enable-xft \
-	--enable-xinerama \
-	--enable-xprint \
-	--enable-old-abi-compat-wrappers \
-	--with-default-mozilla-five-home=%{_seamonkeydir} \
-	--with-pthreads \
-	--with-system-jpeg \
-	--with-system-nspr \
-	--with-system-nss \
-	--with-system-png \
-	--with-system-zlib \
-	--with-x
+cp -f %{_datadir}/automake/config.* build/autoconf
+cp -f %{_datadir}/automake/config.* mozilla/build/autoconf
+cp -f %{_datadir}/automake/config.* mozilla/nsprpub/build/autoconf
+cp -f %{_datadir}/automake/config.* ldap/sdks/c-sdk/config/autoconf
 
-%{__make} \
-	STRIP=echo
+cat << EOF > .mozconfig
+mk_add_options MOZ_OBJDIR=%{objdir}
 
+export CFLAGS="%{rpmcflags}"
+export CXXFLAGS="%{rpmcflags}"
+
+%if %{with crashreporter}
+export MOZ_DEBUG_SYMBOLS=1
+%endif
+
+# Options for 'configure' (same as command-line options).
+ac_add_options --prefix=%{_prefix}
+ac_add_options --exec-prefix=%{_exec_prefix}
+ac_add_options --bindir=%{_bindir}
+ac_add_options --sbindir=%{_sbindir}
+ac_add_options --sysconfdir=%{_sysconfdir}
+ac_add_options --datadir=%{_datadir}
+ac_add_options --includedir=%{_includedir}
+ac_add_options --libdir=%{_libdir}
+ac_add_options --libexecdir=%{_libexecdir}
+ac_add_options --localstatedir=%{_localstatedir}
+ac_add_options --sharedstatedir=%{_sharedstatedir}
+ac_add_options --mandir=%{_mandir}
+ac_add_options --infodir=%{_infodir}
+ac_add_options --disable-elf-hack
+%if %{?debug:1}0
+ac_add_options --disable-optimize
+ac_add_options --enable-debug
+ac_add_options --enable-debug-modules
+ac_add_options --enable-debugger-info-modules
+ac_add_options --enable-crash-on-assert
+%else
+ac_add_options --disable-debug
+ac_add_options --disable-debug-modules
+ac_add_options --disable-logging
+ac_add_options --enable-optimize="%{rpmcflags} -Os"
+%endif
+ac_add_options --disable-strip
+ac_add_options --disable-strip-libs
+%if %{with tests}
+ac_add_options --enable-tests
+%else
+ac_add_options --disable-tests
+%endif
+ac_add_options --enable-gio
+%if %{with gnomeui}
+ac_add_options --enable-gnomeui
+%else
+ac_add_options --disable-gnomeui
+%endif
+ac_add_options --disable-gnomevfs
+%if %{with ldap}
+ac_add_options --enable-ldap
+ac_add_options --with-system-ldap
+%else
+ac_add_options --disable-ldap
+%endif
+%if %{with crashreporter}
+ac_add_options --enable-crashreporter
+%else
+ac_add_options --disable-crashreporter
+%endif
+ac_add_options --disable-xterm-updates
+ac_add_options --enable-postscript
+%if %{with lightning}
+ac_add_options --enable-calendar
+%else
+ac_add_options --disable-calendar
+%endif
+ac_add_options --disable-installer
+ac_add_options --disable-javaxpcom
+ac_add_options --disable-updater
+ac_add_options --disable-xprint
+ac_add_options --disable-permissions
+ac_add_options --disable-pref-extensions
+ac_add_options --enable-canvas
+ac_add_options --enable-crypto
+ac_add_options --enable-mathml
+ac_add_options --enable-libxul
+ac_add_options --enable-pango
+ac_add_options --enable-reorder
+ac_add_options --enable-startup-notification
+ac_add_options --enable-svg
+ac_add_options --enable-system-cairo
+ac_add_options --enable-system-hunspell
+ac_add_options --enable-system-sqlite
+ac_add_options --enable-application=suite
+ac_add_options --enable-default-toolkit=cairo-gtk2
+ac_add_options --enable-xinerama
+ac_add_options --with-distribution-id=org.pld-linux
+%if %{with xulrunner}
+ac_add_options --enable-shared-js
+ac_add_options --with-system-libxul
+ac_add_options --with-libxul-sdk=$(pkg-config --variable=sdkdir libxul)
+%endif
+ac_add_options --with-pthreads
+ac_add_options --with-system-bz2
+ac_add_options --with-system-ffi
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-libevent
+ac_add_options --with-system-libvpx
+ac_add_options --with-system-nspr
+ac_add_options --with-system-nss
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --enable-single-profile
+ac_add_options --disable-profilesharing
+ac_add_options --with-default-mozilla-five-home=%{_seamonkeydir}
+EOF
+
+%{__make} -j1 -f client.mk build \
+	STRIP="/bin/true" \
+	MOZ_MAKE_FLAGS="%{?_smp_mflags}" \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
+
+%if %{with crashreporter}
+# create debuginfo for crash-stats.mozilla.com
+%{__make} -j1 -C obj-%{_target_cpu} buildsymbols
+%endif
+
+%if %{with enigmail}
 cd mailnews/extensions/enigmail
-./makemake -r
-%{__make}
-cd ../../..
+./makemake -r -o %{objdir}
+%{__make} -C %{objdir}/mailnews/extensions/enigmail \
+	STRIP="/bin/true" \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd mozilla
+cd comm-release
 install -d \
-	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dictionaries,icons,greprefs,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name} \
 	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins}
 
-# preparing to create register
-# remove empty directory trees
-rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,cview,embed,embed-sample,en-US,en-mac,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,venkman,xmlterm}
-# non-unix
-rm -f dist/bin/chrome/en-{mac,win}.jar
+%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
-# creating and installing register
-LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
-LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	includedir=%{_includedir}/%{name} \
+	idldir=%{_datadir}/idl/%{name} \
+	installdir=%{_libdir}/%{name} \
+	PKG_SKIP_STRIP=1
 
-ln -sf ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_chromedir}
-ln -sf ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_seamonkeydir}/defaults
-ln -sf ../../share/%{name}/dictionaries $RPM_BUILD_ROOT%{_seamonkeydir}/dictionaries
-ln -sf ../../share/%{name}/greprefs $RPM_BUILD_ROOT%{_seamonkeydir}/greprefs
-ln -sf ../../share/%{name}/icons $RPM_BUILD_ROOT%{_seamonkeydir}/icons
-ln -sf ../../share/%{name}/res $RPM_BUILD_ROOT%{_seamonkeydir}/res
-ln -sf ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_seamonkeydir}/searchplugins
+%if %{with xulrunner}
+# >= 5.0 seems to require this
+ln -s ../xulrunner $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
+%endif
 
-cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/{[!m],m[!y]}*	$RPM_BUILD_ROOT%{_seamonkeydir}/components
-cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-cp -frL dist/bin/dictionaries/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/dictionaries
-cp -frL dist/bin/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
-cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
-cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+# move arch independant ones to datadir
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/icons $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+%if %{without xulrunner}
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js $RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs.js
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
+%endif
 
-install dist/bin/*.so $RPM_BUILD_ROOT%{_seamonkeydir}
+ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
+ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -s ../../share/%{name}/extensions $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions
+ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+ln -s ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+%if %{without xulrunner}
+ln -s ../../share/%{name}/greprefs.js $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js
+ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
+%endif
 
-ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_seamonkeydir}/libnssckbi.so
+%if %{without xulrunner}
+%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
+ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
+%endif
+
+sed 's,@LIBDIR@,%{_libdir},' %{SOURCE7} > $RPM_BUILD_ROOT%{_bindir}/seamonkey
+chmod a+rx $RPM_BUILD_ROOT%{_bindir}/seamonkey
 
 install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -368,54 +483,6 @@ install dist/bin/xpidl $RPM_BUILD_ROOT%{_seamonkeydir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
         $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/seamonkey
-#!/bin/sh
-# (c) vip at linux.pl, wolf at pld-linux.org
-
-LD_LIBRARY_PATH=%{_seamonkeydir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH
-
-MOZILLA_FIVE_HOME="%{_seamonkeydir}"
-SEAMONKEY="$MOZILLA_FIVE_HOME/seamonkey-bin"
-if [ "$1" == "-remote" ]; then
-	exec $SEAMONKEY "$@"
-fi
-
-PING=`$SEAMONKEY -remote 'ping()' 2>&1 >/dev/null`
-if [ -n "$PING" ]; then
-	if [ -f "`pwd`/$1" ]; then
-		exec $SEAMONKEY "file://`pwd`/$1"
-	else
-		exec $SEAMONKEY "$@"
-	fi
-fi
-
-if [ -z "$1" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (openBrowser)'
-elif [ "$1" == "-mail" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (openInbox)'
-elif [ "$1" == "-compose" ]; then
-	exec $SEAMONKEY -remote 'xfeDoCommand (composeMessage)'
-fi
-
-[[ $1 == -* ]] && exec $SEAMONKEY "$@"
-
-if [ -f "`pwd`/$1" ]; then
-	URL="file://`pwd`/$1"
-else
-	URL="$1"
-fi
-if grep -q -E 'browser.tabs.opentabfor.middleclick.*true' \
-		~/.mozilla/default/*/prefs.js; then
-	exec $SEAMONKEY -remote "OpenUrl($URL,new-tab)"
-else
-	exec $SEAMONKEY -remote "OpenUrl($URL,new-window)"
-fi
-
-echo "Cannot execute SeaMonkey ($SEAMONKEY)!" >&2
-exit 1
-EOF
 
 cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
 #!/bin/sh
@@ -532,7 +599,6 @@ fi
 %attr(755,root,root) %{_seamonkeydir}/components/libhtmlpars.so
 %attr(755,root,root) %{_seamonkeydir}/components/libi18n.so
 %attr(755,root,root) %{_seamonkeydir}/components/libimglib2.so
-%{?with_gnomeui:%attr(755,root,root) %{_seamonkeydir}/components/libimgicon.so}
 %attr(755,root,root) %{_seamonkeydir}/components/libjar50.so
 %attr(755,root,root) %{_seamonkeydir}/components/libjsd.so
 %attr(755,root,root) %{_seamonkeydir}/components/libmork.so
@@ -608,7 +674,6 @@ fi
 %{?with_svg:%{_seamonkeydir}/components/gksvgrenderer.xpt}
 %{_seamonkeydir}/components/history.xpt
 %{_seamonkeydir}/components/htmlparser.xpt
-%{?with_gnomeui:%{_seamonkeydir}/components/imgicon.xpt}
 %{_seamonkeydir}/components/imglib2.xpt
 %{_seamonkeydir}/components/intl.xpt
 %{_seamonkeydir}/components/jar.xpt
