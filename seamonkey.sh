@@ -28,7 +28,7 @@ else
 			else
 				URL="$1"
 			fi
-			if ! grep -q browser.tabs.opentabfor.middleclick.*false ~/.seamonkey/*/prefs.js; then
+			if ! grep -q browser.tabs.opentabfor.middleclick.*false ~/.mozilla/seamonkey/*/prefs.js; then
 				exec $SEAMONKEY -new-tab "$URL"
 			else
 				exec $SEAMONKEY -new-window "$URL"
