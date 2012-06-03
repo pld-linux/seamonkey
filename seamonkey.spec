@@ -126,9 +126,6 @@ Obsoletes:	seamonkey-calendar
 Obsoletes:	seamonkey-libs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_seamonkeydir	%{_libdir}/%{name}
-%define		_chromedir	%{_libdir}/%{name}/chrome
-
 %define		topdir		%{_builddir}/%{name}-%{version}
 %define		objdir		%{topdir}/obj-%{_target_cpu}
 
@@ -247,20 +244,6 @@ development.
 To narzędzie pozwala na oglądanie DOM dla stron WWW w SeaMonkey
 Community Edition. Jest bardzo przydatne dla ludzi rozwijających
 chrome w SeaMonkey Community Edition lub tworzących strony WWW.
-
-%package gnomevfs
-Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl.UTF-8):	Moduł Gnome-VFS dodający wsparcie dla URLi smb://
-Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{version}-%{release}
-Requires:	%{name} = %{version}-%{release}
-Obsoletes:	mozilla-gnomevfs
-
-%description gnomevfs
-Gnome-VFS module providing support for smb:// URLs.
-
-%description gnomevfs -l pl.UTF-8
-Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 
 %prep
 %setup -qc
@@ -396,7 +379,7 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 ac_add_options --enable-single-profile
 ac_add_options --disable-profilesharing
-ac_add_options --with-default-mozilla-five-home=%{_seamonkeydir}
+ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 EOF
 
 %{__make} -j1 -f client.mk build \
@@ -423,117 +406,149 @@ cd mailnews/extensions/enigmail
 rm -rf $RPM_BUILD_ROOT
 cd comm-release
 install -d \
-	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir}} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_libdir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name} \
-	$RPM_BUILD_ROOT%{_seamonkeydir}/{components,plugins}
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
-%{__make} install \
+cd %{objdir}
+install -d mozilla/dist/%{_libdir}/%{name}
+%{__make} -C suite/installer install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	includedir=%{_includedir}/%{name} \
-	idldir=%{_datadir}/idl/%{name} \
 	installdir=%{_libdir}/%{name} \
-	PKG_SKIP_STRIP=1
+	MOZ_PKG_APPDIR=%{_libdir}/%{name} \
+	MOZ_PKG_DIR=%{_libdir}/%{name} \
+	PKG_SKIP_STRIP=1 \
+	LIBXUL_SDK=1
 
 %if %{with xulrunner}
 # >= 5.0 seems to require this
 ln -s ../xulrunner $RPM_BUILD_ROOT%{_libdir}/%{name}/xulrunner
 %endif
 
+# Enable crash reporter for Thunderbird application
+%if %{with crashreporter}
+%{__sed} -i -e 's/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/' $RPM_BUILD_ROOT%{_libdir}/%{name}/application.ini
+
+# Add debuginfo for crash-stats.mozilla.com
+install -d $RPM_BUILD_ROOT%{_exec_prefix}/lib/debug%{_libdir}/%{name}
+cp -a mozilla/dist/%{name}-%{version}.en-US.linux-*.crashreporter-symbols.zip $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_libdir}/%{name}
+%endif
+
+# copy manually lightning files, somewhy they are not installed by make
+cp -a mozilla/dist/bin/extensions/calendar-timezones@mozilla.org \
+	mozilla/dist/bin/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103} \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/extensions
+		
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/icons $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/isp $RPM_BUILD_ROOT%{_datadir}/%{name}/isp
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-%if %{without xulrunner}
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js $RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs.js
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
-%endif
 
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/%{name}/extensions $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions
-ln -s ../../share/%{name}/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+ln -s ../../share/%{name}/isp $RPM_BUILD_ROOT%{_libdir}/%{name}/isp
 ln -s ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
-%if %{without xulrunner}
-ln -s ../../share/%{name}/greprefs.js $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js
-ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
-%endif
 
+# dir for arch independant extensions besides arch dependant extensions
+# see mozilla/xpcom/build/nsXULAppAPI.h
+# XRE_SYS_LOCAL_EXTENSION_PARENT_DIR and XRE_SYS_SHARE_EXTENSION_PARENT_DIR
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions
+ 
 %if %{without xulrunner}
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 %endif
 
+# remove %{_bindir}/seamonkey -> %{_libdir}/%{name}/seamonkey symlink
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/seamonkey
 sed 's,@LIBDIR@,%{_libdir},' %{SOURCE7} > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 chmod a+rx $RPM_BUILD_ROOT%{_bindir}/seamonkey
 
 install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 
-install suite/branding/icons/gtk/seamonkey.png $RPM_BUILD_ROOT%{_pixmapsdir}
+cp -p %{topdir}/comm-release/suite/branding/nightly/content/icon64.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
 
-install dist/bin/seamonkey-bin $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/regchrome $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/regxpcom $RPM_BUILD_ROOT%{_seamonkeydir}
-install dist/bin/xpidl $RPM_BUILD_ROOT%{_seamonkeydir}
+# files created by iceweasel -register
+touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
+touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
 
-cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
-        $RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/%{name}-chrome+xpcom-generate
+cat << 'EOF' > $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 #!/bin/sh
 umask 022
-cd %{_datadir}/%{name}/chrome
-cat *-installed-chrome.txt > installed-chrome.txt
-rm -f chrome.rdf overlays.rdf
-rm -f %{_seamonkeydir}/components/{compreg,xpti}.dat
+rm -f %{_libdir}/%{name}/components/{compreg,xpti}.dat
 
-LD_LIBRARY_PATH=%{_seamonkeydir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-export LD_LIBRARY_PATH
+# it attempts to touch files in $HOME/.mozilla
+# beware if you run this with sudo!!!
+export HOME=$(mktemp -d)
+# also TMPDIR could be pointing to sudo user's homedir
+unset TMPDIR TMP || :
 
-MOZILLA_FIVE_HOME=%{_seamonkeydir} %{_seamonkeydir}/regxpcom
-MOZILLA_FIVE_HOME=%{_seamonkeydir} %{_seamonkeydir}/regchrome
-exit 0
+%{_libdir}/%{name}/seamonkey -register
+
+rm -rf $HOME
 EOF
+chmod 755 $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 
-%browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
+%if %{with enigmail}
+ext_dir=$RPM_BUILD_ROOT%{_libdir}/%{name}/extensions/\{847b3a00-7ab1-11d4-8f02-006008948af5\}
+install -d $ext_dir/{chrome,components,defaults/preferences}
+cd mozilla/dist/bin
+#cp -rfLp chrome/enigmail.jar $ext_dir/chrome
+#cp -rfLp chrome/enigmime.jar $ext_dir/chrome
+cp -rfLp components/enig* $ext_dir/components
+cp -rfLp components/libenigmime.so $ext_dir/components
+cp -rfLp components/libipc.so $ext_dir/components
+cp -rfLp components/ipc.xpt $ext_dir/components
+cp -rfLp defaults/preferences/enigmail.js $ext_dir/defaults/preferences
+cd -
+cp -p %{topdir}/comm-release/mailnews/extensions/enigmail/package/install.rdf $ext_dir
+cp -p %{topdir}/comm-release/mailnews/extensions/enigmail/package/chrome.manifest $ext_dir/chrome.manifest
+%endif
+
+# never package these. always remove
+# nss
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}/lib{freebl3,nss3,nssckbi,nssdbm3,nssutil3,smime3,softokn3,ssl3}.*
+# nspr
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}/lib{nspr4,plc4,plds4}.so
+# mozldap
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}/lib{ldap,ldif,prldap,ssldap}60.so
+# testpilot quiz
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}/distribution/extensions/tbtestpilot@labs.mozilla.com.xpi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ "$1" = 1 ]; then
-	%{_sbindir}/seamonkey-chrome+xpcom-generate
-fi
+%{_libdir}/%{name}/register || :
 %update_browser_plugins
+%update_icon_cache hicolor
+%update_desktop_database
 
 %postun
-[ ! -x %{_sbindir}/seamonkey-chrome+xpcom-generate ] || %{_sbindir}/seamonkey-chrome+xpcom-generate
 if [ "$1" = 0 ]; then
 	%update_browser_plugins
+	%update_icon_cache hicolor
 fi
 
-%post mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun mailnews -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post mailnews
+%{_libdir}/%{name}/register || :
 
-%post addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun addon-enigmail -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post addon-enigmail
+%{_libdir}/%{name}/register || :
 
-%post chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun chat -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post chat
+%{_libdir}/%{name}/register || :
 
-%post js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun js-debugger -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post js-debugger
+%{_libdir}/%{name}/register || :
 
-%post dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun dom-inspector -p %{_sbindir}/%{name}-chrome+xpcom-generate
-
-%post gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
-%postun gnomevfs -p %{_sbindir}/%{name}-chrome+xpcom-generate
+%post dom-inspector
+%{_libdir}/%{name}/register || :
 
 %files
 %defattr(644,root,root,755)
@@ -544,209 +559,209 @@ fi
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
 %config(noreplace) %verify(not md5 mtime size) %{_browserpluginsconfdir}/blacklist.d/%{name}.*.blacklist
 
-%dir %{_chromedir}
-%dir %{_seamonkeydir}
-%dir %{_seamonkeydir}/components
-%dir %{_seamonkeydir}/defaults
-%dir %{_seamonkeydir}/dictionaries
-%dir %{_seamonkeydir}/greprefs
-%dir %{_seamonkeydir}/icons
-%dir %{_seamonkeydir}/plugins
-%dir %{_seamonkeydir}/res
-%dir %{_seamonkeydir}/searchplugins
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/chrome
+%dir %{_libdir}/%{name}/components
+%dir %{_libdir}/%{name}/defaults
+%dir %{_libdir}/%{name}/dictionaries
+%dir %{_libdir}/%{name}/greprefs
+%dir %{_libdir}/%{name}/icons
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/res
+%dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_seamonkeydir}/libgfxpsshar.so
-%attr(755,root,root) %{_seamonkeydir}/libgkgfx.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkembedmoz.so
-%attr(755,root,root) %{_seamonkeydir}/libgtkxtbin.so
-%attr(755,root,root) %{_seamonkeydir}/libjsj.so
-%attr(755,root,root) %{_seamonkeydir}/libldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libmozjs.so
-%attr(755,root,root) %{_seamonkeydir}/libprldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libssldap50.so
-%attr(755,root,root) %{_seamonkeydir}/libxlibrgb.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_compat.so
-%attr(755,root,root) %{_seamonkeydir}/libxpcom_core.so
-%attr(755,root,root) %{_seamonkeydir}/libxpistub.so
+%attr(755,root,root) %{_libdir}/%{name}/libgfxpsshar.so
+%attr(755,root,root) %{_libdir}/%{name}/libgkgfx.so
+%attr(755,root,root) %{_libdir}/%{name}/libgtkembedmoz.so
+%attr(755,root,root) %{_libdir}/%{name}/libgtkxtbin.so
+%attr(755,root,root) %{_libdir}/%{name}/libjsj.so
+%attr(755,root,root) %{_libdir}/%{name}/libldap50.so
+%attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
+%attr(755,root,root) %{_libdir}/%{name}/libprldap50.so
+%attr(755,root,root) %{_libdir}/%{name}/libssldap50.so
+%attr(755,root,root) %{_libdir}/%{name}/libxlibrgb.so
+%attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
+%attr(755,root,root) %{_libdir}/%{name}/libxpcom_compat.so
+%attr(755,root,root) %{_libdir}/%{name}/libxpcom_core.so
+%attr(755,root,root) %{_libdir}/%{name}/libxpistub.so
 
-%attr(755,root,root) %{_seamonkeydir}/seamonkey-bin
-%attr(755,root,root) %{_seamonkeydir}/regchrome
-%attr(755,root,root) %{_seamonkeydir}/regxpcom
-%attr(755,root,root) %{_seamonkeydir}/xpidl
+%attr(755,root,root) %{_libdir}/%{name}/seamonkey-bin
+%attr(755,root,root) %{_libdir}/%{name}/regchrome
+%attr(755,root,root) %{_libdir}/%{name}/regxpcom
+%attr(755,root,root) %{_libdir}/%{name}/xpidl
 
-%attr(755,root,root) %{_seamonkeydir}/libnssckbi.so
+%attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
 
-%attr(755,root,root) %{_seamonkeydir}/components/libaccessibility.so
-%attr(755,root,root) %{_seamonkeydir}/components/libappcomps.so
-%attr(755,root,root) %{_seamonkeydir}/components/libauth.so
-%attr(755,root,root) %{_seamonkeydir}/components/libautoconfig.so
-%attr(755,root,root) %{_seamonkeydir}/components/libcaps.so
-%attr(755,root,root) %{_seamonkeydir}/components/libchrome.so
-%attr(755,root,root) %{_seamonkeydir}/components/libcomposer.so
-%attr(755,root,root) %{_seamonkeydir}/components/libcookie.so
-%attr(755,root,root) %{_seamonkeydir}/components/libdocshell.so
-%attr(755,root,root) %{_seamonkeydir}/components/libeditor.so
-%attr(755,root,root) %{_seamonkeydir}/components/libembedcomponents.so
-%attr(755,root,root) %{_seamonkeydir}/components/libfileview.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgfx_gtk.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgfxps.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgfxxprint.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgkdebug.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgklayout.so
-%attr(755,root,root) %{_seamonkeydir}/components/libgkplugin.so
-%attr(755,root,root) %{_seamonkeydir}/components/libhtmlpars.so
-%attr(755,root,root) %{_seamonkeydir}/components/libi18n.so
-%attr(755,root,root) %{_seamonkeydir}/components/libimglib2.so
-%attr(755,root,root) %{_seamonkeydir}/components/libjar50.so
-%attr(755,root,root) %{_seamonkeydir}/components/libjsd.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmork.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmozfind.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmozldap.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmyspell.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnecko.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnecko2.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnkdatetime.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnkfinger.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnsappshell.so
-%attr(755,root,root) %{_seamonkeydir}/components/libnsprefm.so
-%attr(755,root,root) %{_seamonkeydir}/components/liboji.so
-%attr(755,root,root) %{_seamonkeydir}/components/libp3p.so
-%attr(755,root,root) %{_seamonkeydir}/components/libpermissions.so
-%attr(755,root,root) %{_seamonkeydir}/components/libpipboot.so
-%attr(755,root,root) %{_seamonkeydir}/components/libpipnss.so
-%attr(755,root,root) %{_seamonkeydir}/components/libpippki.so
-%attr(755,root,root) %{_seamonkeydir}/components/libpref.so
-%attr(755,root,root) %{_seamonkeydir}/components/libprofile.so
-%attr(755,root,root) %{_seamonkeydir}/components/librdf.so
-%attr(755,root,root) %{_seamonkeydir}/components/libremoteservice.so
-%attr(755,root,root) %{_seamonkeydir}/components/libschemavalidation.so
-%attr(755,root,root) %{_seamonkeydir}/components/libsearchservice.so
-%attr(755,root,root) %{_seamonkeydir}/components/libspellchecker.so
-%attr(755,root,root) %{_seamonkeydir}/components/libsql.so
-%attr(755,root,root) %{_seamonkeydir}/components/libsroaming.so
-%attr(755,root,root) %{_seamonkeydir}/components/libstoragecomps.so
-%attr(755,root,root) %{_seamonkeydir}/components/libsystem-pref.so
-%attr(755,root,root) %{_seamonkeydir}/components/libtransformiix.so
-%attr(755,root,root) %{_seamonkeydir}/components/libtxmgr.so
-%attr(755,root,root) %{_seamonkeydir}/components/libtypeaheadfind.so
-%attr(755,root,root) %{_seamonkeydir}/components/libuconv.so
-%attr(755,root,root) %{_seamonkeydir}/components/libucvmath.so
-%attr(755,root,root) %{_seamonkeydir}/components/libuniversalchardet.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwallet.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwalletviewers.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwebbrwsr.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwebsrvcs.so
-%attr(755,root,root) %{_seamonkeydir}/components/libwidget_gtk2.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxforms.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxmlextras.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxpcom_compat_c.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxpconnect.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxpinstall.so
-%attr(755,root,root) %{_seamonkeydir}/components/libxremoteservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libaccessibility.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libauth.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgfx_gtk.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgfxps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgfxxprint.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgkdebug.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgklayout.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgkplugin.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimglib2.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozfind.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnecko.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnecko2.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnsappshell.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnsprefm.so
+%attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpermissions.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
+%attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libremoteservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsearchservice.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libstoragecomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libucvmath.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxforms.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxmlextras.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxpcom_compat_c.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxpconnect.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxpinstall.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxremoteservice.so
 
-%{_seamonkeydir}/components/access*.xpt
-%{_seamonkeydir}/components/alerts.xpt
-%{_seamonkeydir}/components/appshell.xpt
-%{_seamonkeydir}/components/appstartup.xpt
-%{_seamonkeydir}/components/autocomplete.xpt
-%{_seamonkeydir}/components/autoconfig.xpt
-%{_seamonkeydir}/components/bookmarks.xpt
-%{_seamonkeydir}/components/caps.xpt
-%{_seamonkeydir}/components/chardet.xpt
-%{_seamonkeydir}/components/chrome.xpt
-%{_seamonkeydir}/components/commandhandler.xpt
-%{_seamonkeydir}/components/composer.xpt
-%{_seamonkeydir}/components/content*.xpt
-%{_seamonkeydir}/components/cookie.xpt
-%{_seamonkeydir}/components/directory.xpt
-%{_seamonkeydir}/components/docshell.xpt
-%{_seamonkeydir}/components/dom*.xpt
-%{_seamonkeydir}/components/downloadmanager.xpt
-%{_seamonkeydir}/components/editor.xpt
-%{_seamonkeydir}/components/embed_base.xpt
-%{_seamonkeydir}/components/extensions.xpt
-%{_seamonkeydir}/components/exthandler.xpt
-%{_seamonkeydir}/components/find.xpt
-%{_seamonkeydir}/components/filepicker.xpt
-%{_seamonkeydir}/components/gfx*.xpt
-%{?with_svg:%{_seamonkeydir}/components/gksvgrenderer.xpt}
-%{_seamonkeydir}/components/history.xpt
-%{_seamonkeydir}/components/htmlparser.xpt
-%{_seamonkeydir}/components/imglib2.xpt
-%{_seamonkeydir}/components/intl.xpt
-%{_seamonkeydir}/components/jar.xpt
-%{_seamonkeydir}/components/js*.xpt
-%{_seamonkeydir}/components/layout*.xpt
-%{_seamonkeydir}/components/locale.xpt
-%{_seamonkeydir}/components/lwbrk.xpt
-%{_seamonkeydir}/components/mimetype.xpt
-%{_seamonkeydir}/components/moz*.xpt
-%{_seamonkeydir}/components/necko*.xpt
-%{_seamonkeydir}/components/oji.xpt
-%{_seamonkeydir}/components/p3p.xpt
-%{_seamonkeydir}/components/pipboot.xpt
-%{_seamonkeydir}/components/pipnss.xpt
-%{_seamonkeydir}/components/pippki.xpt
-%{_seamonkeydir}/components/plugin.xpt
-%{_seamonkeydir}/components/pref.xpt
-%{_seamonkeydir}/components/prefetch.xpt
-%{_seamonkeydir}/components/prefmigr.xpt
-%{_seamonkeydir}/components/profile.xpt
-%{_seamonkeydir}/components/progressDlg.xpt
-%{_seamonkeydir}/components/proxyObjInst.xpt
-%{_seamonkeydir}/components/rdf.xpt
-%{_seamonkeydir}/components/related.xpt
-%{_seamonkeydir}/components/saxparser.xpt
-%{_seamonkeydir}/components/search.xpt
-%{_seamonkeydir}/components/schemavalidation.xpt
-%{_seamonkeydir}/components/shistory.xpt
-%{_seamonkeydir}/components/signonviewer.xpt
-%{_seamonkeydir}/components/spellchecker.xpt
-%{_seamonkeydir}/components/sql.xpt
-%{_seamonkeydir}/components/storage.xpt
-%{_seamonkeydir}/components/toolkitremote.xpt
-%{_seamonkeydir}/components/txmgr.xpt
-%{_seamonkeydir}/components/txtsvc.xpt
-%{_seamonkeydir}/components/typeaheadfind.xpt
-%{_seamonkeydir}/components/uconv.xpt
-%{_seamonkeydir}/components/unicharutil.xpt
-%{_seamonkeydir}/components/uriloader.xpt
-%{_seamonkeydir}/components/urlformatter.xpt
-%{_seamonkeydir}/components/wallet*.xpt
-%{_seamonkeydir}/components/webBrowser_core.xpt
-%{_seamonkeydir}/components/webbrowserpersist.xpt
-%{_seamonkeydir}/components/webshell_idls.xpt
-%{_seamonkeydir}/components/websrvcs.xpt
-%{_seamonkeydir}/components/widget.xpt
-%{_seamonkeydir}/components/windowds.xpt
-%{_seamonkeydir}/components/windowwatcher.xpt
-%{_seamonkeydir}/components/x*.xpt
+%{_libdir}/%{name}/components/access*.xpt
+%{_libdir}/%{name}/components/alerts.xpt
+%{_libdir}/%{name}/components/appshell.xpt
+%{_libdir}/%{name}/components/appstartup.xpt
+%{_libdir}/%{name}/components/autocomplete.xpt
+%{_libdir}/%{name}/components/autoconfig.xpt
+%{_libdir}/%{name}/components/bookmarks.xpt
+%{_libdir}/%{name}/components/caps.xpt
+%{_libdir}/%{name}/components/chardet.xpt
+%{_libdir}/%{name}/components/chrome.xpt
+%{_libdir}/%{name}/components/commandhandler.xpt
+%{_libdir}/%{name}/components/composer.xpt
+%{_libdir}/%{name}/components/content*.xpt
+%{_libdir}/%{name}/components/cookie.xpt
+%{_libdir}/%{name}/components/directory.xpt
+%{_libdir}/%{name}/components/docshell.xpt
+%{_libdir}/%{name}/components/dom*.xpt
+%{_libdir}/%{name}/components/downloadmanager.xpt
+%{_libdir}/%{name}/components/editor.xpt
+%{_libdir}/%{name}/components/embed_base.xpt
+%{_libdir}/%{name}/components/extensions.xpt
+%{_libdir}/%{name}/components/exthandler.xpt
+%{_libdir}/%{name}/components/find.xpt
+%{_libdir}/%{name}/components/filepicker.xpt
+%{_libdir}/%{name}/components/gfx*.xpt
+%{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
+%{_libdir}/%{name}/components/history.xpt
+%{_libdir}/%{name}/components/htmlparser.xpt
+%{_libdir}/%{name}/components/imglib2.xpt
+%{_libdir}/%{name}/components/intl.xpt
+%{_libdir}/%{name}/components/jar.xpt
+%{_libdir}/%{name}/components/js*.xpt
+%{_libdir}/%{name}/components/layout*.xpt
+%{_libdir}/%{name}/components/locale.xpt
+%{_libdir}/%{name}/components/lwbrk.xpt
+%{_libdir}/%{name}/components/mimetype.xpt
+%{_libdir}/%{name}/components/moz*.xpt
+%{_libdir}/%{name}/components/necko*.xpt
+%{_libdir}/%{name}/components/oji.xpt
+%{_libdir}/%{name}/components/p3p.xpt
+%{_libdir}/%{name}/components/pipboot.xpt
+%{_libdir}/%{name}/components/pipnss.xpt
+%{_libdir}/%{name}/components/pippki.xpt
+%{_libdir}/%{name}/components/plugin.xpt
+%{_libdir}/%{name}/components/pref.xpt
+%{_libdir}/%{name}/components/prefetch.xpt
+%{_libdir}/%{name}/components/prefmigr.xpt
+%{_libdir}/%{name}/components/profile.xpt
+%{_libdir}/%{name}/components/progressDlg.xpt
+%{_libdir}/%{name}/components/proxyObjInst.xpt
+%{_libdir}/%{name}/components/rdf.xpt
+%{_libdir}/%{name}/components/related.xpt
+%{_libdir}/%{name}/components/saxparser.xpt
+%{_libdir}/%{name}/components/search.xpt
+%{_libdir}/%{name}/components/schemavalidation.xpt
+%{_libdir}/%{name}/components/shistory.xpt
+%{_libdir}/%{name}/components/signonviewer.xpt
+%{_libdir}/%{name}/components/spellchecker.xpt
+%{_libdir}/%{name}/components/sql.xpt
+%{_libdir}/%{name}/components/storage.xpt
+%{_libdir}/%{name}/components/toolkitremote.xpt
+%{_libdir}/%{name}/components/txmgr.xpt
+%{_libdir}/%{name}/components/txtsvc.xpt
+%{_libdir}/%{name}/components/typeaheadfind.xpt
+%{_libdir}/%{name}/components/uconv.xpt
+%{_libdir}/%{name}/components/unicharutil.xpt
+%{_libdir}/%{name}/components/uriloader.xpt
+%{_libdir}/%{name}/components/urlformatter.xpt
+%{_libdir}/%{name}/components/wallet*.xpt
+%{_libdir}/%{name}/components/webBrowser_core.xpt
+%{_libdir}/%{name}/components/webbrowserpersist.xpt
+%{_libdir}/%{name}/components/webshell_idls.xpt
+%{_libdir}/%{name}/components/websrvcs.xpt
+%{_libdir}/%{name}/components/widget.xpt
+%{_libdir}/%{name}/components/windowds.xpt
+%{_libdir}/%{name}/components/windowwatcher.xpt
+%{_libdir}/%{name}/components/x*.xpt
 
-%{_seamonkeydir}/components/jsconsole-clhandler.js
-%{_seamonkeydir}/components/nsCloseAllWindows.js
-%{_seamonkeydir}/components/nsComposerCmdLineHandler.js
-%{_seamonkeydir}/components/nsDictionary.js
-%{_seamonkeydir}/components/nsDownloadProgressListener.js
-%{_seamonkeydir}/components/nsFilePicker.js
-%{_seamonkeydir}/components/nsHelperAppDlg.js
-%{_seamonkeydir}/components/nsInterfaceInfoToIDL.js
-%{_seamonkeydir}/components/nsKillAll.js
-%{_seamonkeydir}/components/nsProgressDialog.js
-%{_seamonkeydir}/components/nsProxyAutoConfig.js
-%{_seamonkeydir}/components/nsResetPref.js
-%{_seamonkeydir}/components/nsSchemaValidatorRegexp.js
-%{_seamonkeydir}/components/nsSidebar.js
-%{_seamonkeydir}/components/nsUpdateNotifier.js
-%{_seamonkeydir}/components/nsURLFormatter.js
-%{_seamonkeydir}/components/nsXmlRpcClient.js
-%{_seamonkeydir}/components/xulappinfo.js
+%{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/nsCloseAllWindows.js
+%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
+%{_libdir}/%{name}/components/nsDictionary.js
+%{_libdir}/%{name}/components/nsDownloadProgressListener.js
+%{_libdir}/%{name}/components/nsFilePicker.js
+%{_libdir}/%{name}/components/nsHelperAppDlg.js
+%{_libdir}/%{name}/components/nsInterfaceInfoToIDL.js
+%{_libdir}/%{name}/components/nsKillAll.js
+%{_libdir}/%{name}/components/nsProgressDialog.js
+%{_libdir}/%{name}/components/nsProxyAutoConfig.js
+%{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
+%{_libdir}/%{name}/components/nsSidebar.js
+%{_libdir}/%{name}/components/nsUpdateNotifier.js
+%{_libdir}/%{name}/components/nsURLFormatter.js
+%{_libdir}/%{name}/components/nsXmlRpcClient.js
+%{_libdir}/%{name}/components/xulappinfo.js
 
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
-%ghost %{_seamonkeydir}/components/compreg.dat
-%ghost %{_seamonkeydir}/components/xpti.dat
+%ghost %{_libdir}/%{name}/components/compreg.dat
+%ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/US.jar
@@ -800,33 +815,33 @@ fi
 
 %files mailnews
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_seamonkeydir}/libmsgbaseutil.so
-%attr(755,root,root) %{_seamonkeydir}/components/libaddrbook.so
-%attr(755,root,root) %{_seamonkeydir}/components/libbayesflt.so
-%attr(755,root,root) %{_seamonkeydir}/components/libimpText.so
-%attr(755,root,root) %{_seamonkeydir}/components/libimpComm4xMail.so
-%attr(755,root,root) %{_seamonkeydir}/components/libimport.so
-%attr(755,root,root) %{_seamonkeydir}/components/liblocalmail.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmailnews.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmailview.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmime.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmimeemitter.so
-%attr(755,root,root) %{_seamonkeydir}/components/libmsg*.so
-%attr(755,root,root) %{_seamonkeydir}/components/libvcard.so
+%attr(755,root,root) %{_libdir}/%{name}/libmsgbaseutil.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimpComm4xMail.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimport.so
+%attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmailview.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
 
-%{_seamonkeydir}/components/addrbook.xpt
-%{_seamonkeydir}/components/impComm4xMail.xpt
-%{_seamonkeydir}/components/import.xpt
-%{_seamonkeydir}/components/mailnews.xpt
-%{_seamonkeydir}/components/mailview.xpt
-%{_seamonkeydir}/components/mime.xpt
-%{_seamonkeydir}/components/msg*.xpt
+%{_libdir}/%{name}/components/addrbook.xpt
+%{_libdir}/%{name}/components/impComm4xMail.xpt
+%{_libdir}/%{name}/components/import.xpt
+%{_libdir}/%{name}/components/mailnews.xpt
+%{_libdir}/%{name}/components/mailview.xpt
+%{_libdir}/%{name}/components/mime.xpt
+%{_libdir}/%{name}/components/msg*.xpt
 
-%{_seamonkeydir}/components/mdn-service.js
-%{_seamonkeydir}/components/nsAbLDAPAttributeMap.js
-%{_seamonkeydir}/components/nsLDAPPrefsService.js
-%{_seamonkeydir}/components/offlineStartup.js
-%{_seamonkeydir}/components/smime-service.js
+%{_libdir}/%{name}/components/mdn-service.js
+%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
+%{_libdir}/%{name}/components/nsLDAPPrefsService.js
+%{_libdir}/%{name}/components/offlineStartup.js
+%{_libdir}/%{name}/components/smime-service.js
 
 %{_datadir}/%{name}/chrome/messenger.jar
 
@@ -839,12 +854,12 @@ fi
 
 %files addon-enigmail
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_seamonkeydir}/components/libenigmime.so
-%{_seamonkeydir}/components/enigmail.xpt
-%{_seamonkeydir}/components/enigmime.xpt
-%{_seamonkeydir}/components/ipc.xpt
-%{_seamonkeydir}/components/enigmail.js
-%{_seamonkeydir}/components/enigprefs-service.js
+%attr(755,root,root) %{_libdir}/%{name}/components/libenigmime.so
+%{_libdir}/%{name}/components/enigmail.xpt
+%{_libdir}/%{name}/components/enigmime.xpt
+%{_libdir}/%{name}/components/ipc.xpt
+%{_libdir}/%{name}/components/enigmail.js
+%{_libdir}/%{name}/components/enigprefs-service.js
 %{_datadir}/%{name}/chrome/enigmail-en-US.jar
 %{_datadir}/%{name}/chrome/enigmail-locale.jar
 %{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
@@ -854,28 +869,22 @@ fi
 
 %files chat
 %defattr(644,root,root,755)
-%{_seamonkeydir}/components/chatzilla-service.js
+%{_libdir}/%{name}/components/chatzilla-service.js
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 %{_desktopdir}/%{name}-chat.desktop
 
 %files js-debugger
 %defattr(644,root,root,755)
-%{_seamonkeydir}/components/venkman-service.js
+%{_libdir}/%{name}/components/venkman-service.js
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
 %{_desktopdir}/%{name}-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
-%{_seamonkeydir}/components/inspector.xpt
-%{_seamonkeydir}/components/inspector-cmdline.js
+%{_libdir}/%{name}/components/inspector.xpt
+%{_libdir}/%{name}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 %{_datadir}/%{name}/defaults/pref/inspector.js
-
-%if %{with gnomevfs}
-%files gnomevfs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_seamonkeydir}/components/libnkgnomevfs.so
-%endif
