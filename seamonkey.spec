@@ -29,7 +29,7 @@ Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	2.9.1
-Release:	0.1
+Release:	1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
@@ -122,9 +122,11 @@ Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla
+Obsoletes:	mozilla-gnomevfs
 Obsoletes:	seamonkey-calendar
 Obsoletes:	seamonkey-libs
 Obsoletes:	seamonkey-mailnews
+Obsoletes:	seamonkey-gnomevfs
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		topdir		%{_builddir}/%{name}-%{version}
