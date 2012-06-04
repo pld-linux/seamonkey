@@ -340,25 +340,16 @@ ac_add_options --disable-calendar
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-updater
-ac_add_options --disable-xprint
-ac_add_options --disable-permissions
-ac_add_options --disable-pref-extensions
-ac_add_options --enable-canvas
 ac_add_options --enable-crypto
-ac_add_options --enable-mathml
 ac_add_options --enable-libxul
 ac_add_options --enable-pango
-ac_add_options --enable-reorder
+ac_add_options --enable-shared-js
 ac_add_options --enable-startup-notification
-ac_add_options --enable-svg
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-application=suite
-ac_add_options --enable-default-toolkit=cairo-gtk2
-ac_add_options --enable-xinerama
 ac_add_options --with-distribution-id=org.pld-linux
-ac_add_options --enable-shared-js
 %if %{with xulrunner}
 ac_add_options --with-system-libxul
 ac_add_options --with-libxul-sdk=$(pkg-config --variable=sdkdir libxul)
@@ -373,8 +364,6 @@ ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
-ac_add_options --enable-single-profile
-ac_add_options --disable-profilesharing
 ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 EOF
 
