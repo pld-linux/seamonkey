@@ -13,10 +13,10 @@
 %undefine	with_gnomeui
 %endif
 
-%define		enigmail_ver	1.4.1
-%define		nspr_ver	4.9
-%define		nss_ver		3.13.3
-%define		xulrunner_ver	12.0
+%define		enigmail_ver	1.5.1
+%define		nspr_ver	4.9.3
+%define		nss_ver		3.14.1
+%define		xulrunner_ver	18.0.2
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
@@ -28,26 +28,30 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.9.1
+Version:	2.15.2
 Release:	1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	8dd18d93a6570c3c9f3873bb177ccc6b
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
+# Source0-md5:	1938c5a9673e94e9f5c809f5dbfe8d29
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
-# Source1-md5:	0eba75fbcf8f0bb32d538df102fbb8e9
-Source2:	%{name}.desktop
-Source3:	%{name}-composer.desktop
-Source4:	%{name}-chat.desktop
-Source5:	%{name}-mail.desktop
-Source6:	%{name}-venkman.desktop
-Source7:	%{name}.sh
-Patch0:		%{name}-pld-homepage.patch
-Patch1:		%{name}-agent.patch
-Patch2:		%{name}-glueload-fix.patch
-Patch3:		system-mozldap.patch
-Patch4:		makefile.patch
-Patch5:		system-cairo.patch
+# Source1-md5:	3e71f84ed2c11471282412ebe4f5eb2d
+Source4:	%{name}.desktop
+Source5:	%{name}-composer.desktop
+Source6:	%{name}-chat.desktop
+Source7:	%{name}-mail.desktop
+Source8:	%{name}-venkman.desktop
+Source9:	%{name}.sh
+Patch1:		%{name}-pld-branding.patch
+Patch2:		%{name}-agent.patch
+Patch3:		%{name}-glueload-fix.patch
+Patch4:		system-mozldap.patch
+Patch5:		makefile.patch
+Patch6:		system-cairo.patch
+# Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
+Patch7:		%{name}-system-virtualenv.patch
+Patch8:		%{name}-gyp-slashism.patch
+Patch9:		%{name}-system-xulrunner.patch
 URL:		http://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
@@ -70,7 +74,9 @@ BuildRequires:	libffi-devel >= 6:3.0.9
 %{?with_gnomeui:BuildRequires:  libgnome-keyring-devel}
 %{?with_gnomeui:BuildRequires:  libgnomeui-devel >= 2.2.0}
 BuildRequires:	libiw-devel
+# requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
+BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 1.4.1
@@ -84,6 +90,7 @@ BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.5
 BuildRequires:	python-modules
+BuildRequires:	python-virtualenv
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
@@ -95,6 +102,7 @@ BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXt-devel
 %if %{with xulrunner}
 BuildRequires:	xulrunner-devel >= 2:%{xulrunner_ver}
+BuildRequires:	xulrunner-devel < 2:19
 %endif
 BuildRequires:	yasm
 BuildRequires:	zip
@@ -109,6 +117,7 @@ Requires:	browser-plugins >= 2.0
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	gtk+2 >= 2:2.18
+Requires:	libjpeg-turbo
 Requires:	libpng >= 1.4.1
 Requires:	libpng(APNG) >= 0.10
 Requires:	myspell-common
@@ -127,6 +136,7 @@ Obsoletes:	seamonkey-calendar
 Obsoletes:	seamonkey-libs
 Obsoletes:	seamonkey-mailnews
 Obsoletes:	seamonkey-gnomevfs
+Conflicts:	seamonkey-lang-resources < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		topdir		%{_builddir}/%{name}-%{version}
@@ -247,12 +257,15 @@ chrome w SeaMonkey Community Edition lub tworzących strony WWW.
 %setup -qc
 cd comm-release
 tar -C mailnews/extensions -zxf %{SOURCE1}
-#patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p2
 
 %build
 cd comm-release
@@ -373,6 +386,7 @@ EOF
 	STRIP="/bin/true" \
 	MOZ_MAKE_FLAGS="%{?_smp_mflags}" \
 	installdir=%{_libdir}/%{name} \
+	XLIBS="-lX11 -lXt" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}"
 
@@ -385,6 +399,11 @@ EOF
 cd mailnews/extensions/enigmail
 ./makemake -r -o %{objdir}
 %{__make} -C %{objdir}/mailnews/extensions/enigmail \
+	STRIP="/bin/true" \
+	CC="%{__cc}" \
+	CXX="%{__cxx}"
+
+%{__make} -C %{objdir}/mailnews/extensions/enigmail xpi \
 	STRIP="/bin/true" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}"
@@ -464,10 +483,10 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/hyphenation
 %endif
 
-sed 's,@LIBDIR@,%{_libdir},' %{SOURCE7} > $RPM_BUILD_ROOT%{_bindir}/seamonkey
+sed 's,@LIBDIR@,%{_libdir},' %{SOURCE9} > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 chmod a+rx $RPM_BUILD_ROOT%{_bindir}/seamonkey
 
-install %{SOURCE2} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} \
+install %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} %{SOURCE8} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 
 cp -p %{topdir}/comm-release/suite/branding/nightly/content/icon64.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
@@ -495,15 +514,14 @@ chmod 755 $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 
 %if %{with enigmail}
 ext_dir=$RPM_BUILD_ROOT%{_libdir}/%{name}/extensions/\{847b3a00-7ab1-11d4-8f02-006008948af5\}
-install -d $ext_dir/{chrome,components,defaults/preferences}
+install -d $ext_dir/{chrome,components,defaults/preferences,modules}
 cd mozilla/dist/bin
-#cp -rfLp chrome/enigmail.jar $ext_dir/chrome
-#cp -rfLp chrome/enigmime.jar $ext_dir/chrome
+cp -rfLp chrome/enigmail.jar $ext_dir/chrome
 cp -rfLp components/enig* $ext_dir/components
 cp -rfLp components/libenigmime.so $ext_dir/components
-cp -rfLp components/libipc.so $ext_dir/components
-cp -rfLp components/ipc.xpt $ext_dir/components
 cp -rfLp defaults/preferences/enigmail.js $ext_dir/defaults/preferences
+cp -rfLp modules/{commonFuncs,enigmailCommon,keyManagement,pipeConsole,subprocess}.jsm $ext_dir/modules
+cp -rfLp modules/{subprocess_worker_unix,subprocess_worker_win}.js $ext_dir/modules
 cd -
 cp -p %{topdir}/comm-release/mailnews/extensions/enigmail/package/install.rdf $ext_dir
 cp -p %{topdir}/comm-release/mailnews/extensions/enigmail/package/chrome.manifest $ext_dir/chrome.manifest
@@ -564,20 +582,48 @@ fi
 
 %dir %{_libdir}/%{name}/components
 
+%{_libdir}/%{name}/components/Aitc.js
+%{_libdir}/%{name}/components/AlarmsManager.js
+%{_libdir}/%{name}/components/AppsService.js
+%{_libdir}/%{name}/components/BrowserElementParent.js
+%{_libdir}/%{name}/components/ColorAnalyzer.js
+%{_libdir}/%{name}/components/ContactManager.js
 %{_libdir}/%{name}/components/FeedConverter.js
 %{_libdir}/%{name}/components/FeedWriter.js
+%{_libdir}/%{name}/components/SettingsManager.js
+%{_libdir}/%{name}/components/SiteSpecificUserAgent.js
+%{_libdir}/%{name}/components/TCPSocket.js
+%{_libdir}/%{name}/components/TCPSocketParentIntermediary.js
 %{_libdir}/%{name}/components/Weave.js
+%{_libdir}/%{name}/components/Webapps.js
 %{_libdir}/%{name}/components/WebContentConverter.js
-%{_libdir}/%{name}/components/browser.xpt
+%{_libdir}/%{name}/components/messageWakeupService.js
+%{_libdir}/%{name}/components/newMailNotificationService.js
+%{_libdir}/%{name}/components/nsAbout.js
 %{_libdir}/%{name}/components/nsBrowserContentHandler.js
+%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
+%{_libdir}/%{name}/components/nsDOMIdentity.js
+%{_libdir}/%{name}/components/nsIDService.js
 %{_libdir}/%{name}/components/nsSessionStartup.js
 %{_libdir}/%{name}/components/nsSessionStore.js
+%{_libdir}/%{name}/components/nsSetDefault.js
 %{_libdir}/%{name}/components/nsSidebar.js
+%{_libdir}/%{name}/components/nsSuiteDownloadManagerUI.js
+%{_libdir}/%{name}/components/nsSuiteGlue.js
+%{_libdir}/%{name}/components/nsTypeAheadFind.js
+%{_libdir}/%{name}/components/nsUrlClassifierHashCompleter.js
+%{_libdir}/%{name}/components/nsUrlClassifierLib.js
+%{_libdir}/%{name}/components/nsUrlClassifierListManager.js
+%{_libdir}/%{name}/components/smileApplication.js
 
+%{_libdir}/%{name}/components/browser.xpt
 %{_libdir}/%{name}/components/components.manifest
 %{_libdir}/%{name}/components/interfaces.manifest
 
+%attr(755,root,root) %{_libdir}/%{name}/components/libsuite.so
+
 %if %{without xulrunner}
+%{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/platform.ini
 %{_libdir}/%{name}/components/ConsoleAPI.js
 %{_libdir}/%{name}/components/FeedProcessor.js
@@ -611,50 +657,25 @@ fi
 %{_libdir}/%{name}/components/nsPlacesAutoComplete.js
 %{_libdir}/%{name}/components/nsPlacesExpiration.js
 %{_libdir}/%{name}/components/nsPrompter.js
-%{_libdir}/%{name}/components/nsProxyAutoConfig.js
 %{_libdir}/%{name}/components/nsSearchService.js
 %{_libdir}/%{name}/components/nsSearchSuggestions.js
 %{_libdir}/%{name}/components/nsTaggingService.js
-%{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsUpdateTimerManager.js
+%{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
 %{_libdir}/%{name}/components/storage-Legacy.js
 %{_libdir}/%{name}/components/storage-mozStorage.js
 %{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
-%endif
-
-%{_libdir}/%{name}/components/nsAbout.js
-%{_libdir}/%{name}/components/nsAboutCertError.js
-%{_libdir}/%{name}/components/nsAboutData.js
-%{_libdir}/%{name}/components/nsAboutFeeds.js
-%{_libdir}/%{name}/components/nsAboutLife.js
-%{_libdir}/%{name}/components/nsAboutRights.js
-%{_libdir}/%{name}/components/nsAboutSessionRestore.js
-%{_libdir}/%{name}/components/nsAboutSyncTabs.js
-%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
-%{_libdir}/%{name}/components/nsSuiteDownloadManagerUI.js
-%{_libdir}/%{name}/components/nsSuiteGlue.js
-%{_libdir}/%{name}/components/nsTypeAheadFind.js
-%{_libdir}/%{name}/components/smileApplication.js
-
-%if %{without xulrunner}
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
-%endif
-
-%if %{without xulrunner}
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
-%endif
-
-%attr(755,root,root) %{_libdir}/%{name}/components/libsuite.so
-
-%attr(755,root,root) %{_libdir}/%{name}/seamonkey
-%dir %{_libdir}/%{name}/plugins
-%if %{without xulrunner}
 %attr(755,root,root) %{_libdir}/%{name}/run-mozilla.sh
 %attr(755,root,root) %{_libdir}/%{name}/seamonkey-bin
 %attr(755,root,root) %{_libdir}/%{name}/mozilla-xremote-client
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 %endif
+
+%attr(755,root,root) %{_libdir}/%{name}/seamonkey
+%dir %{_libdir}/%{name}/plugins
 
 # symlinks
 %{_libdir}/%{name}/chrome
@@ -674,6 +695,15 @@ fi
 %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/modules
+%if %{with enigmail}
+%exclude %{_datadir}/%{name}/modules/commonFuncs.jsm
+%exclude %{_datadir}/%{name}/modules/enigmailCommon.jsm
+%exclude %{_datadir}/%{name}/modules/keyManagement.jsm
+%exclude %{_datadir}/%{name}/modules/pipeConsole.jsm
+%exclude %{_datadir}/%{name}/modules/subprocess.jsm
+%exclude %{_datadir}/%{name}/modules/subprocess_worker_unix.js
+%exclude %{_datadir}/%{name}/modules/subprocess_worker_win.js
+%endif
 %{_datadir}/%{name}/searchplugins
 %if %{without xulrunner}
 %{_datadir}/%{name}/greprefs.js
@@ -753,6 +783,9 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.so
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.xpt
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.js
+%dir %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/modules
+%{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/modules/*.jsm
+%{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/modules/*.js
 %endif
 
 %files chat
