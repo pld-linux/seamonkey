@@ -16,7 +16,7 @@
 %define		enigmail_ver	1.5.1
 %define		nspr_ver	4.9.3
 %define		nss_ver		3.14.1
-%define		xulrunner_ver	18.0.2
+%define		xulrunner_ver	19.0
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
@@ -28,12 +28,12 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.15.2
+Version:	2.16
 Release:	1
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	1938c5a9673e94e9f5c809f5dbfe8d29
+# Source0-md5:	29e360eae42d7a9cca7f25c1ad44f1d5
 Source1:	http://www.mozilla-enigmail.org/download/source/enigmail-%{enigmail_ver}.tar.gz
 # Source1-md5:	3e71f84ed2c11471282412ebe4f5eb2d
 Source4:	%{name}.desktop
@@ -102,7 +102,6 @@ BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXt-devel
 %if %{with xulrunner}
 BuildRequires:	xulrunner-devel >= 2:%{xulrunner_ver}
-BuildRequires:	xulrunner-devel < 2:19
 %endif
 BuildRequires:	yasm
 BuildRequires:	zip
@@ -263,7 +262,7 @@ tar -C mailnews/extensions -zxf %{SOURCE1}
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
+%patch7 -p2
 %patch8 -p1
 %patch9 -p2
 
@@ -518,7 +517,6 @@ install -d $ext_dir/{chrome,components,defaults/preferences,modules}
 cd mozilla/dist/bin
 cp -rfLp chrome/enigmail.jar $ext_dir/chrome
 cp -rfLp components/enig* $ext_dir/components
-cp -rfLp components/libenigmime.so $ext_dir/components
 cp -rfLp defaults/preferences/enigmail.js $ext_dir/defaults/preferences
 cp -rfLp modules/{commonFuncs,enigmailCommon,keyManagement,pipeConsole,subprocess}.jsm $ext_dir/modules
 cp -rfLp modules/{subprocess_worker_unix,subprocess_worker_win}.js $ext_dir/modules
@@ -590,6 +588,7 @@ fi
 %{_libdir}/%{name}/components/ContactManager.js
 %{_libdir}/%{name}/components/FeedConverter.js
 %{_libdir}/%{name}/components/FeedWriter.js
+%{_libdir}/%{name}/components/PermissionSettings.js
 %{_libdir}/%{name}/components/SettingsManager.js
 %{_libdir}/%{name}/components/SiteSpecificUserAgent.js
 %{_libdir}/%{name}/components/TCPSocket.js
@@ -780,7 +779,6 @@ fi
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/chrome.manifest
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/install.rdf
 %dir %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components
-%attr(755,root,root) %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.so
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.xpt
 %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/components/*.js
 %dir %{_libdir}/%{name}/extensions/{847b3a00-7ab1-11d4-8f02-006008948af5}/modules
