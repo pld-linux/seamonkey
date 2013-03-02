@@ -5,7 +5,7 @@
 %bcond_without	gnome		# disable gnomeui (alias)
 %bcond_without	ldap		# disable e-mail address lookups in LDAP directories
 %bcond_without	lightning	# disable Sunbird/Lightning calendar
-%bcond_with	xulrunner	# build with system xulrunner
+%bcond_with	xulrunner	# build with system xulrunner (incomplete? enigmail not supported)
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_without	kerberos	# disable krb5 support
 
@@ -449,21 +449,21 @@ cp -a mozilla/dist/bin/extensions/calendar-timezones@mozilla.org \
 # move arch independant ones to datadir
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-mv $RPM_BUILD_ROOT%{_libdir}/%{name}/isp $RPM_BUILD_ROOT%{_datadir}/%{name}/isp
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/modules $RPM_BUILD_ROOT%{_datadir}/%{name}/modules
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 %if %{without xulrunner}
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js $RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs.js
+mv $RPM_BUILD_ROOT%{_libdir}/%{name}/isp $RPM_BUILD_ROOT%{_datadir}/%{name}/isp
 mv $RPM_BUILD_ROOT%{_libdir}/%{name}/res $RPM_BUILD_ROOT%{_datadir}/%{name}/res
 %endif
 
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/%{name}/isp $RPM_BUILD_ROOT%{_libdir}/%{name}/isp
 ln -s ../../share/%{name}/modules $RPM_BUILD_ROOT%{_libdir}/%{name}/modules
 ln -s ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 %if %{without xulrunner}
 ln -s ../../share/%{name}/greprefs.js $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs.js
+ln -s ../../share/%{name}/isp $RPM_BUILD_ROOT%{_libdir}/%{name}/isp
 ln -s ../../share/%{name}/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 %endif
 
@@ -581,28 +581,13 @@ fi
 %dir %{_libdir}/%{name}/components
 
 %{_libdir}/%{name}/components/Aitc.js
-%{_libdir}/%{name}/components/AlarmsManager.js
-%{_libdir}/%{name}/components/AppsService.js
-%{_libdir}/%{name}/components/BrowserElementParent.js
-%{_libdir}/%{name}/components/ColorAnalyzer.js
-%{_libdir}/%{name}/components/ContactManager.js
 %{_libdir}/%{name}/components/FeedConverter.js
 %{_libdir}/%{name}/components/FeedWriter.js
-%{_libdir}/%{name}/components/PermissionSettings.js
-%{_libdir}/%{name}/components/SettingsManager.js
-%{_libdir}/%{name}/components/SiteSpecificUserAgent.js
-%{_libdir}/%{name}/components/TCPSocket.js
-%{_libdir}/%{name}/components/TCPSocketParentIntermediary.js
 %{_libdir}/%{name}/components/Weave.js
-%{_libdir}/%{name}/components/Webapps.js
 %{_libdir}/%{name}/components/WebContentConverter.js
-%{_libdir}/%{name}/components/messageWakeupService.js
-%{_libdir}/%{name}/components/newMailNotificationService.js
 %{_libdir}/%{name}/components/nsAbout.js
 %{_libdir}/%{name}/components/nsBrowserContentHandler.js
 %{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
-%{_libdir}/%{name}/components/nsDOMIdentity.js
-%{_libdir}/%{name}/components/nsIDService.js
 %{_libdir}/%{name}/components/nsSessionStartup.js
 %{_libdir}/%{name}/components/nsSessionStore.js
 %{_libdir}/%{name}/components/nsSetDefault.js
@@ -610,9 +595,6 @@ fi
 %{_libdir}/%{name}/components/nsSuiteDownloadManagerUI.js
 %{_libdir}/%{name}/components/nsSuiteGlue.js
 %{_libdir}/%{name}/components/nsTypeAheadFind.js
-%{_libdir}/%{name}/components/nsUrlClassifierHashCompleter.js
-%{_libdir}/%{name}/components/nsUrlClassifierLib.js
-%{_libdir}/%{name}/components/nsUrlClassifierListManager.js
 %{_libdir}/%{name}/components/smileApplication.js
 
 %{_libdir}/%{name}/components/browser.xpt
@@ -624,47 +606,82 @@ fi
 %if %{without xulrunner}
 %{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/platform.ini
+%{_libdir}/%{name}/components/AlarmsManager.js
+%{_libdir}/%{name}/components/AppsService.js
+%{_libdir}/%{name}/components/BrowserElementParent.js
+%{_libdir}/%{name}/components/ColorAnalyzer.js
+%{_libdir}/%{name}/components/ContactManager.js
 %{_libdir}/%{name}/components/ConsoleAPI.js
 %{_libdir}/%{name}/components/FeedProcessor.js
 %{_libdir}/%{name}/components/GPSDGeolocationProvider.js
 %{_libdir}/%{name}/components/NetworkGeolocationProvider.js
+%{_libdir}/%{name}/components/PermissionSettings.js
 %{_libdir}/%{name}/components/PlacesCategoriesStarter.js
+%{_libdir}/%{name}/components/SettingsManager.js
+%{_libdir}/%{name}/components/SiteSpecificUserAgent.js
+%{_libdir}/%{name}/components/TCPSocket.js
+%{_libdir}/%{name}/components/TCPSocketParentIntermediary.js
 %{_libdir}/%{name}/components/TelemetryPing.js
+%{_libdir}/%{name}/components/Webapps.js
 %{_libdir}/%{name}/components/addonManager.js
 %{_libdir}/%{name}/components/amContentHandler.js
 %{_libdir}/%{name}/components/amWebInstallListener.js
 %{_libdir}/%{name}/components/contentAreaDropListener.js
 %{_libdir}/%{name}/components/contentSecurityPolicy.js
 %{_libdir}/%{name}/components/crypto-SDR.js
+%{_libdir}/%{name}/components/glautocomp.js
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/jsmimeemitter.js
+%{_libdir}/%{name}/components/mdn-service.js
+%{_libdir}/%{name}/components/messageWakeupService.js
+%{_libdir}/%{name}/components/msgAsyncPrompter.js
+%{_libdir}/%{name}/components/newMailNotificationService.js
+%{_libdir}/%{name}/components/newsblog.js
+%{_libdir}/%{name}/components/nsAbAutoCompleteMyDomain.js
+%{_libdir}/%{name}/components/nsAbAutoCompleteSearch.js
+%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
 %{_libdir}/%{name}/components/nsBadCertHandler.js
 %{_libdir}/%{name}/components/nsBlocklistService.js
 %{_libdir}/%{name}/components/nsContentDispatchChooser.js
 %{_libdir}/%{name}/components/nsContentPrefService.js
+%{_libdir}/%{name}/components/nsDOMIdentity.js
 %{_libdir}/%{name}/components/nsDefaultCLH.js
 %{_libdir}/%{name}/components/nsFilePicker.js
 %{_libdir}/%{name}/components/nsFormAutoComplete.js
 %{_libdir}/%{name}/components/nsFormHistory.js
 %{_libdir}/%{name}/components/nsHandlerService.js
 %{_libdir}/%{name}/components/nsHelperAppDlg.js
+%{_libdir}/%{name}/components/nsIDService.js
 %{_libdir}/%{name}/components/nsINIProcessor.js
 %{_libdir}/%{name}/components/nsInputListAutoComplete.js
+%{_libdir}/%{name}/components/nsLDAPProtocolHandler.js
 %{_libdir}/%{name}/components/nsLivemarkService.js
 %{_libdir}/%{name}/components/nsLoginInfo.js
 %{_libdir}/%{name}/components/nsLoginManager.js
 %{_libdir}/%{name}/components/nsLoginManagerPrompter.js
+%{_libdir}/%{name}/components/nsMailNewsCommandLineHandler.js
+%{_libdir}/%{name}/components/nsMsgTraitService.js
 %{_libdir}/%{name}/components/nsPlacesAutoComplete.js
 %{_libdir}/%{name}/components/nsPlacesExpiration.js
 %{_libdir}/%{name}/components/nsPrompter.js
+%{_libdir}/%{name}/components/nsSMTPProtocolHandler.js
 %{_libdir}/%{name}/components/nsSearchService.js
 %{_libdir}/%{name}/components/nsSearchSuggestions.js
 %{_libdir}/%{name}/components/nsTaggingService.js
 %{_libdir}/%{name}/components/nsUpdateTimerManager.js
+%{_libdir}/%{name}/components/nsUrlClassifierHashCompleter.js
+%{_libdir}/%{name}/components/nsUrlClassifierLib.js
+%{_libdir}/%{name}/components/nsUrlClassifierListManager.js
 %{_libdir}/%{name}/components/nsURLFormatter.js
 %{_libdir}/%{name}/components/nsWebHandlerApp.js
+%{_libdir}/%{name}/components/offlineStartup.js
+%{_libdir}/%{name}/components/smime-service.js
 %{_libdir}/%{name}/components/storage-Legacy.js
 %{_libdir}/%{name}/components/storage-mozStorage.js
 %{_libdir}/%{name}/components/txEXSLTRegExFunctions.js
+
+%{_libdir}/%{name}/components/mail.xpt
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libdbusservice.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozgnome.so
 %attr(755,root,root) %{_libdir}/%{name}/run-mozilla.sh
@@ -719,22 +736,7 @@ fi
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
 
-%{_libdir}/%{name}/components/glautocomp.js
-%{_libdir}/%{name}/components/jsmimeemitter.js
-%{_libdir}/%{name}/components/mail.xpt
-%{_libdir}/%{name}/components/mdn-service.js
-%{_libdir}/%{name}/components/msgAsyncPrompter.js
-%{_libdir}/%{name}/components/newsblog.js
-%{_libdir}/%{name}/components/nsAbAutoCompleteMyDomain.js
-%{_libdir}/%{name}/components/nsAbAutoCompleteSearch.js
-%{_libdir}/%{name}/components/nsAbLDAPAttributeMap.js
-%{_libdir}/%{name}/components/nsLDAPProtocolHandler.js
-%{_libdir}/%{name}/components/nsMailNewsCommandLineHandler.js
-%{_libdir}/%{name}/components/nsMsgTraitService.js
-%{_libdir}/%{name}/components/nsSMTPProtocolHandler.js
-%{_libdir}/%{name}/components/offlineStartup.js
-%{_libdir}/%{name}/components/smime-service.js
-
+%if %{without xulrunner}
 %{_libdir}/%{name}/isp
 %dir %{_datadir}/%{name}/isp
 %{_datadir}/%{name}/isp/Bogofilter.sfd
@@ -744,6 +746,7 @@ fi
 %{_datadir}/%{name}/isp/SpamPal.sfd
 %{_datadir}/%{name}/isp/movemail.rdf
 %{_datadir}/%{name}/isp/rss.rdf
+%endif
 
 %{_pixmapsdir}/seamonkey.png
 %{_desktopdir}/%{name}.desktop
