@@ -1,26 +1,17 @@
---- mozilla/configure.in.orig	2010-06-23 19:43:07.000000000 +0200
-+++ mozilla/configure.in	2010-07-06 11:14:54.350499449 +0200
-@@ -134,6 +134,13 @@
-   AC_MSG_RESULT([no])
- fi
+--- comm-release/mail/configure.in.orig	2014-12-03 07:11:58.000000000 +0100
++++ comm-release/mail/configure.in	2014-12-10 21:34:07.344611754 +0100
+@@ -50,7 +50,19 @@
+     MOZ_LDAP_XPCOM=,
+     MOZ_LDAP_XPCOM=1)
  
+-if test "$MOZ_LDAP_XPCOM"; then
 +dnl system LDAP Support
 +dnl ========================================================
-+MOZ_ARG_WITH_STRING(system-ldap,
-+[  --with-system-ldap[=PFX]
-+                          Use system mozldap [installed at prefix PFX]],
-+    MOZ_LDAP_DIR=$withval)
++MOZ_ARG_ENABLE_BOOL(system-ldap,
++[  --enable-system-ldap
++                          Use system mozldap],
++    MOZ_LDAP_DIR=yes)
 +
- dnl ========================================================
- dnl = Trademarked Branding 
- dnl ========================================================
---- mozilla/mail/configure.in.orig	2010-06-23 19:43:07.000000000 +0200
-+++ mozilla/mail/configure.in	2010-07-06 11:14:54.350499449 +0200
-@@ -59,7 +59,12 @@
-     MOZ_LDAP_XPCOM=,
-     MOZ_LDAP_XPCOM=1)
- 
--if test "$MOZ_LDAP_XPCOM"; then
 +if test "$MOZ_LDAP_DIR" ; then
 +    LDAP_CFLAGS=$(pkg-config --cflags mozldap)
 +    LDAP_LIBS=$(pkg-config --libs mozldap)
@@ -28,9 +19,9 @@
 +    LDAP_MODULE="MODULE(nsLDAPProtocolModule)"
 +elif test "$MOZ_LDAP_XPCOM"; then
      LDAP_CFLAGS='-I${DIST}/public/ldap'
-     if test "$OS_ARCH" = "WINNT"; then
-         if test -n "$GNU_CC"; then
-@@ -118,7 +130,7 @@
+ fi
+ 
+@@ -77,7 +89,7 @@
  
  # if we're building the LDAP XPCOM component, we need to build
  # the c-sdk first.
@@ -39,13 +30,20 @@
      # Save configure args so we can restore them after configuring LDAP.
      _save_ac_configure_args="$ac_configure_args"
      ac_configure_args="$_SUBDIR_CONFIG_ARGS"
---- mozilla/suite/configure.in.orig	2010-06-23 19:43:07.000000000 +0200
-+++ mozilla/suite/configure.in	2010-07-06 11:14:54.350499449 +0200
-@@ -59,7 +59,12 @@
+--- comm-release/suite/configure.in.orig	2014-12-03 07:12:00.000000000 +0100
++++ comm-release/suite/configure.in	2014-12-10 21:35:29.477941640 +0100
+@@ -50,7 +50,19 @@
      MOZ_LDAP_XPCOM=,
      MOZ_LDAP_XPCOM=1)
  
 -if test "$MOZ_LDAP_XPCOM"; then
++dnl system LDAP Support
++dnl ========================================================
++MOZ_ARG_ENABLE_BOOL(system-ldap,
++[  --enable-system-ldap
++                          Use system mozldap],
++    MOZ_LDAP_DIR=yes)
++
 +if test "$MOZ_LDAP_DIR" ; then
 +    LDAP_CFLAGS=$(pkg-config --cflags mozldap)
 +    LDAP_LIBS=$(pkg-config --libs mozldap)
@@ -53,9 +51,19 @@
 +    LDAP_MODULE="MODULE(nsLDAPProtocolModule)"
 +elif test "$MOZ_LDAP_XPCOM"; then
      LDAP_CFLAGS='-I${DIST}/public/ldap'
-     if test "$OS_ARCH" = "WINNT"; then
-         if test -n "$GNU_CC"; then
-@@ -113,7 +125,7 @@
+ fi
+ 
+@@ -68,6 +80,9 @@
+ 
+ AC_SUBST(MOZ_LDAP_XPCOM)
+ AC_SUBST(LDAP_CFLAGS)
++AC_SUBST_LIST(LDAP_LIBS)
++AC_SUBST(LDAP_COMPONENT)
++AC_SUBST(LDAP_MODULE)
+ 
+ dnl =========================================================
+ dnl = MAPI support (Windows only)
+@@ -77,7 +92,7 @@
  
  # if we're building the LDAP XPCOM component, we need to build
  # the c-sdk first.
@@ -64,3 +72,80 @@
      # Save configure args so we can restore them after configuring LDAP.
      _save_ac_configure_args="$ac_configure_args"
      ac_configure_args="$_SUBDIR_CONFIG_ARGS"
+--- comm-release/ldap/moz.build.orig	2014-12-03 07:11:58.000000000 +0100
++++ comm-release/ldap/moz.build	2014-12-13 21:33:15.543736333 +0100
+@@ -14,8 +14,4 @@
+         '/ldap/sdks/c-sdk/ldap/libraries/libprldap/nsldappr32v60',
+     ]
+ else:
+-    USE_LIBS += [
+-        '/ldap/sdks/c-sdk/ldap/libraries/libldap/ldap60',
+-        '/ldap/sdks/c-sdk/ldap/libraries/libldif/ldif60',
+-        '/ldap/sdks/c-sdk/ldap/libraries/libprldap/prldap60',
+-    ]
++    OS_LIBS += CONFIG['LDAP_LIBS']
+--- comm-release/ldap/Makefile.in.orig	2014-12-03 07:11:58.000000000 +0100
++++ comm-release/ldap/Makefile.in	2014-12-14 14:35:24.641162595 +0100
+@@ -7,11 +7,7 @@
+ # reach in and just install the headers that we need.
+ 
+ export::
+-	$(MAKE) -C $(DEPTH)/ldap/sdks/c-sdk/config export
+-	$(MAKE) -C $(DEPTH)/ldap/sdks/c-sdk/ldap/include export
+ 
+ libs clean distclean::
+-	$(MAKE) -C $(DEPTH)/ldap/sdks/c-sdk $@
+ 
+ target::
+-	$(MAKE) -C $(DEPTH)/ldap/sdks/c-sdk export
+--- comm-release/mozilla/build/autoconf/config.status.m4.orig	2014-12-03 07:22:33.000000000 +0100
++++ comm-release/mozilla/build/autoconf/config.status.m4	2014-12-20 11:51:52.906485837 +0100
+@@ -157,6 +157,10 @@
+   variable='$'$ac_subst_arg
+   echo "    (''' $ac_subst_arg ''', r''' `eval echo $variable` ''')," >> $CONFIG_STATUS
+ done
++for ac_subst_arg in $_subconfigure_ac_subst_list_args; do
++  variable='$'$ac_subst_arg
++  echo "    (''' $ac_subst_arg ''', list(r''' `eval echo $variable` '''.split()))," >> $CONFIG_STATUS
++done
+ 
+ cat >> $CONFIG_STATUS <<\EOF
+ ] ]
+--- comm-release/mozilla/build/autoconf/subconfigure.m4.orig	2014-12-03 07:22:33.000000000 +0100
++++ comm-release/mozilla/build/autoconf/subconfigure.m4	2014-12-20 11:50:26.996489440 +0100
+@@ -31,6 +31,11 @@
+ _subconfigure_ac_subst_args="$_subconfigure_ac_subst_args $1"
+ ])
+ 
++AC_DEFUN([AC_SUBST_LIST],
++[
++_subconfigure_ac_subst_list_args="$_subconfigure_ac_subst_list_args $1"
++])
++
+ dnl Override for AC_DEFINE.
+ AC_DEFUN([AC_DEFINE],
+ [
+--- comm-release/mozilla/configure.orig	2014-12-03 07:23:55.000000000 +0100
++++ comm-release/mozilla/configure	2014-12-21 08:15:22.603405124 +0100
+@@ -29627,6 +29627,10 @@
+   variable='$'$ac_subst_arg
+   echo "    (''' $ac_subst_arg ''', r''' `eval echo $variable` ''')," >> $CONFIG_STATUS
+ done
++for ac_subst_arg in $_subconfigure_ac_subst_list_args; do
++  variable='$'$ac_subst_arg
++  echo "    (''' $ac_subst_arg ''', list(r''' `eval echo $variable` '''.split()))," >> $CONFIG_STATUS
++done
+ 
+ cat >> $CONFIG_STATUS <<\EOF
+ ] ]
+--- comm-release/suite/installer/package-manifest.in.orig	2014-12-03 07:12:00.000000000 +0100
++++ comm-release/suite/installer/package-manifest.in	2014-12-21 16:18:12.162189385 +0100
+@@ -742,7 +742,7 @@
+ @APPNAME@/Contents/MacOS/@DLL_PREFIX@ldap60@DLL_SUFFIX@
+ @APPNAME@/Contents/MacOS/@DLL_PREFIX@ldif60@DLL_SUFFIX@
+ @APPNAME@/Contents/MacOS/@DLL_PREFIX@prldap60@DLL_SUFFIX@
+-#else
++#elif 0
+ @BINPATH@/@DLL_PREFIX@ldap60@DLL_SUFFIX@
+ @BINPATH@/@DLL_PREFIX@ldif60@DLL_SUFFIX@
+ @BINPATH@/@DLL_PREFIX@prldap60@DLL_SUFFIX@

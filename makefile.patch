@@ -1,28 +1,28 @@
---- mozilla/Makefile.in~	2011-08-12 16:52:03.000000000 +0300
-+++ mozilla/Makefile.in	2011-08-26 13:00:59.373870016 +0300
+--- comm-release/Makefile.in.orig	2014-12-11 16:09:07.771804209 +0100
++++ comm-release/Makefile.in	2014-12-11 16:37:56.318398334 +0100
 @@ -26,21 +26,7 @@
  
  include $(topsrcdir)/config/config.mk
  
--default alldep all:: $(topsrcdir)/configure config.status
+-libs binaries export tools:: $(topsrcdir)/configure config.status
 -
 -$(topsrcdir)/configure: $(topsrcdir)/configure.in
--	@echo "STOP!  configure.in has changed, and your configure is out of date."
--	@echo "Please rerun autoconf and configure."
--	@echo "To ignore this message, touch 'configure' in the source directory."
+-	@echo 'STOP!  configure.in has changed, and your configure is out of date.'
+-	@echo 'Please rerun autoconf and configure.'
+-	@echo 'To ignore this message, touch "configure" in the source directory.'
 -	@exit 1
 -
 -config.status: $(topsrcdir)/configure
--	@echo "STOP!  configure has changed and needs to be run in this build directory."
--	@echo "Please rerun configure."
--	@echo "To ignore this message, touch 'config.status' in the build directory."
+-	@echo 'STOP!  configure has changed and needs to be run in this build directory.'
+-	@echo 'Please rerun configure.'
+-	@echo 'To ignore this message, touch "config.status" in the build directory.'
 -	@exit 1
 -
 -default export libs clean realclean distclean alldep \
 +default export libs clean realclean distclean \
+ package installer package-compare stage-package install source-package \
+ upload source-upload hg-bundle l10n-check \
  maybe_clobber_profiledbuild uploadsymbols all:: $(SUBMAKEFILES)
- 	$(MAKE) -C mozilla $@
- 
 --- mozilla/client.mk~	2011-08-26 13:10:08.000000000 +0300
 +++ mozilla/client.mk	2011-08-26 13:10:11.365956960 +0300
 @@ -278,8 +278,8 @@

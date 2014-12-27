@@ -9,8 +9,8 @@
 %bcond_with	tests		# enable tests (whatever they check)
 
 %define		nspr_ver	4.10.3
-%define		nss_ver		3.16
-%define		xulrunner_ver	29.0
+%define		nss_ver		3.17.2
+%define		xulrunner_ver	34.0
 
 %if %{without xulrunner}
 # The actual sqlite version (see RHBZ#480989):
@@ -22,24 +22,22 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.26.1
+Version:	2.31
 Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	4bfa46b370b4d211eef56b90277a9517
+# Source0-md5:	44b6f9cfc2a95fd08dba35ff236d306e
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source6:	%{name}-chat.desktop
 Source7:	%{name}-mail.desktop
-Source8:	%{name}-venkman.desktop
 Source9:	%{name}.sh
 Patch1:		%{name}-pld-branding.patch
 Patch2:		%{name}-agent.patch
 Patch3:		%{name}-enable-addons.patch
 Patch4:		system-mozldap.patch
 Patch5:		makefile.patch
-Patch6:		%{name}-pixman.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch7:		%{name}-system-virtualenv.patch
 Patch9:		%{name}-system-xulrunner.patch
@@ -68,23 +66,23 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libnotify-devel >= 0.4
 BuildRequires:	libpng(APNG)-devel >= 0.10
-BuildRequires:	libpng-devel >= 2:1.6.7
+BuildRequires:	libpng-devel >= 2:1.6.13
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvpx-devel >= 1.3.0
-BuildRequires:	mozldap-devel
+BuildRequires:	mozldap-devel >= 6.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
-BuildRequires:	pango-devel >= 1:1.14.0
+BuildRequires:	pango-devel >= 1:1.22.0
 BuildRequires:	perl-base >= 1:5.6
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.5
 BuildRequires:	python-modules
-BuildRequires:	python-virtualenv
+BuildRequires:	python-virtualenv >= 1.11.6-2
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
-BuildRequires:	sqlite3-devel >= 3.8.2
+BuildRequires:	sqlite3-devel >= 3.8.6
 BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXScrnSaver-devel
@@ -111,13 +109,13 @@ Requires:	glib2 >= 1:2.20
 %{!?with_gtk3:Requires:	gtk+2 >= 2:2.18}
 %{?with_gtk3:Requires:	gtk+3 >= 3.0.0}
 Requires:	libjpeg-turbo
-Requires:	libpng >= 2:1.6.7
+Requires:	libpng >= 2:1.6.13
 Requires:	libpng(APNG) >= 0.10
 Requires:	libvpx >= 1.3.0
 Requires:	myspell-common
 Requires:	nspr >= 1:%{nspr_ver}
 Requires:	nss >= 1:%{nss_ver}
-Requires:	pango >= 1:1.14.0
+Requires:	pango >= 1:1.22.0
 Requires:	sqlite3 >= %{sqlite_build_version}
 Requires:	startup-notification >= 0.8
 %endif
@@ -127,6 +125,7 @@ Obsoletes:	light
 Obsoletes:	mozilla
 Obsoletes:	mozilla-gnomevfs
 Obsoletes:	seamonkey-calendar
+Obsoletes:	seamonkey-js-debugger
 Obsoletes:	seamonkey-libs
 Obsoletes:	seamonkey-mailnews
 Obsoletes:	seamonkey-gnomevfs
@@ -141,8 +140,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # don't satisfy other packages
 %define		_noautoprovfiles	%{_libdir}/%{name}
 # and as we don't provide them, don't require either
-%define		_noautoreq	libmozjs.so libxpcom.so libxul.so libjemalloc.so %{!?with_xulrunner:libmozalloc.so}
-%define		_noautoreqdep	libgfxpsshar.so libgkgfx.so libgtkxtbin.so libjsj.so libxpcom_compat.so libxpistub.so
+%if %{without xulrunner}
+%define		_noautoreq	libmozalloc.so libmozjs.so libmozsandbox.so libxul.so
+%endif
 
 %description
 SeaMonkey Community Edition is an open-source web browser, designed
@@ -234,10 +234,9 @@ chrome w SeaMonkey Community Edition lub tworzących strony WWW.
 cd comm-release
 %patch1 -p1
 %patch2 -p1
-%patch3 -p2
+%patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 %patch7 -p1
 %patch9 -p2
 
@@ -323,7 +322,7 @@ ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:ca
 ac_add_options --enable-gio
 %if %{with ldap}
 ac_add_options --enable-ldap
-ac_add_options --with-system-ldap
+ac_add_options --enable-system-ldap
 %else
 ac_add_options --disable-ldap
 %endif
@@ -344,6 +343,7 @@ ac_add_options --with-system-libxul
 ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
 ac_add_options --with-system-ffi
+ac_add_options --with-system-icu
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
@@ -373,7 +373,8 @@ install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_libdir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name} \
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins \
+	$RPM_BUILD_ROOT%{_mandir}/man1
 
 %browser_plugins_add_browser %{name} -p %{_libdir}/%{name}/plugins
 
@@ -385,7 +386,8 @@ cwd=`pwd`
 	installdir=%{_libdir}/%{name} \
 	PKG_SKIP_STRIP=1
 
-cp -a mozilla/dist/seamonkey/* $RPM_BUILD_ROOT%{_libdir}/%{name}/
+cp -a dist/seamonkey/* $RPM_BUILD_ROOT%{_libdir}/%{name}/
+cp -p dist/man/man1/seamonkey.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %if %{with xulrunner}
 # >= 5.0 seems to require this
@@ -401,8 +403,10 @@ install -d $RPM_BUILD_ROOT%{_exec_prefix}/lib/debug%{_libdir}/%{name}
 cp -a mozilla/dist/%{name}-%{version}.en-US.linux-*.crashreporter-symbols.zip $RPM_BUILD_ROOT%{_prefix}/lib/debug%{_libdir}/%{name}
 %endif
 
-# copy manually lightning files, somewhy they are not installed by make
-cp -a mozilla/dist/bin/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103} \
+# copy manually lightning and chat files, somewhy they are not installed by make
+cp -a dist/bin/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}.xpi \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/extensions
+cp -a dist/bin/distribution/extensions/{59c81df5-4b7a-477b-912d-4e0fdf64e5f2}.xpi \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/extensions
 
 # move arch independant ones to datadir
@@ -435,7 +439,7 @@ ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 sed 's,@LIBDIR@,%{_libdir},' %{SOURCE9} > $RPM_BUILD_ROOT%{_bindir}/seamonkey
 chmod a+rx $RPM_BUILD_ROOT%{_bindir}/seamonkey
 
-install %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} %{SOURCE8} \
+install %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 
 cp -p %{topdir}/comm-release/suite/branding/nightly/content/icon64.png $RPM_BUILD_ROOT%{_pixmapsdir}/%{name}.png
@@ -461,13 +465,6 @@ rm -rf $HOME
 EOF
 chmod 755 $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 
-%if %{without xulrunner}
-# never package these. always remove
-# mozldap
-%{__sed} -i '/lib\(ldap\|ldif\|prldap\)60.so/d' $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib{ldap,ldif,prldap}60.so
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -484,6 +481,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/seamonkey
+%{_mandir}/man1/seamonkey.1*
 
 # browser plugins v2
 %{_browserpluginsconfdir}/browsers.d/%{name}.*
@@ -493,6 +491,7 @@ fi
 %if %{without xulrunner}
 %attr(755,root,root) %{_libdir}/%{name}/libmozalloc.so
 %attr(755,root,root) %{_libdir}/%{name}/libmozjs.so
+%attr(755,root,root) %{_libdir}/%{name}/libmozsandbox.so
 %attr(755,root,root) %{_libdir}/%{name}/libxul.so
 %endif
 
@@ -574,31 +573,13 @@ fi
 %if %{with lightning}
 %files addon-lightning
 %defattr(644,root,root,755)
-%dir %{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/application.ini
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/chrome
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/chrome.manifest
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/defaults
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/install.rdf
-%dir %{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/components
-%attr(755,root,root) %{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/components/*.so
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/components/*.js
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/components/*.manifest
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/components/*.xpt
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/modules
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/calendar-js
-%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/timezones.sqlite
+%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}.xpi
 %endif
 
 %files chat
 %defattr(644,root,root,755)
 %{_libdir}/%{name}/extensions/{59c81df5-4b7a-477b-912d-4e0fdf64e5f2}.xpi
 %{_desktopdir}/%{name}-chat.desktop
-
-%files js-debugger
-%defattr(644,root,root,755)
-%{_libdir}/%{name}/extensions/{f13b157f-b174-47e7-a34d-4815ddfdfeb8}.xpi
-%{_desktopdir}/%{name}-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
