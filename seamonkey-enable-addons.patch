@@ -9,25 +9,25 @@
  
  // Preferences for AMO integration
  pref("extensions.getAddons.cache.enabled", true);
---- comm-release/suite/browser/browser-prefs.js~	2013-11-06 19:54:38.789734061 +0100
-+++ comm-release/suite/browser/browser-prefs.js	2013-11-06 20:55:33.765611935 +0100
+--- seamonkey-2.26/suite/browser/browser-prefs.js~	2013-11-06 19:54:38.789734061 +0100
++++ seamonkey-2.26/suite/browser/browser-prefs.js	2013-11-06 20:55:33.765611935 +0100
 @@ -616,7 +616,7 @@
  // Disable add-ons installed into the shared user and shared system areas by
  // default. This does not include the application directory. See the SCOPE
  // constants in AddonManager.jsm for values to use here.
 -pref("extensions.autoDisableScopes", 15);
-+pref("extensions.autoDisableScopes", 0);
++pref("extensions.autoDisableScopes", 3);
  
  // Preferences for AMO integration
  pref("extensions.getAddons.cache.enabled", true);  // also toggles personalized recommendations
---- comm-release/mozilla/browser/app/profile/firefox.js~	2013-10-29 02:20:40.000000000 +0100
-+++ comm-release/mozilla/browser/app/profile/firefox.js	2013-11-06 20:56:58.633092070 +0100
+--- seamonkey-2.26/mozilla/browser/app/profile/firefox.js~	2013-10-29 02:20:40.000000000 +0100
++++ seamonkey-2.26/mozilla/browser/app/profile/firefox.js	2013-11-06 20:56:58.633092070 +0100
 @@ -62,7 +62,7 @@
  
  // Disable add-ons that are not installed by the user in all scopes by default.
  // See the SCOPE constants in AddonManager.jsm for values to use here.
 -pref("extensions.autoDisableScopes", 15);
-+pref("extensions.autoDisableScopes", 0);
++pref("extensions.autoDisableScopes", 3);
  
  // Dictionary download preference
  pref("browser.dictionaries.download.url", "https://addons.mozilla.org/%LOCALE%/firefox/dictionaries/");
