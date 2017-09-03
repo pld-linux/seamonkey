@@ -75,7 +75,7 @@ BuildRequires:	pixman-devel >= 0.19.2
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.7
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-virtualenv >= 1.15
+BuildRequires:	python-virtualenv >= 15
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	sed >= 4.0
@@ -117,6 +117,13 @@ Requires:	sqlite3 >= %{sqlite_build_version}
 Requires:	startup-notification >= 0.8
 Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
+Obsoletes:	iceape
+Obsoletes:	iceape-addon-lightning
+Obsoletes:	iceape-chat
+Obsoletes:	iceape-dom-inspector
+Obsoletes:	iceape-js-debugger
+Obsoletes:	iceape-mailnews
+Obsoletes:	iceape-gnomevfs
 Obsoletes:	light
 Obsoletes:	mozilla
 Obsoletes:	mozilla-gnomevfs
