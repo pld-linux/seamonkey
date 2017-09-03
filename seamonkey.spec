@@ -1,4 +1,6 @@
-# TODO: consider --enable-libproxy
+# TODO:
+# - consider --enable-libproxy
+# - do something with *.rdf file, there if file conflict with other lang packages
 #
 # Conditional build:
 %bcond_without	gtk3		# GTK+ 3.x instead of 2.x
@@ -13,28 +15,74 @@
 # The actual sqlite version (see RHBZ#480989):
 %define		sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo ERROR)
 
+# UPDATING TRANSALTIONS:
+%if 0
+rm -vf *.xpi
+./builder -g
+V=2.46
+U=http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/$V/langpack/
+curl -s $U | sed -ne 's,.*href="\([^"]\+\)/".*,'"$U"'xpi/\1.xpi,p'
+%endif
+
 Summary:	SeaMonkey Community Edition - web browser
 Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.46
+Version:	2.48
 Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
-# Source0-md5:	436a158e16eee151b97f96c053b82d45
+# Source0-md5:	cf9ccf46be9359bd82e1931e083e942f
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}.sh
+Source100:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.cs.langpack.xpi
+# Source100-md5:	1440669e2cfdbf92d86e7e1d3f330fa9
+Source101:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.de.langpack.xpi
+# Source101-md5:	b3ddf04adb1e843ce508c514d808380b
+Source102:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-GB.langpack.xpi
+# Source102-md5:	01addd001621cdc26a16f8061915cb58
+Source103:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-US.langpack.xpi
+# Source103-md5:	76955aadfa8386c1c2d94092d12a8e21
+Source104:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-AR.langpack.xpi
+# Source104-md5:	dfa216f194adf2655608ea3f1f846e6d
+Source105:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-ES.langpack.xpi
+# Source105-md5:	4e1da78090bf3d193bd323a4553954b1
+Source106:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fr.langpack.xpi
+# Source106-md5:	72fabbb49f0fae5b2eeb6a59b7295f7b
+Source107:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.hu.langpack.xpi
+# Source107-md5:	1644dfe2d544e9e357cbdd3ace80621c
+Source108:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.it.langpack.xpi
+# Source108-md5:	6be97efcdb0b369ef0e7cafe37b5010b
+Source109:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ja.langpack.xpi
+# Source109-md5:	ed40db4a9e086707fae65247dfcb9c39
+Source110:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.lt.langpack.xpi
+# Source110-md5:	17cbddb876f39638e29e99e3440e2921
+Source111:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nl.langpack.xpi
+# Source111-md5:	549822ed7166200da8e8e7506a7182e5
+Source112:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pl.langpack.xpi
+# Source112-md5:	f6007d4b6f322f63412316e2ef468b4b
+Source113:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-PT.langpack.xpi
+# Source113-md5:	fceabd98d9a3c5a40a263ef0765de5c2
+Source114:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ru.langpack.xpi
+# Source114-md5:	f1aabf26e25e419d08fd4a1228d08b16
+Source115:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sk.langpack.xpi
+# Source115-md5:	c81d55df5e6e26a9fed2bb797077cfc8
+Source116:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sv-SE.langpack.xpi
+# Source116-md5:	9a54d87596debbd9bddcadebb98ba8ce
+Source117:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-CN.langpack.xpi
+# Source117-md5:	6f131470289a845719a55b7b54cb91e6
+Source118:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-TW.langpack.xpi
+# Source118-md5:	57db71fd37c356d1a4022aaeb87ffb83
 Patch1:		%{name}-pld-branding.patch
 Patch2:		%{name}-agent.patch
 Patch3:		%{name}-enable-addons.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
-Patch6:		%{name}-nss-http2.patch
 Patch7:		%{name}-libevent21.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
@@ -170,14 +218,304 @@ SeaMonkey Community Edition - полнофункциональный web-browser
 открытыми исходными текстами, разработанный для максимального
 соотвествия стандартам, максмимальной переносимости и скорости работы
 
+%package lang-cs
+Summary:	Czech resources for SeaMonkey
+Summary(pl.UTF-8):	Czeskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-cs
+Czech resources for SeaMonkey.
+
+%description lang-cs -l pl.UTF-8
+Czeskie pliki językowe dla SeaMonkeya.
+
+%package lang-de
+Summary:	German resources for SeaMonkey
+Summary(pl.UTF-8):	Niemieckie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-de
+German resources for SeaMonkey.
+
+%description lang-de -l pl.UTF-8
+Niemieckie pliki językowe dla SeaMonkeya.
+
+%package lang-en_GB
+Summary:	English (British) resources for SeaMonkey
+Summary(pl.UTF-8):	Angielskie (brytyjskie) pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-en_GB
+English (British) resources for SeaMonkey.
+
+%description lang-en_GB -l pl.UTF-8
+Angielskie (brytyjskie) pliki językowe dla SeaMonkeya.
+
+%package lang-en_US
+Summary:	English (American) resources for SeaMonkey
+Summary(pl.UTF-8):	Angielskie (amerykańskie) pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-en_US
+English (American) resources for SeaMonkey.
+
+%description lang-en_US -l pl.UTF-8
+Angielskie (amerykańskie) pliki językowe dla SeaMonkeya.
+
+%package lang-es_AR
+Summary:	Spanish (Andorra) resources for SeaMonkey
+Summary(ca.UTF-8):	Recursos espanyols (Andorra) per SeaMonkey
+Summary(es.UTF-8):	Recursos españoles (Andorra) para SeaMonkey
+Summary(pl.UTF-8):	Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Andory)
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-es_AR
+Spanish (Spain) resources for SeaMonkey.
+
+%description lang-es_AR -l ca.UTF-8
+Recursos espanyols (Andorra) per SeaMonkey.
+
+%description lang-es_AR -l es.UTF-8
+Recursos españoles (Andorra) para SeaMonkey.
+
+%description lang-es_AR -l pl.UTF-8
+Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Andory).
+
+%package lang-es
+Summary:	Spanish (Spain) resources for SeaMonkey
+Summary(ca.UTF-8):	Recursos espanyols (Espanya) per SeaMonkey
+Summary(es.UTF-8):	Recursos españoles (España) para SeaMonkey
+Summary(pl.UTF-8):	Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Hiszpanii)
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-es
+Spanish (Spain) resources for SeaMonkey.
+
+%description lang-es -l ca.UTF-8
+Recursos espanyols (Espanya) per SeaMonkey.
+
+%description lang-es -l es.UTF-8
+Recursos españoles (España) para SeaMonkey.
+
+%description lang-es -l pl.UTF-8
+Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Hiszpanii).
+
+%package lang-fr
+Summary:	French resources for SeaMonkey
+Summary(pl.UTF-8):	Francuskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-fr
+French resources for SeaMonkey.
+
+%description lang-fr -l pl.UTF-8
+Francuskie pliki językowe dla SeaMonkeya.
+
+%package lang-hu
+Summary:	Hungarian resources for SeaMonkey
+Summary(hu.UTF-8):	Magyar nyelv SeaMonkey-hez
+Summary(pl.UTF-8):	Węgierskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-hu
+Hungarian resources for SeaMonkey.
+
+%description lang-hu -l hu.UTF-8
+Magyar nyelv SeaMonkey-hez.
+
+%description lang-hu -l pl.UTF-8
+Węgierskie pliki językowe dla SeaMonkeya.
+
+%package lang-it
+Summary:	Italian resources for SeaMonkey
+Summary(pl.UTF-8):	Włoskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-it
+Italian resources for SeaMonkey.
+
+%description lang-it -l pl.UTF-8
+Włoskie pliki językowe dla SeaMonkeya.
+
+%package lang-ja
+Summary:	Japanese resources for SeaMonkey
+Summary(pl.UTF-8):	Japońskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-ja
+Japanese resources for SeaMonkey.
+
+%description lang-ja -l pl.UTF-8
+Japońskie pliki językowe dla SeaMonkeya.
+
+%package lang-lt
+Summary:	Lithuanian resources for SeaMonkey
+Summary(pl.UTF-8):	Litewskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-lt
+Lithuanian resources for SeaMonkey.
+
+%description lang-lt -l pl.UTF-8
+Litewskie pliki językowe dla SeaMonkeya.
+
+%package lang-nl
+Summary:	Dutch resources for SeaMonkey
+Summary(pl.UTF-8):	Holenderskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-nl
+Dutch resources for SeaMonkey.
+
+%description lang-nl -l pl.UTF-8
+Holenderskie pliki językowe dla SeaMonkeya.
+
+%package lang-pl
+Summary:	Polish resources for SeaMonkey
+Summary(pl.UTF-8):	Polskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-pl
+Polish resources for SeaMonkey.
+
+%description lang-pl -l pl.UTF-8
+Polskie pliki językowe dla SeaMonkeya.
+
+%package lang-pt
+Summary:	Portuguese (Portugal) resources for SeaMonkey
+Summary(pl.UTF-8):	Portugalskie pliki językowe dla SeaMonkeya (wersja dla Portugalii)
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-pt
+Portuguese (Portugal) resources for SeaMonkey.
+
+%description lang-pt -l pl.UTF-8
+Portugalskie pliki językowe dla SeaMonkeya (wersja dla Portugalii).
+
+%package lang-ru
+Summary:	Russian resources for SeaMonkey
+Summary(pl.UTF-8):	Rosyjskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-ru
+Russian resources for SeaMonkey.
+
+%description lang-ru -l pl.UTF-8
+Rosyjskie pliki językowe dla SeaMonkeya.
+
+%package lang-sk
+Summary:	Slovak resources for SeaMonkey
+Summary(pl.UTF-8):	Słowackie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-sk
+Slovak resources for SeaMonkey.
+
+%description lang-sk -l pl.UTF-8
+Słowackie pliki językowe dla SeaMonkeya.
+
+%package lang-sv
+Summary:	Swedish resources for SeaMonkey
+Summary(pl.UTF-8):	Szwedzkie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-sv
+Swedish resources for SeaMonkey.
+
+%description lang-sv -l pl.UTF-8
+Szwedzkie pliki językowe dla SeaMonkeya.
+
+%package lang-zh_CN
+Summary:	Simplified Chinese resources for SeaMonkey
+Summary(pl.UTF-8):	Chińskie (uproszczone) pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-zh_CN
+Simplified Chinese resources for SeaMonkey.
+
+%description lang-zh_CN -l pl.UTF-8
+Chińskie uproszczone pliki językowe dla SeaMonkeya.
+
+%package lang-zh_TW
+Summary:	Traditional Chinese resources for SeaMonkey
+Summary(pl.UTF-8):	Chińskie tradycyjne pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-zh_TW
+Traditional Chinese resources for SeaMonkey.
+
+%description lang-zh_TW -l pl.UTF-8
+Chińskie tradycyjne pliki językowe dla SeaMonkeya.
+
 %prep
-%setup -q
+unpack() {
+	local args="$1" file="$2"
+	cp -p $file .
+}
+%define __unzip unpack
+%setup -q %(seq -f '-a %g' 100 118 | xargs)
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 %patch7 -p1
 
 %build
@@ -347,6 +685,13 @@ chmod 755 $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 %{__sed} -i '/lib\(ldap\|ldif\|prldap\)60.so/d' $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/lib{ldap,ldif,prldap}60.so
 
+cd ..
+for a in *.xpi; do
+	basename=$(basename $a .langpack.xpi)
+	basename=${basename##seamonkey-%{version}.}
+	cp -p $a $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/langpack-$basename@seamonkey.mozilla.org.xpi
+done
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -442,3 +787,79 @@ fi
 %{_desktopdir}/%{name}.desktop
 %{_desktopdir}/%{name}-composer.desktop
 %{_desktopdir}/%{name}-mail.desktop
+
+%files lang-cs
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-cs@seamonkey.mozilla.org.xpi
+
+%files lang-de
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-de@seamonkey.mozilla.org.xpi
+
+%files lang-en_GB
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-en-GB@seamonkey.mozilla.org.xpi
+
+%files lang-en_US
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-en-US@seamonkey.mozilla.org.xpi
+
+%files lang-es_AR
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-es-AR@seamonkey.mozilla.org.xpi
+
+%files lang-es
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-es-ES@seamonkey.mozilla.org.xpi
+
+%files lang-fr
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-fr@seamonkey.mozilla.org.xpi
+
+%files lang-hu
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-hu@seamonkey.mozilla.org.xpi
+
+%files lang-it
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-it@seamonkey.mozilla.org.xpi
+
+%files lang-ja
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-ja@seamonkey.mozilla.org.xpi
+
+%files lang-lt
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-lt@seamonkey.mozilla.org.xpi
+
+%files lang-nl
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-nl@seamonkey.mozilla.org.xpi
+
+%files lang-pl
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-pl@seamonkey.mozilla.org.xpi
+
+%files lang-pt
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-pt-PT@seamonkey.mozilla.org.xpi
+
+%files lang-ru
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-ru@seamonkey.mozilla.org.xpi
+
+%files lang-sk
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-sk@seamonkey.mozilla.org.xpi
+
+%files lang-sv
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-sv-SE@seamonkey.mozilla.org.xpi
+
+%files lang-zh_CN
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-zh-CN@seamonkey.mozilla.org.xpi
+
+%files lang-zh_TW
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-zh-TW@seamonkey.mozilla.org.xpi
