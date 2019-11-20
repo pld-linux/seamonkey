@@ -6,6 +6,7 @@
 %bcond_without	gtk3		# GTK+ 3.x instead of 2.x
 %bcond_without	ldap		# disable e-mail address lookups in LDAP directories
 %bcond_without	kerberos	# disable krb5 support
+%bcond_without	lightning	# disable Lightning calendar
 %bcond_with	crashreporter	# report crashes to crash-stats.mozilla.com
 %bcond_with	tests		# enable tests (whatever they check)
 
@@ -19,8 +20,8 @@
 %if 0
 rm -vf *.xpi
 ./builder -g
-V=2.49.4
-U=http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/$V/langpack/
+V=2.49.5
+U=http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/$V/langpacks/linux-i686/
 curl -s $U | sed -ne 's,.*href="\([^"]\+\)/".*,'"$U"'xpi/\1.xpi,p'
 %endif
 
@@ -29,56 +30,56 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.49.4
-Release:	3
+Version:	2.49.5
+Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
-# Source0-md5:	5868179112ff4b2562f0ca22f4091bf0
+# Source0-md5:	91f60a7aca6f8bc053ffddc7259ae4ec
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}.sh
-Source100:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.cs.langpack.xpi
-# Source100-md5:	ea8679b0a53005194ba37aa93cc6d96c
-Source101:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.de.langpack.xpi
-# Source101-md5:	a9ea700071e46d2dbe0f20f2b89d14b6
-Source102:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-GB.langpack.xpi
-# Source102-md5:	bc952e49d2dc0023ad6a02006b3fadfb
-Source103:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-US.langpack.xpi
-# Source103-md5:	70f716bcf052f85d93cc9c31d3485dea
-Source104:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-AR.langpack.xpi
-# Source104-md5:	566895bf9344555e257c1329193b4599
-Source105:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-ES.langpack.xpi
-# Source105-md5:	3cebddc6561154279ee990e11039e989
-Source106:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fr.langpack.xpi
-# Source106-md5:	b6648e11df5de5085eb096e282a9c32d
-Source107:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.hu.langpack.xpi
-# Source107-md5:	489985e4589075d283d283d4d15f7a7e
-Source108:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.it.langpack.xpi
-# Source108-md5:	fb58032d2d8b220c5d5fca596abc9cd6
-Source109:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ja.langpack.xpi
-# Source109-md5:	ad1eb989acca2d410df20634001cfff9
-Source110:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.lt.langpack.xpi
-# Source110-md5:	cbc7e1b0b7836e93e3ddabd285c124ca
-Source111:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nb-NO.langpack.xpi
-# Source111-md5:	53ff9320263f2b2ef614434035bb8638
-Source112:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nl.langpack.xpi
-# Source112-md5:	3af79ab368d303e1531e379e609e08a9
-Source113:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pl.langpack.xpi
-# Source113-md5:	c281366d869a3bf064fa5e1ffc2f9e53
-Source114:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-PT.langpack.xpi
-# Source114-md5:	648adb05f8f154840b3e86a2af26e2a2
-Source115:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ru.langpack.xpi
-# Source115-md5:	56a98a56ab775cf483eb3f3eb2fe96a5
-Source116:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sk.langpack.xpi
-# Source116-md5:	1fa532a10a90706918713f8c879e3a30
-Source117:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sv-SE.langpack.xpi
-# Source117-md5:	17e5f8e0a0368ec95df9fd0bcbfc5ee4
-Source118:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-CN.langpack.xpi
-# Source118-md5:	47dce13104db366e90b34d6d9b91db39
-Source119:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-TW.langpack.xpi
-# Source119-md5:	00b3d856b7eec77ed1fe60abb2956ec2
+Source100:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.cs.langpack.xpi
+# Source100-md5:	1e0b73887e5d80589c5b2fd5d8538d7f
+Source101:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.de.langpack.xpi
+# Source101-md5:	eb4bf2ab50756280d1a39c1547129ced
+Source102:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.en-GB.langpack.xpi
+# Source102-md5:	c9bea7471fabf225009a5340733e4ce2
+Source103:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.en-US.langpack.xpi
+# Source103-md5:	42f234f11bcb6a127462caaf664dc21b
+Source104:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.es-AR.langpack.xpi
+# Source104-md5:	5fdf01f31dd24c06bc0c51a74d9673a6
+Source105:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.es-ES.langpack.xpi
+# Source105-md5:	948d3dbf4452e7e46f1a0d5026d2200c
+Source106:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.fr.langpack.xpi
+# Source106-md5:	5dbd832a5d4d81aa52f7435123ade06e
+Source107:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.hu.langpack.xpi
+# Source107-md5:	b002ed727428960d34ded53ec290667b
+Source108:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.it.langpack.xpi
+# Source108-md5:	12d37399fda4202144a82b458f75d27c
+Source109:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.ja.langpack.xpi
+# Source109-md5:	f5e304d3ba8d526b28e92693f23154c9
+Source110:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.lt.langpack.xpi
+# Source110-md5:	40db7b6ee7b1ddd5723e51c335f73eec
+Source111:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.nb-NO.langpack.xpi
+# Source111-md5:	cfde049afaaba0afe9f8b85ac704ba85
+Source112:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.nl.langpack.xpi
+# Source112-md5:	21a733c0b344840a2d81958a0fe72bc1
+Source113:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.pl.langpack.xpi
+# Source113-md5:	1a2646b993dc540f09c8b04fc4107c45
+Source114:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.pt-PT.langpack.xpi
+# Source114-md5:	0e54c214e673c474400c36a934f946a8
+Source115:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.ru.langpack.xpi
+# Source115-md5:	c24ff5c5bafbfce18b0333ef31735f54
+Source116:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.sk.langpack.xpi
+# Source116-md5:	5ab1d6ebf6cee6dc822fc91e1ced4443
+Source117:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.sv-SE.langpack.xpi
+# Source117-md5:	e471259f0afcdb159ce5f0a8f24cfd5b
+Source118:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.zh-CN.langpack.xpi
+# Source118-md5:	7160e0ea724c68c6457bb5a76b996255
+Source119:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.zh-TW.langpack.xpi
+# Source119-md5:	5370bfa849ea4af22e6ef8d1500279c8
 Patch1:		%{name}-pld-branding.patch
 Patch2:		%{name}-agent.patch
 Patch3:		%{name}-enable-addons.patch
@@ -86,6 +87,7 @@ Patch3:		%{name}-enable-addons.patch
 Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
 Patch6:		%{name}-glibc2.30.patch
+Patch7:		%{name}-crmf.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
@@ -168,9 +170,6 @@ Requires:	startup-notification >= 0.8
 Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	iceape
-Obsoletes:	iceape-addon-lightning
-Obsoletes:	iceape-chat
-Obsoletes:	iceape-dom-inspector
 Obsoletes:	iceape-js-debugger
 Obsoletes:	iceape-mailnews
 Obsoletes:	iceape-gnomevfs
@@ -178,7 +177,7 @@ Obsoletes:	light
 Obsoletes:	mozilla
 Obsoletes:	mozilla-gnomevfs
 Obsoletes:	seamonkey-addon-lightning < 2.46
-Obsoletes:	seamonkey-char < 2.46
+Obsoletes:	seamonkey-chat < 2.46
 Obsoletes:	seamonkey-calendar
 Obsoletes:	seamonkey-dom-inspector < 2.46
 Obsoletes:	seamonkey-js-debugger
@@ -219,6 +218,57 @@ inicial do Netscape Communicator.
 SeaMonkey Community Edition - полнофункциональный web-browser с
 открытыми исходными текстами, разработанный для максимального
 соотвествия стандартам, максмимальной переносимости и скорости работы
+
+%package addon-lightning
+Summary:	An integrated calendar for SeaMonkey
+Summary(pl.UTF-8):	Zintegrowany kalendarz dla SeaMonkey
+Group:		Applications/Networking
+Requires:	%{name} = %{version}-%{release}
+Obsoletes:	iceape-addon-lightning
+
+%description addon-lightning
+Lightning is an calendar extension to Icedove email client.
+
+%description addon-lightning -l pl.UTF-8
+Lightning to rozszerzenie do klienta poczty Icedove dodające
+funkcjonalność kalendarza.
+
+%package chat
+Summary:	SeaMonkey Community Edition Chat - integrated IRC client
+Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
+Obsoletes:	iceape-chat
+Obsoletes:	mozilla-chat
+
+%description chat
+SeaMonkey Community Edition Chat - IRC client that is integrated with
+the SeaMonkey Community Edition web browser.
+
+%description chat -l pl.UTF-8
+SeaMonkey Community Edition Chat - klient IRC-a zintegrowany z
+przeglądarką SeaMonkey Community Edition.
+
+%package dom-inspector
+Summary:	A tool for inspecting the DOM of pages in SeaMonkey Community Edition
+Summary(pl.UTF-8):	Narzędzie do oglądania DOM stron w SeaMonkey Community Edition
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
+Obsoletes:	iceape-dom-inspector
+Obsoletes:	mozilla-dom-inspector
+
+%description dom-inspector
+This is a tool that allows you to inspect the DOM for web pages in
+SeaMonkey Community Edition. This is of great use to people who are
+doing SeaMonkey Community Edition chrome development or web page
+development.
+
+%description dom-inspector -l pl.UTF-8
+To narzędzie pozwala na oglądanie DOM dla stron WWW w SeaMonkey
+Community Edition. Jest bardzo przydatne dla ludzi rozwijających
+chrome w SeaMonkey Community Edition lub tworzących strony WWW.
 
 %package lang-cs
 Summary:	Czech resources for SeaMonkey
@@ -533,6 +583,7 @@ unpack() {
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 cat << EOF > .mozconfig
@@ -570,9 +621,12 @@ ac_add_options --disable-gnomeui
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-updater
 ac_add_options --enable-application=suite
+%if %{with lightning}
+ac_add_options --enable-calendar
+%endif
 ac_add_options --enable-chrome-format=omni
 ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:cairo-gtk2}
-ac_add_options --enable-extensions=default,irc
+ac_add_options --enable-extensions=default
 ac_add_options --enable-gio
 %if %{with ldap}
 ac_add_options --enable-ldap
@@ -786,6 +840,9 @@ fi
 %{_datadir}/%{name}/fonts
 %{_datadir}/%{name}/searchplugins
 
+%dir %{_libdir}/%{name}/distribution
+%dir %{_libdir}/%{name}/distribution/extensions
+
 %dir %{_datadir}/%{name}/extensions
 %dir %{_libdir}/%{name}/extensions
 # the signature of the default theme
@@ -810,6 +867,20 @@ fi
 %{_desktopdir}/%{name}.desktop
 %{_desktopdir}/%{name}-composer.desktop
 %{_desktopdir}/%{name}-mail.desktop
+
+%if %{with lightning}
+%files addon-lightning
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}
+%endif
+
+%files chat
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/distribution/extensions/{59c81df5-4b7a-477b-912d-4e0fdf64e5f2}.xpi
+
+%files dom-inspector
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/distribution/extensions/inspector@mozilla.org.xpi
 
 %files lang-cs
 %defattr(644,root,root,755)
