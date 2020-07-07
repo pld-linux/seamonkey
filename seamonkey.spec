@@ -31,7 +31,7 @@ Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
 Version:	2.49.5
-Release:	4
+Release:	5
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
@@ -88,6 +88,7 @@ Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
 Patch6:		%{name}-glibc2.30.patch
 Patch7:		%{name}-crmf.patch
+Patch8:		mozilla-1389436.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
@@ -584,6 +585,7 @@ unpack() {
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 cat << EOF > .mozconfig
