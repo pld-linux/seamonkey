@@ -3,12 +3,16 @@
 # - do something with *.rdf file, there if file conflict with other lang packages
 #
 # Conditional build:
-%bcond_without	gtk3		# GTK+ 3.x instead of 2.x
 %bcond_without	ldap		# disable e-mail address lookups in LDAP directories
 %bcond_without	kerberos	# disable krb5 support
 %bcond_without	lightning	# disable Lightning calendar
 %bcond_with	crashreporter	# report crashes to crash-stats.mozilla.com
 %bcond_with	tests		# enable tests (whatever they check)
+%bcond_with	lowmem		# lower memory requirements
+
+%ifarch %{ix86} %{arm} aarch64
+%define		with_lowmem	1
+%endif
 
 %define		nspr_ver	4.13.1
 %define		nss_ver		3.28.6
@@ -30,65 +34,67 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.49.5
-Release:	5
+Version:	2.53.4
+Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
-# Source0-md5:	91f60a7aca6f8bc053ffddc7259ae4ec
+Source0:	http://releases.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
+# Source0-md5:	bbf02af3586f1d488e77517f8cd9f439
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}.sh
-Source100:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.cs.langpack.xpi
-# Source100-md5:	1e0b73887e5d80589c5b2fd5d8538d7f
-Source101:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.de.langpack.xpi
-# Source101-md5:	eb4bf2ab50756280d1a39c1547129ced
-Source102:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.en-GB.langpack.xpi
-# Source102-md5:	c9bea7471fabf225009a5340733e4ce2
-Source103:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.en-US.langpack.xpi
-# Source103-md5:	42f234f11bcb6a127462caaf664dc21b
-Source104:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.es-AR.langpack.xpi
-# Source104-md5:	5fdf01f31dd24c06bc0c51a74d9673a6
-Source105:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.es-ES.langpack.xpi
-# Source105-md5:	948d3dbf4452e7e46f1a0d5026d2200c
-Source106:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.fr.langpack.xpi
-# Source106-md5:	5dbd832a5d4d81aa52f7435123ade06e
-Source107:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.hu.langpack.xpi
-# Source107-md5:	b002ed727428960d34ded53ec290667b
-Source108:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.it.langpack.xpi
-# Source108-md5:	12d37399fda4202144a82b458f75d27c
-Source109:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.ja.langpack.xpi
-# Source109-md5:	f5e304d3ba8d526b28e92693f23154c9
-Source110:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.lt.langpack.xpi
-# Source110-md5:	40db7b6ee7b1ddd5723e51c335f73eec
-Source111:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.nb-NO.langpack.xpi
-# Source111-md5:	cfde049afaaba0afe9f8b85ac704ba85
-Source112:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.nl.langpack.xpi
-# Source112-md5:	21a733c0b344840a2d81958a0fe72bc1
-Source113:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.pl.langpack.xpi
-# Source113-md5:	1a2646b993dc540f09c8b04fc4107c45
-Source114:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.pt-PT.langpack.xpi
-# Source114-md5:	0e54c214e673c474400c36a934f946a8
-Source115:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.ru.langpack.xpi
-# Source115-md5:	c24ff5c5bafbfce18b0333ef31735f54
-Source116:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.sk.langpack.xpi
-# Source116-md5:	5ab1d6ebf6cee6dc822fc91e1ced4443
-Source117:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.sv-SE.langpack.xpi
-# Source117-md5:	e471259f0afcdb159ce5f0a8f24cfd5b
-Source118:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.zh-CN.langpack.xpi
-# Source118-md5:	7160e0ea724c68c6457bb5a76b996255
-Source119:	http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpacks/linux-i686/seamonkey-%{version}.zh-TW.langpack.xpi
-# Source119-md5:	5370bfa849ea4af22e6ef8d1500279c8
-Patch1:		%{name}-pld-branding.patch
-Patch2:		%{name}-agent.patch
+Source100:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.cs.langpack.xpi
+# Source100-md5:	fbd24a894e5f38c856c96e56ffcc385d
+Source101:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.de.langpack.xpi
+# Source101-md5:	f6b49b75f5243e36c4a98bf7146d6b1a
+Source102:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-GB.langpack.xpi
+# Source102-md5:	4dcbd1cd568e299f18fa2bc95cf6152c
+Source103:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-US.langpack.xpi
+# Source103-md5:	f2a4f7ac0fbf7a06c9021c357c5af503
+Source104:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-AR.langpack.xpi
+# Source104-md5:	28f2ab4ba66a0020e24d6e411c1d3b3b
+Source105:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-ES.langpack.xpi
+# Source105-md5:	83511c772e41de9c3d906bc92f47f072
+Source106:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fi.langpack.xpi
+# Source106-md5:	1767f0472e71c00e6e4c8e160dc4fbcc
+Source107:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fr.langpack.xpi
+# Source107-md5:	b6e096d2149393a4d293ddeca6a25bee
+Source108:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.hu.langpack.xpi
+# Source108-md5:	e5aecc27125a241eae56daf130e6faf3
+Source109:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.it.langpack.xpi
+# Source109-md5:	2619029fe3b09dff08a91da686607bd5
+Source110:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ja.langpack.xpi
+# Source110-md5:	2f7dc3fb8c36f27530f852cd2af1debe
+Source111:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ka.langpack.xpi
+# Source111-md5:	d6217e7033b8706a1d264d8afed2f191
+Source112:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nb-NO.langpack.xpi
+# Source112-md5:	e1e358c42db67f02e789f5e147a6ea9c
+Source113:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nl.langpack.xpi
+# Source113-md5:	abaa8c33c5051a8e3fe3826e1076c161
+Source114:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pl.langpack.xpi
+# Source114-md5:	8b0803dce15fcb73f4f196800df8af7b
+Source115:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-BR.langpack.xpi
+# Source115-md5:	fbe78878c25d68204b17e46ac865ebca
+Source116:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-PT.langpack.xpi
+# Source116-md5:	70e3c8c4b232b51ee8e290aa914f7fc6
+Source117:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ru.langpack.xpi
+# Source117-md5:	88b0109f28bd7b46d6dbd8687d1a855e
+Source118:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sk.langpack.xpi
+# Source118-md5:	5ecc927c3bb08686ad268bab206e9d4f
+Source119:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sv-SE.langpack.xpi
+# Source119-md5:	59f51d736df33d9d729d7b5ba961b911
+Source120:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-CN.langpack.xpi
+# Source120-md5:	c12a3ec7a48811f81fbbc02ab6a00ce0
+Source121:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-TW.langpack.xpi
+# Source121-md5:	36642e52ba7bd0562b5498d4760bfbec
+Patch0:		%{name}-sysctl.patch
+Patch1:		%{name}-mozilla-revert-1332139.patch
+Patch2:		%{name}-pld-branding.patch
 Patch3:		%{name}-enable-addons.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
-Patch6:		%{name}-glibc2.30.patch
-Patch7:		%{name}-crmf.patch
-Patch8:		mozilla-1389436.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
@@ -100,8 +106,8 @@ BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	fontconfig-devel >= 1:2.7.0
 BuildRequires:	freetype-devel >= 1:2.1.8
 BuildRequires:	glib2-devel >= 1:2.22
-%{!?with_gtk3:BuildRequires:	gtk+2-devel >= 2:2.18}
-%{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.4.0}
+BuildRequires:	gtk+2-devel >= 2:2.18
+BuildRequires:	gtk+3-devel >= 3.4.0
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
 BuildRequires:	hunspell-devel
 # DECnet (dnprogs.spec), not dummy net (libdnet.spec)
@@ -155,8 +161,8 @@ Requires:	browser-plugins >= 2.0
 Requires:	cairo >= 1.10.2-5
 Requires:	dbus-glib >= 0.60
 Requires:	glib2 >= 1:2.22
-%{!?with_gtk3:Requires:	gtk+2 >= 2:2.18}
-%{?with_gtk3:Requires:	gtk+3 >= 3.4.0}
+Requires:	gtk+2 >= 2:2.18
+Requires:	gtk+3 >= 3.4.0
 Requires:	libjpeg-turbo
 Requires:	libpng >= 2:1.6.21
 Requires:	libpng(APNG) >= 0.10
@@ -182,6 +188,7 @@ Obsoletes:	seamonkey-chat < 2.46
 Obsoletes:	seamonkey-calendar
 Obsoletes:	seamonkey-dom-inspector < 2.46
 Obsoletes:	seamonkey-js-debugger
+Obsoletes:	seamonkey-lang-lt < 2.53
 Obsoletes:	seamonkey-libs
 Obsoletes:	seamonkey-mailnews
 Obsoletes:	seamonkey-gnomevfs
@@ -371,6 +378,20 @@ Recursos españoles (España) para SeaMonkey.
 %description lang-es -l pl.UTF-8
 Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Hiszpanii).
 
+%package lang-fi
+Summary:	Finnish resources for SeaMonkey
+Summary(pl.UTF-8):	Fińskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-fi
+Finnish resources for SeaMonkey.
+
+%description lang-fi -l pl.UTF-8
+Fińskie pliki językowe dla SeaMonkeya.
+
 %package lang-fr
 Summary:	French resources for SeaMonkey
 Summary(pl.UTF-8):	Francuskie pliki językowe dla SeaMonkeya
@@ -431,6 +452,20 @@ Japanese resources for SeaMonkey.
 %description lang-ja -l pl.UTF-8
 Japońskie pliki językowe dla SeaMonkeya.
 
+%package lang-ka
+Summary:	Georgian resources for SeaMonkey
+Summary(pl.UTF-8):	Gruzińskie pliki językowe dla SeaMonkeya
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-ka
+Georgian resources for SeaMonkey.
+
+%description lang-ka -l pl.UTF-8
+Gruzińskie pliki językowe dla SeaMonkeya.
+
 %package lang-lt
 Summary:	Lithuanian resources for SeaMonkey
 Summary(pl.UTF-8):	Litewskie pliki językowe dla SeaMonkeya
@@ -486,6 +521,20 @@ Polish resources for SeaMonkey.
 
 %description lang-pl -l pl.UTF-8
 Polskie pliki językowe dla SeaMonkeya.
+
+%package lang-pt_BR
+Summary:	Portuguese (Brazilian) resources for SeaMonkey
+Summary(pl.UTF-8):	Portugalskie pliki językowe dla SeaMonkeya (wersja dla Brazylii)
+Group:		I18n
+Requires:	seamonkey >= %{version}
+Provides:	seamonkey-lang-resources = %{version}
+BuildArch:	noarch
+
+%description lang-pt_BR
+Portuguese (Brazilian) resources for SeaMonkey.
+
+%description lang-pt_BR -l pl.UTF-8
+Portugalskie pliki językowe dla SeaMonkeya (wersja dla Brazylii).
 
 %package lang-pt
 Summary:	Portuguese (Portugal) resources for SeaMonkey
@@ -577,19 +626,32 @@ unpack() {
 	cp -p $file .
 }
 %define __unzip unpack
-%setup -q %(seq -f '-a %g' 100 119 | xargs)
+%setup -q %(seq -f '-a %g' 100 121 | xargs)
+cd mozilla
+%patch0 -p1
 %patch1 -p1
+cd ..
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 cat << EOF > .mozconfig
 mk_add_options MOZ_OBJDIR=%{objdir}
+
+export CFLAGS="%{rpmcflags} -D_FILE_OFFSET_BITS=64"
+export CXXFLAGS="%{rpmcxxflags} -D_FILE_OFFSET_BITS=64"
+
+%if %{with lowmem}
+export CFLAGS="$CFLAGS -g0"
+export CXXFLAGS="$CXXFLAGS -g0"
+export MOZ_DEBUG_FLAGS=" "
+export LLVM_USE_SPLIT_DWARF=1
+export LLVM_PARALLEL_LINK_JOBS=1
+export MOZ_LINK_FLAGS="-Wl,--no-keep-memory -Wl,--reduce-memory-overheads"
+export RUSTFLAGS="-Cdebuginfo=0"
+%endif
 
 %if %{with crashreporter}
 export MOZ_DEBUG_SYMBOLS=1
@@ -597,6 +659,7 @@ export MOZ_DEBUG_SYMBOLS=1
 
 # Options for 'configure' (same as command-line options).
 ac_add_options --prefix=%{_prefix}
+ac_add_options --libdir=%{_libdir}
 %if %{?debug:1}0
 ac_add_options --disable-optimize
 ac_add_options --enable-crash-on-assert
@@ -605,9 +668,9 @@ ac_add_options --enable-debug-modules
 ac_add_options --enable-debugger-info-modules
 %else
 ac_add_options --disable-debug
-ac_add_options --enable-optimize="%{rpmcflags} -Os"
 %endif
 ac_add_options --disable-strip
+ac_add_options --disable-install-strip
 %if %{with tests}
 ac_add_options --enable-tests
 %else
@@ -619,7 +682,6 @@ ac_add_options --enable-crashreporter
 ac_add_options --disable-crashreporter
 %endif
 ac_add_options --disable-elf-hack
-ac_add_options --disable-gnomeui
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-updater
 ac_add_options --enable-application=suite
@@ -627,22 +689,21 @@ ac_add_options --enable-application=suite
 ac_add_options --enable-calendar
 %endif
 ac_add_options --enable-chrome-format=omni
-ac_add_options --enable-default-toolkit=%{?with_gtk3:cairo-gtk3}%{!?with_gtk3:cairo-gtk2}
+ac_add_options --enable-default-toolkit=cairo-gtk3
+ac_add_options --enable-dominspector
 ac_add_options --enable-extensions=default
-ac_add_options --enable-gio
+ac_add_options --enable-irc
 %if %{with ldap}
 ac_add_options --enable-ldap
 %else
 ac_add_options --disable-ldap
 %endif
-ac_add_options --enable-safe-browsing
 # breaks build
 #ac_add_options --enable-shared-js
 ac_add_options --enable-startup-notification
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-sqlite
-ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
@@ -653,7 +714,9 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
+ac_add_options --with-system-pixman
 ac_add_options --with-system-png
+ac_add_options --with-system-sqlite
 ac_add_options --with-system-zlib
 EOF
 
@@ -664,7 +727,7 @@ EOF
 	installdir=%{_libdir}/%{name} \
 	XLIBS="-lX11 -lXt" \
 	CC="%{__cc}" \
-	CXX="%{__cxx} -std=gnu++11"
+	CXX="%{__cxx}"
 
 %if %{with crashreporter}
 # create debuginfo for crash-stats.mozilla.com
@@ -705,12 +768,10 @@ cp -a dist/%{name}-%{version}.en-US.linux-*.crashreporter-symbols.zip $RPM_BUILD
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name}/fonts $RPM_BUILD_ROOT%{_datadir}/%{name}/fonts
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 
 ln -s ../../share/%{name}/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/%{name}/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/%{name}/fonts $RPM_BUILD_ROOT%{_libdir}/%{name}/fonts
-ln -s ../../share/%{name}/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name}/isp $RPM_BUILD_ROOT%{_datadir}/%{name}/isp
 ln -s ../../share/%{name}/isp $RPM_BUILD_ROOT%{_libdir}/%{name}/isp
@@ -729,31 +790,14 @@ chmod a+rx $RPM_BUILD_ROOT%{_bindir}/seamonkey
 install %{SOURCE4} %{SOURCE5} %{SOURCE7} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 
-for d in 32 48 64 ; do
+for d in 16 32 48 64 128 ; do
 install -d $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps
-cp -p %{topdir}/suite/branding/nightly/content/icon${d}.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
+if [ $d -eq 32 ]; then
+cp -p %{topdir}/suite/branding/seamonkey/default.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
+else
+cp -p %{topdir}/suite/branding/seamonkey/default${d}.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
+fi
 done
-
-# files created by seamonkey -register
-touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/compreg.dat
-touch $RPM_BUILD_ROOT%{_libdir}/%{name}/components/xpti.dat
-
-cat << 'EOF' > $RPM_BUILD_ROOT%{_libdir}/%{name}/register
-#!/bin/sh
-umask 022
-rm -f %{_libdir}/%{name}/components/{compreg,xpti}.dat
-
-# it attempts to touch files in $HOME/.mozilla
-# beware if you run this with sudo!!!
-export HOME=$(mktemp -d)
-# also TMPDIR could be pointing to sudo user's homedir
-unset TMPDIR TMP || :
-
-%{_libdir}/%{name}/seamonkey -register
-
-rm -rf $HOME
-EOF
-chmod 755 $RPM_BUILD_ROOT%{_libdir}/%{name}/register
 
 # don't package, rely on system mozldap libraries
 %{__sed} -i '/lib\(ldap\|ldif\|prldap\)60.so/d' $RPM_BUILD_ROOT%{_libdir}/%{name}/dependentlibs.list
@@ -766,11 +810,12 @@ for a in *.xpi; do
 	cp -p $a $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/langpack-$basename@seamonkey.mozilla.org.xpi
 done
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/%{name}/{license.txt,precomplete,removed-files}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%{_libdir}/%{name}/register || :
 %update_browser_plugins
 %update_icon_cache hicolor
 %update_desktop_database
@@ -803,7 +848,6 @@ fi
 
 %{_libdir}/%{name}/blocklist.xml
 %{_libdir}/%{name}/omni.ja
-%attr(755,root,root) %{_libdir}/%{name}/register
 
 %if %{with crashreporter}
 %{_libdir}/%{name}/crashreporter
@@ -816,14 +860,11 @@ fi
 %{_libdir}/%{name}/application.ini
 %{_libdir}/%{name}/chrome.manifest
 
-%dir %{_libdir}/%{name}/components
-%{_libdir}/%{name}/components/components.manifest
-%attr(755,root,root) %{_libdir}/%{name}/components/libsuite.so
-
 %{_libdir}/%{name}/dependentlibs.list
 %{_libdir}/%{name}/platform.ini
 %attr(755,root,root) %{_libdir}/%{name}/run-mozilla.sh
 %attr(755,root,root) %{_libdir}/%{name}/seamonkey-bin
+%attr(755,root,root) %{_libdir}/%{name}/pingsender
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
 %attr(755,root,root) %{_libdir}/%{name}/seamonkey
@@ -834,13 +875,11 @@ fi
 %{_libdir}/%{name}/defaults
 %{_libdir}/%{name}/fonts
 %{_libdir}/%{name}/dictionaries
-%{_libdir}/%{name}/searchplugins
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/fonts
-%{_datadir}/%{name}/searchplugins
 
 %dir %{_libdir}/%{name}/distribution
 %dir %{_libdir}/%{name}/distribution/extensions
@@ -850,10 +889,6 @@ fi
 # the signature of the default theme
 %{_libdir}/%{name}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}.xpi
 %{_libdir}/%{name}/extensions/modern@themes.mozilla.org.xpi
-
-# files created by seamonkey -register
-%ghost %{_libdir}/%{name}/components/compreg.dat
-%ghost %{_libdir}/%{name}/components/xpti.dat
 
 %{_libdir}/%{name}/isp
 %dir %{_datadir}/%{name}/isp
@@ -873,7 +908,7 @@ fi
 %if %{with lightning}
 %files addon-lightning
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}
+%{_libdir}/%{name}/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}.xpi
 %endif
 
 %files chat
@@ -908,6 +943,10 @@ fi
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/extensions/langpack-es-ES@seamonkey.mozilla.org.xpi
 
+%files lang-fi
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-fi@seamonkey.mozilla.org.xpi
+
 %files lang-fr
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/extensions/langpack-fr@seamonkey.mozilla.org.xpi
@@ -924,9 +963,13 @@ fi
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/extensions/langpack-ja@seamonkey.mozilla.org.xpi
 
-%files lang-lt
+%files lang-ka
 %defattr(644,root,root,755)
-%{_datadir}/%{name}/extensions/langpack-lt@seamonkey.mozilla.org.xpi
+%{_datadir}/%{name}/extensions/langpack-ka@seamonkey.mozilla.org.xpi
+
+#%files lang-lt
+#%defattr(644,root,root,755)
+#%{_datadir}/%{name}/extensions/langpack-lt@seamonkey.mozilla.org.xpi
 
 %files lang-nb
 %defattr(644,root,root,755)
@@ -939,6 +982,10 @@ fi
 %files lang-pl
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/extensions/langpack-pl@seamonkey.mozilla.org.xpi
+
+%files lang-pt_BR
+%defattr(644,root,root,755)
+%{_datadir}/%{name}/extensions/langpack-pt-BR@seamonkey.mozilla.org.xpi
 
 %files lang-pt
 %defattr(644,root,root,755)
