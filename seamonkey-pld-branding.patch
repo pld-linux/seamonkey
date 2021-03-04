@@ -1,5 +1,5 @@
---- seamonkey-2.53.4/mozilla/browser/locales/generic/profile/bookmarks.html.in.orig	2020-02-18 00:37:47.000000000 +0100
-+++ seamonkey-2.53.4/mozilla/browser/locales/generic/profile/bookmarks.html.in	2020-10-08 21:07:26.482740347 +0200
+--- seamonkey-2.53.4/browser/locales/generic/profile/bookmarks.html.in.orig	2020-02-18 00:37:47.000000000 +0100
++++ seamonkey-2.53.4/browser/locales/generic/profile/bookmarks.html.in	2020-10-08 21:07:26.482740347 +0200
 @@ -16,6 +16,8 @@
  #define mdn_icon data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAACYklEQVQ4y3WSTYjNYRTGf+f9/+/NuDN3GKMxt1mYpKR8RT6zEk1iyUo2IysSNspCxEIZRSN07YiUJSWkaUIZizELMzIZlO9h3MzXvf/341jcmTGa69RZvKfnPOc5z3mhQlRd651Ry17tqQQl5uR9ONHC3EtdiPPxWKZ24bhJvQV0OlBHhiV7pTs3WpUdEmeLrnWJAhhOtJA5/3RjqZg8Lrnwy4bQT/DvTb73Qt3N9ymATNvTU15Mvx8vfvTWDrmgT0y+dzuAZM527lM0Xx6jFKvnEKIYvIIqVeMFRCfEiDBWMw9UQUBUT8fBWvmrU9HEUpUWDq2cT23a0P6kQEqEwTFLQCBJpm9mYrV+6lW0ngNr62jb0kw6KvMeXJohZYSLzz9xvOMDJG6aPUKMtZPDObq+iXPbmoG/ooJC0QVaVy2g5AI3Bkq8/jYCkQEBo9ah1hESS1N1Gu9DxXNFRji0oYm+/Stoaa4tK0kcRq1HE4fxHqOKEf4bk16ubphd9iKxGKxFrcOWLB1vvuOCzmg0Irig1MxKMfBznPbOd2DLCmJNHKgSIdzr/kjXhwKbFtVPNQ+NJiw7+YDh0YTFuVr6CwLpaNJDjCYOtR61DldyHL7975c9dqeH4ZESscC7r79BFBI7kY5YrZsCC8qL/kFyR+6yY0UjS3M1PHz5ich71IOIQGSn0cskwdTeryTyfV9+jGzOP3rTQAiIHUNQEBkCeUbkcqguB2JEMGqt4sJlg8lGIsv0+p5dON8YaVgn3veJ85/F61YNtn5uXf3OCF0TQVacP0PiXMVzpfbemlnbna+I/QPSFTsRLd+hHAAAAABJRU5ErkJggg==
  
