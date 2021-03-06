@@ -198,6 +198,8 @@ Obsoletes:	seamonkey-libs < 1.1.8-2
 Obsoletes:	seamonkey-mailnews < 2.9.1
 Obsoletes:	seamonkey-gnomevfs < 2.9.1
 Conflicts:	seamonkey-lang-resources < %{version}
+# TODO: change to supported archs list
+ExcludeArch:	x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		topdir		%{_builddir}/%{name}-%{version}
