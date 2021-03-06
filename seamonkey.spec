@@ -171,22 +171,32 @@ Requires:	pixman >= 0.19.2
 Requires:	startup-notification >= 0.8
 Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
-Obsoletes:	iceape
-Obsoletes:	iceape-js-debugger
-Obsoletes:	iceape-mailnews
-Obsoletes:	iceape-gnomevfs
-Obsoletes:	light
-Obsoletes:	mozilla
-Obsoletes:	mozilla-gnomevfs
-Obsoletes:	seamonkey-addon-lightning < 2.46
-Obsoletes:	seamonkey-chat < 2.46
-Obsoletes:	seamonkey-calendar
-Obsoletes:	seamonkey-dom-inspector < 2.46
-Obsoletes:	seamonkey-js-debugger
+Obsoletes:	iceape < 2.47
+Obsoletes:	iceape-js-debugger < 2.40
+Obsoletes:	iceape-lang-be < 2.47
+Obsoletes:	iceape-lang-ca < 2.47
+Obsoletes:	iceape-lang-gl < 2.47
+Obsoletes:	iceape-lang-lt < 2.47
+Obsoletes:	iceape-lang-tr < 2.47
+Obsoletes:	iceape-lang-uk < 2.47
+Obsoletes:	iceape-mailnews < 2.9
+Obsoletes:	iceape-gnomevfs < 2.9
+Obsoletes:	light < 1.4.13
+Obsoletes:	mozilla < 1.8
+Obsoletes:	mozilla-gnomevfs < 1.8
+Obsoletes:	mozilla-js-debugger < 1.8
+Obsoletes:	mozilla-mailnews < 1.8
+Obsoletes:	seamonkey-calendar < 1.1
+Obsoletes:	seamonkey-js-debugger < 2.31
+Obsoletes:	seamonkey-lang-be < 2.47
+Obsoletes:	seamonkey-lang-ca < 2.47
+Obsoletes:	seamonkey-lang-gl < 2.47
 Obsoletes:	seamonkey-lang-lt < 2.53
-Obsoletes:	seamonkey-libs
-Obsoletes:	seamonkey-mailnews
-Obsoletes:	seamonkey-gnomevfs
+Obsoletes:	seamonkey-lang-tr < 2.47
+Obsoletes:	seamonkey-lang-uk < 2.47
+Obsoletes:	seamonkey-libs < 1.1.8-2
+Obsoletes:	seamonkey-mailnews < 2.9.1
+Obsoletes:	seamonkey-gnomevfs < 2.9.1
 Conflicts:	seamonkey-lang-resources < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -227,7 +237,7 @@ Summary:	An integrated calendar for SeaMonkey
 Summary(pl.UTF-8):	Zintegrowany kalendarz dla SeaMonkey
 Group:		Applications/Networking
 Requires:	%{name} = %{version}-%{release}
-Obsoletes:	iceape-addon-lightning
+Obsoletes:	iceape-addon-lightning < 2.46
 
 %description addon-lightning
 Lightning is an calendar extension to Icedove email client.
@@ -242,8 +252,8 @@ Summary(pl.UTF-8):	SeaMonkey Community Edition Chat - zintegrowany klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{version}-%{release}
 Requires:	%{name} = %{version}-%{release}
-Obsoletes:	iceape-chat
-Obsoletes:	mozilla-chat
+Obsoletes:	iceape-chat < 2.46
+Obsoletes:	mozilla-chat < 1.8
 
 %description chat
 SeaMonkey Community Edition Chat - IRC client that is integrated with
@@ -259,8 +269,8 @@ Summary(pl.UTF-8):	Narzędzie do oglądania DOM stron w SeaMonkey Community Edit
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{version}-%{release}
 Requires:	%{name} = %{version}-%{release}
-Obsoletes:	iceape-dom-inspector
-Obsoletes:	mozilla-dom-inspector
+Obsoletes:	iceape-dom-inspector < 2.46
+Obsoletes:	mozilla-dom-inspector < 1.8
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
@@ -279,6 +289,7 @@ Summary(pl.UTF-8):	Czeskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-cs < 2.47
 BuildArch:	noarch
 
 %description lang-cs
@@ -293,6 +304,7 @@ Summary(pl.UTF-8):	Niemieckie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-de < 2.47
 BuildArch:	noarch
 
 %description lang-de
@@ -321,6 +333,7 @@ Summary(pl.UTF-8):	Angielskie (brytyjskie) pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-en_GB < 2.47
 BuildArch:	noarch
 
 %description lang-en_GB
@@ -335,6 +348,7 @@ Summary(pl.UTF-8):	Angielskie (amerykańskie) pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-en_US < 2.47
 BuildArch:	noarch
 
 %description lang-en_US
@@ -351,6 +365,7 @@ Summary(pl.UTF-8):	Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Andor
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-es_AR < 2.47
 BuildArch:	noarch
 
 %description lang-es_AR
@@ -373,6 +388,7 @@ Summary(pl.UTF-8):	Hiszpańskie pliki językowe dla SeaMonkeya (wersja dla Hiszp
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-es < 2.47
 BuildArch:	noarch
 
 %description lang-es
@@ -393,6 +409,7 @@ Summary(pl.UTF-8):	Fińskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-fi < 2.47
 BuildArch:	noarch
 
 %description lang-fi
@@ -407,6 +424,7 @@ Summary(pl.UTF-8):	Francuskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-fr < 2.47
 BuildArch:	noarch
 
 %description lang-fr
@@ -422,6 +440,7 @@ Summary(pl.UTF-8):	Węgierskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-hu < 2.47
 BuildArch:	noarch
 
 %description lang-hu
@@ -439,6 +458,7 @@ Summary(pl.UTF-8):	Włoskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-it < 2.47
 BuildArch:	noarch
 
 %description lang-it
@@ -453,6 +473,7 @@ Summary(pl.UTF-8):	Japońskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-ja < 2.47
 BuildArch:	noarch
 
 %description lang-ja
@@ -481,6 +502,7 @@ Summary(pl.UTF-8):	Litewskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-lt < 2.47
 BuildArch:	noarch
 
 %description lang-lt
@@ -495,6 +517,7 @@ Summary(pl.UTF-8):	Norweskie (bokmaal) pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-nb < 2.47
 BuildArch:	noarch
 
 %description lang-nb
@@ -509,6 +532,7 @@ Summary(pl.UTF-8):	Holenderskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-nl < 2.47
 BuildArch:	noarch
 
 %description lang-nl
@@ -523,6 +547,7 @@ Summary(pl.UTF-8):	Polskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-pl < 2.47
 BuildArch:	noarch
 
 %description lang-pl
@@ -551,6 +576,7 @@ Summary(pl.UTF-8):	Portugalskie pliki językowe dla SeaMonkeya (wersja dla Portu
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-pt < 2.47
 BuildArch:	noarch
 
 %description lang-pt
@@ -565,6 +591,7 @@ Summary(pl.UTF-8):	Rosyjskie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-ru < 2.47
 BuildArch:	noarch
 
 %description lang-ru
@@ -579,6 +606,7 @@ Summary(pl.UTF-8):	Słowackie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-sk < 2.47
 BuildArch:	noarch
 
 %description lang-sk
@@ -593,6 +621,7 @@ Summary(pl.UTF-8):	Szwedzkie pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-sv < 2.47
 BuildArch:	noarch
 
 %description lang-sv
@@ -607,6 +636,7 @@ Summary(pl.UTF-8):	Chińskie (uproszczone) pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-zh_CN < 2.47
 BuildArch:	noarch
 
 %description lang-zh_CN
@@ -621,6 +651,7 @@ Summary(pl.UTF-8):	Chińskie tradycyjne pliki językowe dla SeaMonkeya
 Group:		I18n
 Requires:	seamonkey >= %{version}
 Provides:	seamonkey-lang-resources = %{version}
+Obsoletes:	iceape-lang-zh_TW < 2.47
 BuildArch:	noarch
 
 %description lang-zh_TW
