@@ -30,62 +30,62 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.53.6
+Version:	2.53.8.1
 Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	http://releases.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
-# Source0-md5:	045ca741d5fac8aa87b4be617969ff9a
+# Source0-md5:	3cba72ec6a37f7c68fac48876a3a5f8f
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}.sh
 Source100:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.cs.langpack.xpi
-# Source100-md5:	fc276bd4bf965f32b15592ccf4e09238
+# Source100-md5:	94593194c153f8436cb0f1a3b28a2f69
 Source101:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.de.langpack.xpi
-# Source101-md5:	738b08e05b885544c4946a70cfbd66a5
+# Source101-md5:	6874c56c3ed7380edf47980b1ef957eb
 Source102:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.el.langpack.xpi
-# Source102-md5:	87ccb1366dd23813bc0264ea67cc126b
+# Source102-md5:	3c5a86e85a1eabb04c5796c63f31bb8d
 Source103:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-GB.langpack.xpi
-# Source103-md5:	e2cb02e017fcb25a8d3ecdb3704b9df3
+# Source103-md5:	71ef6f07668b4d2bdfa2763c1cea4160
 Source104:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-US.langpack.xpi
-# Source104-md5:	3df6da0ab4cb04078ebbe798b3810e74
+# Source104-md5:	55e5ac585e0b8ea5be3ca45896eb06a0
 Source105:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-AR.langpack.xpi
-# Source105-md5:	948ff8345efdb5aac5f5e68f0ec41518
+# Source105-md5:	f3bb6d37c4448a12f1d70e38c3690f13
 Source106:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-ES.langpack.xpi
-# Source106-md5:	e141b8fa7ead9789d4c33752a8143040
+# Source106-md5:	ef701301ec683f0aa1929bd46d3991c5
 Source107:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fi.langpack.xpi
-# Source107-md5:	fe57689c3d780ee3507e6d2794faa59c
+# Source107-md5:	e5b73e3c55c22486f8a51d9fc1f43279
 Source108:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fr.langpack.xpi
-# Source108-md5:	470cfc441d07b933e53e05e23ce61c01
+# Source108-md5:	8d248ae28fe1ae486d43f3784b874a82
 Source109:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.hu.langpack.xpi
-# Source109-md5:	b1cba1cf46e57a6c0e2485785d06f1ee
+# Source109-md5:	13b3fe09806c2c4f37bab7a452779885
 Source110:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.it.langpack.xpi
-# Source110-md5:	0cc4c10e7d3a6f26b26eb857dee1a89e
+# Source110-md5:	75b70bedf8ac261eb7048591ef18fd4b
 Source111:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ja.langpack.xpi
-# Source111-md5:	f0ce347625936155e34ae37642ea9d6f
+# Source111-md5:	30657d2ffe578e8dd9d47b70dc5e4de3
 Source112:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ka.langpack.xpi
-# Source112-md5:	be8898de65266fa5cf412c5ef54e13d1
+# Source112-md5:	508dc8520c55487723ba9a38b3d670b5
 Source113:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nb-NO.langpack.xpi
-# Source113-md5:	fe407da48dadd42fd9b9db8c38ef8ef2
+# Source113-md5:	7fbc6c1931ceaa9ab5ab6376307f8270
 Source114:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nl.langpack.xpi
-# Source114-md5:	a4ab0f878a2c756b07ce2368bd9d711c
+# Source114-md5:	8fd3ab64b7b55904302a7544b44a7497
 Source115:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pl.langpack.xpi
-# Source115-md5:	9211ababef041b36ac8e080e0145f755
+# Source115-md5:	de09cb897a822346887a84fdadd7ed5f
 Source116:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-BR.langpack.xpi
-# Source116-md5:	1caedbdceb03205738ab1214dbd261c5
+# Source116-md5:	bf8b76312f992d72c10a0b93e0c599ce
 Source117:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-PT.langpack.xpi
-# Source117-md5:	7208de5de55837b87b030ef44b9b40e5
+# Source117-md5:	51ac452e37e5af2aa73a56bc3c0b5d7f
 Source118:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ru.langpack.xpi
-# Source118-md5:	84b45a3b6ae5091716affe1491ffc992
+# Source118-md5:	bb24b5bf4161333fad3953daed423caf
 Source119:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sk.langpack.xpi
-# Source119-md5:	f5d261537549c45b2143e8f504096e24
+# Source119-md5:	90b9e5e8d62b3a017bd68b581ed6273b
 Source120:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sv-SE.langpack.xpi
-# Source120-md5:	ce22eae780150bbb2c630bce4fdf721b
+# Source120-md5:	6491ef421621eae93105ec218af3cfae
 Source121:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-CN.langpack.xpi
-# Source121-md5:	d26cf32689c5dbe9b190fd817e6fe4aa
+# Source121-md5:	409bc991e143425869ced24e2ce40881
 Source122:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-TW.langpack.xpi
-# Source122-md5:	90b06447fcbf80104a1f4ddffa5cbc43
+# Source122-md5:	a2462056b235a8806e19078df77a296c
 Patch1:		%{name}-mozilla-revert-1332139.patch
 Patch2:		%{name}-pld-branding.patch
 Patch3:		%{name}-enable-addons.patch
@@ -751,7 +751,7 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
-%{__make} -j1 -f client.mk build \
+%{__make} -j1 build \
 	AUTOCONF=/usr/bin/autoconf2_13 \
 	STRIP="/bin/true" \
 	MOZ_MAKE_FLAGS="%{?_smp_mflags}" \
