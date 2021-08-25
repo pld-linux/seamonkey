@@ -92,6 +92,7 @@ Patch3:		%{name}-enable-addons.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
+Patch6:		rust-1.54.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	OpenGL-devel
@@ -674,6 +675,7 @@ unpack() {
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 %build
 cat << EOF > .mozconfig
@@ -823,11 +825,7 @@ install %{SOURCE4} %{SOURCE5} %{SOURCE7} \
 
 for d in 16 32 48 64 128 ; do
 install -d $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps
-if [ $d -eq 32 ]; then
-cp -p %{topdir}/comm/suite/branding/seamonkey/default.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
-else
 cp -p %{topdir}/comm/suite/branding/seamonkey/default${d}.png $RPM_BUILD_ROOT%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
-fi
 done
 
 # don't package, rely on system mozldap libraries
@@ -896,7 +894,6 @@ fi
 %{_libdir}/%{name}/platform.ini
 %attr(755,root,root) %{_libdir}/%{name}/run-mozilla.sh
 %attr(755,root,root) %{_libdir}/%{name}/seamonkey-bin
-%attr(755,root,root) %{_libdir}/%{name}/pingsender
 %attr(755,root,root) %{_libdir}/%{name}/plugin-container
 
 %attr(755,root,root) %{_libdir}/%{name}/seamonkey
@@ -912,9 +909,6 @@ fi
 %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/fonts
-
-%dir %{_libdir}/%{name}/distribution
-%dir %{_libdir}/%{name}/distribution/extensions
 
 %dir %{_datadir}/%{name}/extensions
 %dir %{_libdir}/%{name}/extensions
@@ -940,16 +934,16 @@ fi
 %if %{with lightning}
 %files addon-lightning
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/distribution/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}.xpi
+%{_libdir}/%{name}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}.xpi
 %endif
 
 %files chat
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/distribution/extensions/{59c81df5-4b7a-477b-912d-4e0fdf64e5f2}.xpi
+%{_libdir}/%{name}/extensions/{59c81df5-4b7a-477b-912d-4e0fdf64e5f2}.xpi
 
 %files dom-inspector
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/distribution/extensions/inspector@mozilla.org.xpi
+%{_libdir}/%{name}/extensions/inspector@mozilla.org.xpi
 
 %files lang-cs
 %defattr(644,root,root,755)
