@@ -10,3 +10,12 @@
  
      @property
      def bin_path(self):
+@@ -424,7 +424,7 @@
+                 handle_package(package)
+ 
+             sitecustomize = os.path.join(
+-                os.path.dirname(os.__file__), 'sitecustomize.py')
++                os.path.dirname(distutils.sysconfig.get_python_lib()), 'sitecustomize.py')
+             with open(sitecustomize, 'w') as f:
+                 f.write(
+                     '# Importing mach_bootstrap has the side effect of\n'
