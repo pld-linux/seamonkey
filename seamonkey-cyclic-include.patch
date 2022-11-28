@@ -1,0 +1,20 @@
+--- seamonkey-2.53.14/extensions/spellcheck/src/mozSpellChecker.h.orig	2020-02-18 00:37:50.000000000 +0100
++++ seamonkey-2.53.14/extensions/spellcheck/src/mozSpellChecker.h	2022-11-27 07:17:16.420656526 +0100
+@@ -17,7 +17,6 @@
+ #include "nsTArray.h"
+ #include "mozISpellI18NUtil.h"
+ #include "nsCycleCollectionParticipant.h"
+-#include "RemoteSpellCheckEngineChild.h"
+ 
+ namespace mozilla {
+ class RemoteSpellcheckEngineChild;
+--- seamonkey-2.53.14/extensions/spellcheck/src/mozSpellChecker.cpp.orig	2020-02-18 00:37:50.000000000 +0100
++++ seamonkey-2.53.14/extensions/spellcheck/src/mozSpellChecker.cpp	2022-11-26 15:23:46.187257633 +0100
+@@ -13,6 +13,7 @@
+ #include "mozilla/PRemoteSpellcheckEngineChild.h"
+ #include "mozilla/dom/ContentChild.h"
+ #include "nsXULAppAPI.h"
++#include "RemoteSpellCheckEngineChild.h"
+ 
+ using mozilla::dom::ContentChild;
+ using mozilla::GenericPromise;

@@ -1,16 +1,16 @@
---- seamonkey-2.53.6/python/mozbuild/mozbuild/virtualenv.py.orig	2020-10-09 08:14:38.869199627 +0200
-+++ seamonkey-2.53.6/python/mozbuild/mozbuild/virtualenv.py	2020-10-09 08:30:19.570770076 +0200
-@@ -66,8 +66,7 @@
+--- seamonkey-2.53.14/python/mozbuild/mozbuild/virtualenv.py.orig	2022-08-24 21:55:13.000000000 +0200
++++ seamonkey-2.53.14/python/mozbuild/mozbuild/virtualenv.py	2022-11-25 22:13:52.882020703 +0100
+@@ -73,8 +73,7 @@ class VirtualenvManager(object):
      @property
      def virtualenv_script_path(self):
          """Path to virtualenv's own populator script."""
 -        return os.path.join(self.topsrcdir, 'third_party', 'python',
--            'virtualenv', 'virtualenv.py')
+-                            'virtualenv', 'virtualenv.py')
 +        return '/usr/bin/virtualenv-2'
  
      @property
      def bin_path(self):
-@@ -424,7 +424,7 @@
+@@ -448,7 +447,7 @@ class VirtualenvManager(object):
                  handle_package(package)
  
              sitecustomize = os.path.join(
