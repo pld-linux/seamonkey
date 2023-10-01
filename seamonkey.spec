@@ -98,6 +98,7 @@ Patch3:		%{name}-enable-addons.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch4:		%{name}-system-virtualenv.patch
 Patch5:		%{name}-icu-detect.patch
+Patch6:		binutils2.41.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	autoconf2_13 >= 2.13
@@ -681,6 +682,7 @@ unpack() {
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1 -d media/ffvpx
 
 %build
 cat << EOF > .mozconfig
