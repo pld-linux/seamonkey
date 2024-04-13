@@ -20,7 +20,7 @@
 %endif
 
 %define		nspr_ver	4.32
-%define		nss_ver		3.79.2
+%define		nss_ver		3.90
 
 # UPDATING TRANSALTIONS:
 %if 0
@@ -36,74 +36,74 @@ Summary(es.UTF-8):	Navegador de Internet SeaMonkey Community Edition
 Summary(pl.UTF-8):	SeaMonkey Community Edition - przeglądarka WWW
 Summary(pt_BR.UTF-8):	Navegador SeaMonkey Community Edition
 Name:		seamonkey
-Version:	2.53.16
-Release:	2
+Version:	2.53.18
+Release:	1
 License:	MPL v2.0
 Group:		X11/Applications/Networking
 Source0:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/source/%{name}-%{version}.source.tar.xz
-# Source0-md5:	92ebcb6d9410442a9c1cf9c321f292f4
+# Source0-md5:	6ac064816caa2c3fe6bc1f130bd9599b
 Source4:	%{name}.desktop
 Source5:	%{name}-composer.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}.sh
 Source100:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.cs.langpack.xpi
-# Source100-md5:	8c4648bfd3c19d1a8c3dfb68bc9dce04
+# Source100-md5:	9c8bac37197299450f9f0640d36513ff
 Source101:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.de.langpack.xpi
-# Source101-md5:	55e39428c260dc47c8e2379cf32ef019
+# Source101-md5:	67de9240a5f47d08a3aa0e05b84ae2fd
 Source102:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.el.langpack.xpi
-# Source102-md5:	323e5cca28b630725c5ce131c0c29f53
+# Source102-md5:	a6dd39b888a42261475b29d5b9c2afc3
 Source103:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-GB.langpack.xpi
-# Source103-md5:	414d0e4c15c001c6b4cb607cad469fc9
+# Source103-md5:	58cfb46eae8cfced94b429817b30dec1
 Source104:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.en-US.langpack.xpi
-# Source104-md5:	12fc29f85abf2b24d5b3ac029c26e258
+# Source104-md5:	0170a5f8e4314bed6fce4ec42b1a6676
 Source105:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-AR.langpack.xpi
-# Source105-md5:	bcc008d78b33288629ff66e441ddadc0
+# Source105-md5:	a9137c2d369d80e4da5d706e838b0b90
 Source106:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.es-ES.langpack.xpi
-# Source106-md5:	0df0d1acaea09fe46da5a66796117f9a
+# Source106-md5:	b86936b85c43986f601fe105f1a128ee
 Source107:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fi.langpack.xpi
-# Source107-md5:	c82a4c0bf3694edee295def61411ab51
+# Source107-md5:	c197113dbca44a23e90666245f20cff0
 Source108:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.fr.langpack.xpi
-# Source108-md5:	7ea97447adaf6f20b581532704872946
+# Source108-md5:	4ee5600b2dc983a080f3208c7a4389a7
 Source109:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.hu.langpack.xpi
-# Source109-md5:	4d6654fb9fdbc49d278142ae46b68adb
+# Source109-md5:	16775c3d1099c76d293944f8a618b930
 Source110:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.it.langpack.xpi
-# Source110-md5:	0f4dbaab441ecb6cecc7f9ee68a3f170
+# Source110-md5:	73ffd5f16cb42c5c2e175dad98f5c36b
 Source111:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ja.langpack.xpi
-# Source111-md5:	499952e27588b7c7d3af859d6dd93ed0
+# Source111-md5:	790f607d8686041649cb6d25a16c6665
 Source112:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ka.langpack.xpi
-# Source112-md5:	99654f41a21bbe05366b22054b3358e9
+# Source112-md5:	d1e7a96d2ad0198fd8502fcd6b2ad6e4
 Source113:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nb-NO.langpack.xpi
-# Source113-md5:	418f5db3b9f3c92bc191e85368c1aa3f
+# Source113-md5:	d73a43b445dbd904ce34e109cc1eb7c9
 Source114:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.nl.langpack.xpi
-# Source114-md5:	d877ef0c0b0307945f2ba7bab7cd054b
+# Source114-md5:	8582b43803cc7ff38883aab7165b33ce
 Source115:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pl.langpack.xpi
-# Source115-md5:	d86884970907ffde26698f8c4c840a51
+# Source115-md5:	e125bbf76efa67d1afd495a808844351
 Source116:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-BR.langpack.xpi
-# Source116-md5:	14549e4e83520c7dffb320c446b33d1b
+# Source116-md5:	f28564c0d3f34eec08141f3d8eb38c2a
 Source117:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.pt-PT.langpack.xpi
-# Source117-md5:	2c8f1a69893b9d5a726e05d84c3e3948
+# Source117-md5:	b92809004b73904985e295e9d519d73b
 Source118:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.ru.langpack.xpi
-# Source118-md5:	14c8b4f3a2f9483640b912ab4f5277b6
+# Source118-md5:	91bbde04e7b9897bdc70e21c3fb49216
 Source119:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sk.langpack.xpi
-# Source119-md5:	8a6910c49916ed9e27f994a7e61056c4
+# Source119-md5:	3cd03d5b6866f15cf559113c3788fbcf
 Source120:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.sv-SE.langpack.xpi
-# Source120-md5:	958397e070fe405d90a59abd586add57
+# Source120-md5:	b16a9aafa2ebcbe2907de735b43f1eff
 Source121:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-CN.langpack.xpi
-# Source121-md5:	8c19c8bf20ecedd2d7c65844d2951b71
+# Source121-md5:	ecbc19c599e637ec1ed0c5b9bed135db
 Source122:	https://releases.mozilla.org/pub/seamonkey/releases/%{version}/langpack/seamonkey-%{version}.zh-TW.langpack.xpi
-# Source122-md5:	23067733d78ba08a0ff14cec46968a30
+# Source122-md5:	5020c2761abdaf2704adee3ea773d5ee
 Patch1:		%{name}-mozilla-revert-1332139.patch
 Patch2:		%{name}-pld-branding.patch
 Patch3:		%{name}-enable-addons.patch
 # Edit patch below and restore --system-site-packages when system virtualenv gets 1.7 upgrade
 Patch4:		%{name}-system-virtualenv.patch
-Patch5:		%{name}-icu-detect.patch
-Patch6:		binutils2.41.patch
+Patch7:		glibc-double.patch
 URL:		https://www.seamonkey-project.org/
 BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	autoconf2_13 >= 2.13
 %{?with_system_cairo:BuildRequires:	cairo-devel >= 1.10.2-5}
 BuildRequires:	cargo
+BuildRequires:	dbus-devel >= 0.60
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	fontconfig-devel >= 1:2.7.0
 # pkgconfig(freetype2) >= 9.10.3
@@ -112,13 +112,12 @@ BuildRequires:	glib2-devel >= 1:2.22
 BuildRequires:	gn
 BuildRequires:	gtk+3-devel >= 3.4.0
 %{?with_kerberos:BuildRequires:	heimdal-devel >= 0.7.1}
-BuildRequires:	hunspell-devel
 # DECnet (dnprogs.spec), not dummy net (libdnet.spec)
 #BuildRequires:	libdnet-devel
 BuildRequires:	libevent-devel >= 1.4.7
 # standalone libffi 3.0.9 or gcc's from 4.5(?)+
 BuildRequires:	libffi-devel >= 6:3.0.9
-BuildRequires:	libicu-devel >= 63.1
+BuildRequires:	libicu-devel >= 67.1
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
@@ -681,8 +680,7 @@ unpack() {
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1 -d media/ffvpx
+%patch7 -p1
 
 %build
 cat << EOF > .mozconfig
@@ -749,7 +747,6 @@ ac_add_options --enable-startup-notification
 %if %{with system_cairo}
 ac_add_options --enable-system-cairo
 %endif
-ac_add_options --enable-system-hunspell
 ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-system-bz2
 ac_add_options --with-system-ffi
