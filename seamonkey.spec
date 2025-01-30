@@ -504,21 +504,6 @@ Georgian resources for SeaMonkey.
 %description lang-ka -l pl.UTF-8
 Gruzińskie pliki językowe dla SeaMonkeya.
 
-%package lang-lt
-Summary:	Lithuanian resources for SeaMonkey
-Summary(pl.UTF-8):	Litewskie pliki językowe dla SeaMonkeya
-Group:		I18n
-Requires:	seamonkey >= %{version}
-Provides:	seamonkey-lang-resources = %{version}
-Obsoletes:	iceape-lang-lt < 2.47
-BuildArch:	noarch
-
-%description lang-lt
-Lithuanian resources for SeaMonkey.
-
-%description lang-lt -l pl.UTF-8
-Litewskie pliki językowe dla SeaMonkeya.
-
 %package lang-nb
 Summary:	Norwegian Bokmaal resources for SeaMonkey
 Summary(pl.UTF-8):	Norweskie (bokmaal) pliki językowe dla SeaMonkeya
@@ -1003,10 +988,6 @@ fi
 %files lang-ka
 %defattr(644,root,root,755)
 %{_datadir}/%{name}/extensions/langpack-ka@seamonkey.mozilla.org.xpi
-
-#%files lang-lt
-#%defattr(644,root,root,755)
-#%{_datadir}/%{name}/extensions/langpack-lt@seamonkey.mozilla.org.xpi
 
 %files lang-nb
 %defattr(644,root,root,755)
