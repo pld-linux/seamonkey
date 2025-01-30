@@ -8,5 +8,5 @@
 -                            'virtualenv', 'virtualenv.py')
 +        return '/usr/bin/virtualenv-3'
  
-     @property
-     def bin_path(self):
+     def version_info(self):
+         return eval(subprocess.check_output([
