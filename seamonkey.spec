@@ -134,10 +134,9 @@ BuildRequires:	perl-base >= 1:5.6
 BuildRequires:	perl-modules >= 5.004
 BuildRequires:	pixman-devel >= 0.19.2
 BuildRequires:	pkgconfig
-BuildRequires:	python >= 1:2.7.3
-BuildRequires:	python-modules >= 1:2.7.3
-BuildRequires:	python-virtualenv >= 15
 BuildRequires:	python3 >= 1:3.5.0
+BuildRequires:	python3-modules >= 1:3.5.0
+BuildRequires:	python3-virtualenv
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	rust >= 1.47.0
