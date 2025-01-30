@@ -670,12 +670,14 @@ Traditional Chinese resources for SeaMonkey.
 Chińskie tradycyjne pliki językowe dla SeaMonkeya.
 
 %prep
-unpack() {
-	local args="$1" file="$2"
-	cp -p $file .
-}
-%define __unzip unpack
-%setup -q %(seq -f '-a %g' 100 122 | xargs)
+%setup -q
+for s in %sources; do
+	case $s in
+	*.xpi)
+		cp -p $s .
+		;;
+	esac
+done
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -821,7 +823,7 @@ ln -s ../../share/%{name}/isp $RPM_BUILD_ROOT%{_libdir}/%{name}/isp
 # see mozilla/xpcom/build/nsXULAppAPI.h
 # XRE_SYS_LOCAL_EXTENSION_PARENT_DIR and XRE_SYS_SHARE_EXTENSION_PARENT_DIR
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions
- 
+
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 
