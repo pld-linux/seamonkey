@@ -8,6 +8,7 @@
 %bcond_without	gold		# gold linker
 %bcond_with	crashreporter	# report crashes to crash-stats.mozilla.com
 %bcond_with	system_cairo	# build with system cairo (not supported in 2.53.9+)
+%bcond_with	system_icu	# build with system icu
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_with	lowmem		# lower memory requirements
 
@@ -117,7 +118,7 @@ BuildRequires:	gtk+3-devel >= 3.22.30
 BuildRequires:	libevent-devel >= 1.4.7
 # standalone libffi 3.0.9 or gcc's from 4.5(?)+
 BuildRequires:	libffi-devel >= 6:3.0.9
-BuildRequires:	libicu-devel >= 67.1
+%{?with_system_icu:BuildRequires:	libicu-devel >= 67.1}
 # requires libjpeg-turbo implementing at least libjpeg 6b API
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libjpeg-turbo-devel
@@ -736,7 +737,7 @@ ac_add_options --enable-system-cairo
 ac_add_options --with-distribution-id=org.pld-linux
 ac_add_options --with-system-bz2
 ac_add_options --with-system-ffi
-ac_add_options --with-system-icu
+ac_add_options --with%{!?with_system_icu:out}-system-icu
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
