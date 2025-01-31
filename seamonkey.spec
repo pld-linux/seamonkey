@@ -748,6 +748,8 @@ ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 EOF
 
+export MOZBUILD_STATE_PATH="$(pwd)/.mozbuild"
+export MACH_USE_SYSTEM_PYTHON=1
 %{__make} -j1 build \
 	AUTOCONF=/usr/bin/autoconf2_13 \
 	STRIP="/bin/true" \
