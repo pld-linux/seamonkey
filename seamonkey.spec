@@ -730,12 +730,10 @@ ac_add_options --enable-linker=bfd
 %endif
 # breaks build
 #ac_add_options --enable-shared-js
-ac_add_options --enable-startup-notification
 %if %{with system_cairo}
 ac_add_options --enable-system-cairo
 %endif
 ac_add_options --with-distribution-id=org.pld-linux
-ac_add_options --with-system-bz2
 ac_add_options --with-system-ffi
 ac_add_options --with%{!?with_system_icu:out}-system-icu
 ac_add_options --with-system-jpeg
