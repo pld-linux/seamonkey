@@ -744,6 +744,7 @@ ac_add_options --with-system-nss
 ac_add_options --with-system-pixman
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
+ac_add_options --disable-rust-simd
 EOF
 
 export MOZBUILD_STATE_PATH="$(pwd)/.mozbuild"
