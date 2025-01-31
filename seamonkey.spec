@@ -104,6 +104,7 @@ BuildRequires:	GConf2-devel >= 1.2.1
 BuildRequires:	autoconf2_13 >= 2.13
 %{?with_system_cairo:BuildRequires:	cairo-devel >= 1.10.2-5}
 BuildRequires:	cargo
+BuildRequires:	clang
 BuildRequires:	dbus-devel >= 0.60
 BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	fontconfig-devel >= 1:2.7.0
@@ -127,6 +128,7 @@ BuildRequires:	libpng(APNG)-devel >= 0.10
 BuildRequires:	libpng-devel >= 2:1.6.35
 BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libvpx-devel >= 1.5.0
+BuildRequires:	llvm-devel
 BuildRequires:	nodejs >= 8.11.0
 BuildRequires:	nspr-devel >= 1:%{nspr_ver}
 BuildRequires:	nss-devel >= 1:%{nss_ver}
@@ -143,7 +145,6 @@ BuildRequires:	rpmbuild(macros) >= 1.601
 BuildRequires:	rust >= 1.47.0
 BuildRequires:	rust-cbindgen
 BuildRequires:	sed >= 4.0
-BuildRequires:	startup-notification-devel >= 0.8
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXcomposite-devel
@@ -175,7 +176,6 @@ Requires:	nspr >= 1:%{nspr_ver}
 Requires:	nss >= 1:%{nss_ver}
 Requires:	pango >= 1:1.22.0
 Requires:	pixman >= 0.36
-Requires:	startup-notification >= 0.8
 Provides:	seamonkey-embedded = %{version}-%{release}
 Provides:	wwwbrowser
 Obsoletes:	iceape < 2.47
