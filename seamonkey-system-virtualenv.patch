@@ -10,3 +10,17 @@
  
      def version_info(self):
          return eval(subprocess.check_output([
+--- seamonkey-2.53.20/python/mozbuild/mozbuild/virtualenv.py.orig	2025-01-31 15:33:46.664284795 +0100
++++ seamonkey-2.53.20/python/mozbuild/mozbuild/virtualenv.py	2025-01-31 15:36:33.242966376 +0100
+@@ -184,8 +184,10 @@
+ 
+         if env_requirements.pth_requirements and self.populate_local_paths:
+             try:
++                import distutils.sysconfig
++                python_lib = distutils.sysconfig.get_python_lib()
+                 with open(
+-                    os.path.join(self._site_packages_dir(), PTH_FILENAME)
++                    os.path.join(python_lib, PTH_FILENAME)
+                 ) as file:
+                     pth_lines = file.read().strip().split("\n")
+             except FileNotFoundError:
