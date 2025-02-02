@@ -7,8 +7,8 @@
 %bcond_without	lightning	# Lightning calendar
 %bcond_without	gold		# gold linker
 %bcond_with	crashreporter	# report crashes to crash-stats.mozilla.com
-%bcond_with	system_cairo	# build with system cairo (not supported in 2.53.9+)
-%bcond_with	system_icu	# build with system icu
+%bcond_with	system_cairo	# system cairo (not supported in 2.53.9+)
+%bcond_with	system_icu	# system icu
 %bcond_with	tests		# enable tests (whatever they check)
 %bcond_with	lowmem		# lower memory requirements
 
@@ -663,11 +663,11 @@ for s in %sources; do
 		;;
 	esac
 done
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch7 -p1
+%patch -P1 -p1
+%patch -P2 -p1
+%patch -P3 -p1
+%patch -P4 -p1
+%patch -P7 -p1
 
 %build
 cat << EOF > .mozconfig
